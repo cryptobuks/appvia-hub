@@ -1,0 +1,50 @@
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  Exclude:
+    - bin/*
+    - db/schema.rb
+    - tmp/**/*
+    - vendor/**/*
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Layout/AlignParameters:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/BlockLength:
+  Exclude:
+    - "db/migrate/*"
+    - "spec/**/*"
+
+Metrics/ClassLength:
+  Exclude:
+    - "spec/**/*"
+
+Metrics/LineLength:
+  Max: 150
+
+Metrics/MethodLength:
+  Max: 20
+  Exclude:
+    - "db/migrate/*"
+    - "spec/**/*"
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Rails:
+  Enabled: true
+
+Style/AccessModifierDeclarations:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
