@@ -1,4 +1,23 @@
 {
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/*.js": {
+      "when": "$(basename).ts"
+    },
+    "**/*.js.map": {
+      "when": "$(basename)"
+    }
+  },
+  "editor.wordWrap": "on",
+  "prettier.singleQuote": true,
+  "prettier.printWidth": 100,
+  "html.format.enable": false,
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "typescriptHero.imports.organizeOnSave": true,
+  "tslint.packageManager": "yarn",
+  "prettier.tslintIntegration": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
