@@ -12,5 +12,42 @@ services:
     ports:
       - 5432:5432
 
+  mock_user_service:
+    image: mock-oidc-user-server:latest # CHANGEME!
+    environment:
+      - PORT=9090
+      - CLIENT_ID=ahub-client
+      - CLIENT_SECRET=ahub-secret
+      - CLIENT_REDIRECT_URI=http://localhost:8080/oauth/callback
+    ports:
+      - 9090:9090
+
+  auth_proxy:
+    image: keycloak/keycloak-gatekeeper:4.6.0.Final
+    depends_on:
+      - mock_user_service
+    environment:
+      - PROXY_DISCOVERY_URL=http://localhost:9090
+      - PROXY_CLIENT_ID=ahub-client
+      - PROXY_CLIENT_SECRET=ahub-secret
+      - PROXY_REDIRECTION_URL=http://localhost:8080
+      - PROXY_LISTEN=0.0.0.0:8080
+      - PROXY_ENABLE_REFRESH_TOKEN=true
+      - PROXY_ENABLE_SECURITY_FILTER=false
+      - PROXY_ENCRYPTION_KEY=2B982C6C-E310-4D77-8745-FA958EDF
+      - PROXY_UPSTREAM_URL=http://host.docker.internal:8081
+    command:
+      - --openid-provider-proxy=http://mock_user_service:9090
+      - --no-redirects=true
+      - --secure-cookie=false
+      - --cookie-access-name=auth-access
+      - --cookie-refresh-name=auth-refresh
+      - --enable-logging=true
+      - --enable-json-logging=false
+      - --verbose=false
+      - --resources=uri=/*
+    ports:
+      - 8080:8080
+
 volumes:
   pgdata:
