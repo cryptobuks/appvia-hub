@@ -35,4 +35,6 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 
   config.include FactoryBot::Syntax::Methods
+
+  config.include_context 'authentication helpers', type: :request
 end
