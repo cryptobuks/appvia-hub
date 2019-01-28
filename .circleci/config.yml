@@ -39,6 +39,11 @@ jobs:
       - run: bundle exec rake db:create
       - run: bundle exec rake db:schema:load
 
+      # Lint
+      - run:
+          name: lint
+          command: bundle exec rubocop && yarn lint
+
       # run tests!
       - run:
           name: run tests

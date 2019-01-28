@@ -2,6 +2,7 @@
   "name": "appvia-hub",
   "private": true,
   "scripts": {
+    "lint": "eslint config/webpack/**/*.js app/webpack/**/*.js",
     "lint-staged": "$(yarn bin)/lint-staged"
   },
   "lint-staged": {
