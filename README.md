@@ -1,6 +1,6 @@
 # Appvia Hub
 
-[![Build_Status](https://circleci.com/gh/appvia/appvia-hub.svg?style=svg)](https://circleci.com/gh/appvia/appvia-hub)
+[![Build_Status](https://circleci.com/gh/appvia/appvia-hub.svg?style=svg&circle-token=ea303efa15990d76dc61bbbed4e4b634b578299f)](https://circleci.com/gh/appvia/appvia-hub)
 
 ## Dev
 
