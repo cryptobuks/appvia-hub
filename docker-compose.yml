@@ -1,0 +1,53 @@
+version: '3.7'
+
+services:
+
+  postgres:
+    image: 'postgres:10.6-alpine'
+    volumes:
+      - 'pgdata:/var/lib/postgresql/data'
+    environment:
+      - POSTGRES_USER=ahub
+      - POSTGRES_PASSWORD=ahub_password
+    ports:
+      - 5432:5432
+
+  mock_user_service:
+    image: quay.io/appvia/mock-oidc-user-server:v0.0.2
+    environment:
+      - PORT=9000
+      - CLIENT_ID=ahub-client
+      - CLIENT_SECRET=ahub-secret
+      - CLIENT_REDIRECT_URI=http://localhost:3000/oauth/callback
+    ports:
+      - 9000:9000
+
+  auth_proxy:
+    image: keycloak/keycloak-gatekeeper:4.6.0.Final
+    depends_on:
+      - mock_user_service
+    environment:
+      - PROXY_DISCOVERY_URL=http://localhost:9000
+      - PROXY_CLIENT_ID=ahub-client
+      - PROXY_CLIENT_SECRET=ahub-secret
+      - PROXY_REDIRECTION_URL=http://localhost:3000
+      - PROXY_LISTEN=0.0.0.0:3000
+      - PROXY_ENABLE_SECURITY_FILTER=false
+      - PROXY_ENCRYPTION_KEY=2B982C6C-E310-4D77-8745-FA958EDF
+      - PROXY_UPSTREAM_URL=http://host.docker.internal:3001
+    command:
+      - --enable-refresh-tokens=true
+      - --preserve-host=true
+      - --openid-provider-proxy=http://mock_user_service:9000
+      - --secure-cookie=false
+      - --cookie-access-name=auth-access
+      - --cookie-refresh-name=auth-refresh
+      - --enable-logging=true
+      - --enable-json-logging=false
+      - --verbose=false
+      - --resources=uri=/*
+    ports:
+      - 3000:3000
+
+volumes:
+  pgdata:

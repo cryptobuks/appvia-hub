@@ -1,0 +1,40 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+  # The env var DATABASE_URL always takes precedence.
+  # If provided, it MUST contain:
+  # - The username and password
+  # - The host and port
+  # - The name of the database
+  #
+  # Example:
+  # export DATABASE_URL="postgres://user1:supersecretpassword@myhost.com:5432/ahub_production"
+
+  <% if ENV.include? 'DATABASE_URL' %>
+  database_url: ENV['DATABASE_URL']
+  <% else %>
+  host: <%= ENV.fetch('AHUB_DB_HOST', 'localhost') %>
+  port: <%= ENV.fetch('AHUB_DB_PORT', 5432) %>
+  username: <%= ENV.fetch('AHUB_DB_USER') { raise 'AHUB_DB_USER missing' } %>
+  password: <%= ENV.fetch('AHUB_DB_PASSWORD') { raise 'AHUB_DB_PASSWORD missing' } %>
+  database: <%= ENV.fetch('AHUB_DB_NAME') { raise 'AHUB_DB_NAME missing' } %>_<%= Rails.env %>
+  <% end %>
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+  # Explicitly set the database name for test
+  <% if ENV.include? 'AHUB_DB_NAME' %>
+  database: <%= ENV['AHUB_DB_NAME'] %>_test
+  <% else %>
+  database: ahub_test
+  <% end %>
+
+production:
+  <<: *default
