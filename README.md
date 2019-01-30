@@ -49,3 +49,12 @@ bin/rails serve
 This serves the entire app, including all frontend assets (bundled using [Webpack](https://webpack.js.org/)).
 
 You can **also** run `bin/webpack-dev-server` in a separate terminal shell if you want live reloading (in your browser) of CSS and JavaScript changes (note: only changes made within the `app/webpack` folder will cause live reloads).
+
+
+### Dev Tips
+
+To get Rubocop to fix detected issues automatically (where it can):
+
+```shell
+bundle exec rubocop -a
+```
