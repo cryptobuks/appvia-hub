@@ -16,7 +16,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.8', '>= 3.8.2'
   gem 'factory_bot_rails', '~> 4.11', '>= 4.11.1'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.4'
-  gem 'rspec_junit_formatter', '~> 0.4.1'
+  gem 'pry-rails', '~> 0.3.9'
+  gem 'pry-byebug', '~> 3.6'
 end
 
 group :development do
@@ -27,6 +28,10 @@ group :development do
   gem 'rubocop', '~> 0.63.1', require: false
   gem 'better_errors', '~> 2.5'
   gem 'binding_of_caller', '~> 0.8.0'
+end
+
+group :test do
+  gem 'rspec_junit_formatter', '~> 0.4.1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
