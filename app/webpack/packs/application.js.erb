@@ -1,9 +1,12 @@
 import '../stylesheets/application.scss';
+import "<%= File.join(Gem.loaded_specs['bootstrap_form'].full_gem_path, 'app', 'assets', 'stylesheets', 'rails_bootstrap_forms.css') %>";
 
 import Rails from 'rails-ujs';
 import Turbolinks from 'turbolinks';
 
 import 'bootstrap/dist/js/bootstrap';
+
+import 'data-confirm-modal';
 
 Rails.start();
 Turbolinks.start();

@@ -10,6 +10,9 @@ gem 'webpacker', '~> 3.5', '>= 3.5.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'memoist', '~> 0.16.0'
 gem 'sidekiq', '~> 5.2.5'
+gem 'friendly_id', '~> 5.2', '>= 5.2.5'
+gem 'turbolinks', '~> 5.2'
+gem 'bootstrap_form', '~> 4.1'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
@@ -17,6 +20,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.8', '>= 3.8.2'
   gem 'factory_bot_rails', '~> 4.11', '>= 4.11.1'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.4'
+  gem 'shoulda-matchers', '~> 4.0.0.rc1'
   gem 'pry-rails', '~> 0.3.9'
   gem 'pry-byebug', '~> 3.6'
 end
@@ -33,6 +37,7 @@ end
 
 group :test do
   gem 'rspec_junit_formatter', '~> 0.4.1'
+  gem 'timecop', '~> 0.9.1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

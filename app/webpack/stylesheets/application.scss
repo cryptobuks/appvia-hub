@@ -1,29 +1,49 @@
+@import './theme/variables';
 @import './variables';
 
 @import '~bootstrap/scss/bootstrap';
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+@import './theme/bootswatch';
 
-  font-family: Helvetica, Arial, sans-serif;
+@import './sidebar';
+
+[role="main"] {
+  margin-left: $sidebar-width;
+  padding: $spacer * 1.5;
+  padding-top: calc(#{$navbar-height} + #{$spacer * 1.5}); /* Space for fixed navbar */
 }
 
-body > .container {
-  padding-top: $spacer;
-  padding-bottom: $spacer;
+hr {
+  margin-top: $spacer;
+  margin-bottom: $spacer;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: $spacer;
+}
+
+.fas {
+  color: $gray-800;
+  margin-right: 0.3em;
+}
+
+label.required:after {
+  content:" *";
+}
+
+.alert-notice {
+  @extend .alert-success;
+}
+
+.alert-alert {
+  @extend .alert-danger;
+}
+
+.navbar {
+  height: $navbar-height;
+  box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15);
 }
 
 .navbar-brand {
   text-transform: uppercase;
-}
-
-.site-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 60px;
-  line-height: 60px;
-  padding-left: $spacer;
-  padding-right: $spacer;
 }

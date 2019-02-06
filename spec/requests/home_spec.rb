@@ -13,6 +13,7 @@ RSpec.describe 'Home', type: :request do
         get root_path
         expect(response).to be_successful
         expect(response).to render_template(:show)
+        expect(assigns(:activity)).to eq []
       end
     end
   end

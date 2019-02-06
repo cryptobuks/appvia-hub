@@ -23,8 +23,10 @@
   "dependencies": {
     "@rails/webpacker": "3.5",
     "bootstrap": "^4.2.1",
+    "data-confirm-modal": "^1.6.2",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.6",
+    "rails-erb-loader": "^5.5.2",
     "rails-ujs": "^5.2.2",
     "turbolinks": "^5.2.0",
     "vue": "^2.5.22",
