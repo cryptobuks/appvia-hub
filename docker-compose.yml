@@ -36,6 +36,7 @@ services:
       - PROXY_ENCRYPTION_KEY=2B982C6C-E310-4D77-8745-FA958EDF
       - PROXY_UPSTREAM_URL=http://host.docker.internal:3001
     command:
+      - --upstream-timeout=5m
       - --enable-refresh-tokens=true
       - --preserve-host=true
       - --openid-provider-proxy=http://mock_user_service:9000
