@@ -4,6 +4,8 @@ class App < ApplicationRecord
 
   include FriendlyId
 
+  audited
+
   friendly_id :slug
 
   attr_readonly :slug
@@ -18,4 +20,8 @@ class App < ApplicationRecord
       with: /\A#{SLUG_FORMAT_REGEX}\z/,
       message: SLUG_FORMAT_TEXT
     }
+
+  def descriptor
+    slug
+  end
 end
