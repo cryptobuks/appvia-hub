@@ -14,6 +14,7 @@ gem 'friendly_id', '~> 5.2', '>= 5.2.5'
 gem 'turbolinks', '~> 5.2'
 gem 'bootstrap_form', '~> 4.1'
 gem 'audited', '~> 4.8'
+gem 'local_time', '~> 2.1'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

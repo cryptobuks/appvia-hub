@@ -1,0 +1,14 @@
+.activity-stream {
+  .fas {
+    margin-right: 0.5em;
+  }
+
+  .time-ago {
+    @extend .d-inline-block;
+    @extend .float-right;
+    @extend .text-muted;
+    @extend .font-weight-light;
+    @extend .font-italic;
+    @extend .align-middle;
+  }
+}

@@ -25,3 +25,7 @@
     <%= simple_format @app.description %>
   </div>
 <% end %>
+
+<div class="mt-4">
+  <%= render partial: 'activity/stream', locals: { activity: @activity } %>
+</div>

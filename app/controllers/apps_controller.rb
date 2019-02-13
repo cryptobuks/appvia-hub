@@ -7,7 +7,9 @@ class AppsController < ApplicationController
   end
 
   # GET /apps/:id
-  def show; end
+  def show
+    @activity = ActivityService.new.for_app @app
+  end
 
   # GET /apps/new
   def new
