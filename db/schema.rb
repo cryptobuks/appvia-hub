@@ -10,11 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_24_131236) do
+ActiveRecord::Schema.define(version: 2019_02_12_155724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "apps", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_apps_on_slug", unique: true
+  end
+
+  create_table "audits", force: :cascade do |t|
+    t.string "auditable_type"
+    t.uuid "auditable_id"
+    t.string "auditable_descriptor"
+    t.string "associated_type"
+    t.uuid "associated_id"
+    t.string "associated_descriptor"
+    t.string "user_type"
+    t.uuid "user_id"
+    t.string "username"
+    t.string "user_email"
+    t.string "action"
+    t.jsonb "audited_changes"
+    t.integer "version", default: 0
+    t.string "comment"
+    t.string "remote_address"
+    t.string "request_uuid"
+    t.datetime "created_at", null: false
+    t.index ["associated_type", "associated_id"], name: "index_audits_on_associated_type_and_associated_id"
+    t.index ["auditable_type", "auditable_id"], name: "index_audits_on_auditable_type_and_auditable_id"
+    t.index ["created_at"], name: "index_audits_on_created_at"
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
+    t.index ["user_email"], name: "index_audits_on_user_email"
+    t.index ["user_type", "user_id"], name: "index_audits_on_user_type_and_user_id"
+  end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", null: false

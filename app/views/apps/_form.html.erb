@@ -1,0 +1,20 @@
+<%= bootstrap_form_with(model: app, local: true) do |form| %>
+  <%= form.alert_message "Please fix the issues below:" %>
+
+  <%= form.text_field :name %>
+
+  <% if app.new_record? %>
+    <%=
+      form.text_field :slug,
+        help: App::SLUG_FORMAT_TEXT.capitalize,
+        pattern: "^#{App::SLUG_FORMAT_REGEX}$"
+    %>
+  <% else %>
+    <%= form.static_control :slug %>
+  <% end %>
+
+  <%= form.text_area :description %>
+
+  <% submit_label = app.new_record? ? 'Create app' : 'Update app' %>
+  <%= form.primary submit_label %>
+<% end %>

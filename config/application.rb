@@ -26,11 +26,14 @@ module AppviaHub
     # the framework and any gems in your application.
 
     config.generators do |g|
-      g.system_tests    false
-      g.stylesheets     false
-      g.javascripts     false
-      g.helper          false
-      g.channel         assets: false
+      g.system_tests false
+      g.stylesheets false
+      g.javascripts false
+      g.helper false
+      g.channel assets: false
+      g.controller_specs false
+      g.helper_specs false
+      g.view_specs false
     end
   end
 end

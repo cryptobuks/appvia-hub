@@ -1,3 +1,5 @@
 class HomeController < ApplicationController
-  def show; end
+  def show
+    @activity = ActivityService.new.overall
+  end
 end

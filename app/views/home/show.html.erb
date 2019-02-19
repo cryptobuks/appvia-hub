@@ -1,1 +1,1 @@
-<h1>Welcome, <%= current_user.try(:email) %>!</h1>
+<%= render partial: 'activity/stream', locals: { activity: @activity } %>

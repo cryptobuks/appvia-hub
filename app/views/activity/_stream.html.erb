@@ -1,0 +1,37 @@
+<div class="card activity-stream">
+  <div class="card-header">
+    <strong>Activity</strong>
+  </div>
+  <ul class="list-group list-group-flush">
+    <% if activity.present? %>
+      <% activity.each do |a| %>
+        <%- case a.auditable_type -%>
+        <%- when 'User' -%>
+          <%- case a.action -%>
+          <%- when 'create' -%>
+            <%= activity_entry 'user-plus', a.created_at do %>
+              <%= a.user_email %> joined the hub
+            <% end %>
+          <%- end -%>
+        <%- when 'App' -%>
+          <%- case a.action -%>
+          <%- when 'create' -%>
+            <%= activity_entry 'cube', a.created_at do %>
+              <%= a.user_email %> created a new app:
+              <%= link_to a.auditable_descriptor, app_path(a.auditable_id), class: 'text-monospace' %>
+            <% end %>
+          <%- when 'destroy' -%>
+            <%= activity_entry 'cube', a.created_at do %>
+              <%= a.user_email %> deleted app:
+              <span class="text-monospace"><%= a.auditable_descriptor %></span>
+            <% end %>
+          <%- end -%>
+        <%- end -%>
+      <%- end -%>
+    <% else %>
+      <li class="list-group-item text-center none-text">
+        No activity yet
+      </li>
+    <% end %>
+  </ul>
+</div>

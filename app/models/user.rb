@@ -1,9 +1,15 @@
 class User < ApplicationRecord
+  audited
+
   validates :email,
     presence: true,
     uniqueness: true
 
   before_validation :normalise_email
+
+  def descriptor
+    email
+  end
 
   private
 

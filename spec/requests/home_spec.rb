@@ -9,10 +9,20 @@ RSpec.describe 'Home', type: :request do
     end
 
     it_behaves_like 'authenticated' do
+      let(:activity_service) { instance_double('ActivityService') }
+
+      before do
+        expect(ActivityService).to receive(:new)
+          .and_return(activity_service)
+        expect(activity_service).to receive(:overall)
+          .and_return([])
+      end
+
       it 'loads the homepage' do
         get root_path
         expect(response).to be_successful
         expect(response).to render_template(:show)
+        expect(assigns(:activity)).to eq []
       end
     end
   end
