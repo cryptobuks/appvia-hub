@@ -5,6 +5,10 @@ jobs:
   build:
     parallelism: 1
 
+    environment:
+      SECRET_KEY_BASE: test_secret_key_base
+      SECRET_SALT: test_secret_salt
+
     docker:
       - image: circleci/ruby:2.5.3-node-browsers
 
