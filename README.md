@@ -30,7 +30,13 @@ docker-compose down
 
 ### Initial Setup
 
-Once you have the prerequisites above, the codebase cloned and the dependent services running locally, run the following to set everything up:
+Once you have the prerequisites above, the codebase cloned and the dependent services running locally…
+
+Set up the following environment variables in `.env.local` (you'll need to create this file initially):
+- `SECRET_KEY_BASE` – used for encryption. Usually 128 bytes. You can run `bin/rails secret` locally to generate a string for this.
+- `SECRET_SALT` – a separate [salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) value used for things like model attribute encryption.
+
+Then run the following to set everything up:
 
 ```bash
 bin/setup
