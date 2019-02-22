@@ -3,7 +3,7 @@ require_relative 'boot'
 require 'rails'
 # Pick the frameworks you want:
 require 'active_model/railtie'
-require 'active_job/railtie'
+# require 'active_job/railtie'
 require 'active_record/railtie'
 require 'active_storage/engine'
 require 'action_controller/railtie'
@@ -26,14 +26,18 @@ module AppviaHub
     # the framework and any gems in your application.
 
     config.generators do |g|
+      g.orm :active_record, primary_key_type: :uuid
+
       g.system_tests false
       g.stylesheets false
       g.javascripts false
       g.helper false
       g.channel assets: false
-      g.controller_specs false
-      g.helper_specs false
-      g.view_specs false
+
+      g.test_framework :rspec,
+        controller_specs: false,
+        helper_specs: false,
+        view_specs: false
     end
   end
 end

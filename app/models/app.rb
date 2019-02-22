@@ -1,25 +1,26 @@
 class App < ApplicationRecord
-  SLUG_FORMAT_REGEX = '[a-z]+[a-z0-9\-_]*'.freeze
-  SLUG_FORMAT_TEXT = 'must start with a letter and can only contain lowercase letters, numbers, hyphens, and underscores'.freeze
-
+  include SluggedAttribute
   include FriendlyId
 
   audited
 
-  friendly_id :slug
+  has_many :resources,
+    -> { includes :provider },
+    dependent: :restrict_with_exception,
+    inverse_of: :app
 
-  attr_readonly :slug
+  has_many :code_repos,
+    class_name: 'Resources::CodeRepo',
+    dependent: :restrict_with_exception
 
-  validates :name,
-    presence: true
-
-  validates :slug,
+  slugged_attribute :slug,
     presence: true,
     uniqueness: true,
-    format: {
-      with: /\A#{SLUG_FORMAT_REGEX}\z/,
-      message: SLUG_FORMAT_TEXT
-    }
+    readonly: true
+
+  friendly_id :slug
+
+  validates :name, presence: true
 
   def descriptor
     slug

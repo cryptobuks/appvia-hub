@@ -2,16 +2,24 @@
   name: GitHub
   config_spec:
     properties:
+      app_id:
+        title: Your GitHub App ID
+        description: "The app ID for the [GitHub App](https://developer.github.com/apps/about-apps/) you have set up."
+        type: string
+      app_private_key:
+        title: Your GitHub App private key
+        description: "A private key for the [GitHub App](https://developer.github.com/apps/about-apps/) you have set up."
+        type: string
+      app_installation_id:
+        title: Your GitHub App installation on your org
+        description: "The specific installation of your GitHub App within your GitHub organisation."
+        type: string
       org:
-        title: Organisation
-        description: The organisation on GitHub to manage repos for. This should be the 'login' value as specified in https://developer.github.com/v3/orgs/
+        title: Your GitHub organisation
+        description: "The organisation on GitHub to manage repos for. This should be the 'login' value as specified in https://developer.github.com/v3/orgs/."
         type: string
-      token:
-        title: API Token
-        description: The API token used by the hub to interact with GitHub. This must be a GitHub "personal access token" with the ability to manage repos and teams in the organisation specified.
-        type: string
-        minLength: 40
-        maxLength: 40
     required:
+      - app_id
+      - app_private_key
+      - app_installation_id
       - org
-      - token

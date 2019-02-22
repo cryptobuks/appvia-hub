@@ -6,7 +6,7 @@ class ActivityService
   end
 
   def for_app(app)
-    with_defaults(app.audits)
+    with_defaults(app.own_and_associated_audits)
   end
 
   private

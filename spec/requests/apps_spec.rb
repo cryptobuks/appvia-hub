@@ -112,6 +112,14 @@ RSpec.describe 'Apps', type: :request do
 
     it_behaves_like 'authenticated' do
       context 'with valid params' do
+        before do
+          app_bootstrap_service = instance_double('AppBootstrapService')
+          expect(AppBootstrapService).to receive(:new)
+            .with(App)
+            .and_return(app_bootstrap_service)
+          expect(app_bootstrap_service).to receive(:bootstrap)
+        end
+
         it 'creates a new App with the given params and redirects to the app page' do
           expect do
             post apps_path, params: { app: params }
@@ -136,6 +144,10 @@ RSpec.describe 'Apps', type: :request do
       end
 
       context 'with invalid params' do
+        before do
+          expect(AppBootstrapService).to receive(:new).never
+        end
+
         it 'loads the new page with errors' do
           post apps_path, params: { app: { name: nil, slug: '1 2 3' } }
           expect(response).to be_successful

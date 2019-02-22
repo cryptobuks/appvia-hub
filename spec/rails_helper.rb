@@ -40,6 +40,12 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
   config.include_context 'authentication helpers', type: :request
+
+  config.include_context 'mocked configured provider helper'
+
+  config.before(:each) do
+    Sidekiq::Worker.clear_all
+  end
 end
 
 Shoulda::Matchers.configure do |config|

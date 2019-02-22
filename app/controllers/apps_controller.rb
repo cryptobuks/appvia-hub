@@ -24,6 +24,8 @@ class AppsController < ApplicationController
     @app = App.new app_params
 
     if @app.save
+      AppBootstrapService.new(@app).bootstrap
+
       redirect_to @app, notice: 'App was successfully created.'
     else
       render :new

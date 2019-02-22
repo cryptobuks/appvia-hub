@@ -64,3 +64,5 @@ To get Rubocop to fix detected issues automatically (where it can):
 ```shell
 bundle exec rubocop -a
 ```
+
+If you get the error `Invalid single-table inheritance type: […]` just restart your local server. This is due to single-table inheritance and lazy loading of files during development.

@@ -3,6 +3,5 @@ FactoryBot.define do
     sequence :name do |n|
       "Configured Provider #{n}"
     end
-    kind { ConfiguredProvider.kinds.keys.first }
   end
 end
