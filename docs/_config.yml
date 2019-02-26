@@ -1,1 +1,37 @@
-theme: jekyll-theme-cayman
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+title: Appvia Hub Project
+email: info@appvia.io
+description: >- # this means to ignore newlines until "baseurl:"
+  The Appvia Hub is an open-source hosting platform that allows you to focus your time on the things that matter to your business - like building, deploying and running your apps - without the complexity of building and maintaining your own infrastructure.
+baseurl: "/appvia-hub/"
+url: "https://appvia.github.io"
+twitter_username: appvia_io
+github_username:  appvia
+
+# Build settings
+markdown: kramdown
+remote_theme: pmarsceill/just-the-docs
+
+# Theme specific config
+search_enabled: true
+aux_links:
+    "Appvia.io":
+      - "https://appvia.io/"
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
+exclude:
+  - "README.md"
