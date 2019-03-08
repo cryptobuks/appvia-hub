@@ -28,8 +28,21 @@
         </div>
       <%- end -%>
     <% else %>
-      <li class="list-group-item text-center none-text">
-        No resources yet
+      <li class="list-group-item text-center">
+        <span class="none-text mt-2 inline-block">
+          No resources yet
+        </span>
+
+        <br />
+        <br />
+
+        <%=
+          link_to 'Provision a new set of resources',
+            provision_app_resources_path(@app),
+            method: :post,
+            class: 'btn btn-primary',
+            role: 'button'
+        %>
       </li>
     <% end %>
   </div>
