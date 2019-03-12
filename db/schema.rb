@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_20_103112) do
+ActiveRecord::Schema.define(version: 2019_03_06_153823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 2019_02_20_103112) do
     t.string "remote_address"
     t.string "request_uuid"
     t.datetime "created_at", null: false
+    t.string "auditable_model_name"
     t.index ["associated_type", "associated_id"], name: "index_audits_on_associated_type_and_associated_id"
     t.index ["auditable_type", "auditable_id"], name: "index_audits_on_auditable_type_and_auditable_id"
     t.index ["created_at"], name: "index_audits_on_created_at"
@@ -59,6 +60,22 @@ ActiveRecord::Schema.define(version: 2019_02_20_103112) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "resources", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type", null: false
+    t.uuid "app_id", null: false
+    t.uuid "provider_id", null: false
+    t.string "status", null: false
+    t.string "name", null: false
+    t.jsonb "metadata", default: {}, null: false
+    t.string "lock_version"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["app_id"], name: "index_resources_on_app_id"
+    t.index ["name", "provider_id"], name: "index_resources_on_name_and_provider_id", unique: true
+    t.index ["provider_id"], name: "index_resources_on_provider_id"
+    t.index ["type"], name: "index_resources_on_type"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", null: false
     t.string "name"
@@ -68,4 +85,6 @@ ActiveRecord::Schema.define(version: 2019_02_20_103112) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "resources", "apps"
+  add_foreign_key "resources", "configured_providers", column: "provider_id"
 end

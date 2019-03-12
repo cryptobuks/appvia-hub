@@ -13,23 +13,12 @@ RSpec.describe ConfiguredProvider, type: :model do
     it { is_expected.to validate_presence_of(:config) }
 
     context 'encryption, serialisation and persistence' do
-      let(:kind) { ConfiguredProvider.kinds.keys.first }
-
-      let(:schema) { instance_double(JsonSchema::Schema) }
-
       let :initial_config do
         { 'foo' => 'one', 'bar' => 'two' }
       end
 
       subject do
-        build :configured_provider, kind: kind, config: initial_config
-      end
-
-      before do
-        allow(PROVIDERS_REGISTRY).to receive(:config_schemas)
-          .and_return(kind => schema)
-        allow(schema).to receive(:validate!)
-          .and_return(true)
+        create_mocked_provider config: initial_config
       end
 
       it 'persists and loads up the config from the db as expected' do

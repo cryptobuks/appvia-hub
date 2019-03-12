@@ -45,6 +45,9 @@ Metrics/ParameterLists:
 Rails:
   Enabled: true
 
+Rails/Delegate:
+  Enabled: false
+
 Style/AccessModifierDeclarations:
   Enabled: false
 

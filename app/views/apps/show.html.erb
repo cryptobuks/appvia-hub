@@ -26,6 +26,11 @@
   </div>
 <% end %>
 
-<div class="mt-4">
-  <%= render partial: 'activity/stream', locals: { activity: @activity } %>
+<div class="row">
+  <div class="col-md">
+    <%= render partial: 'resources', locals: { app: @app } %>
+  </div>
+  <div class="col-md">
+    <%= render partial: 'activity/stream', locals: { activity: @activity } %>
+  </div>
 </div>

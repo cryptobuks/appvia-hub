@@ -10,6 +10,7 @@ gem 'webpacker', '~> 3.5', '>= 3.5.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'memoist', '~> 0.16.0'
 gem 'sidekiq', '~> 5.2.5'
+gem 'sidekiq-history', '~> 0.0.11'
 gem 'friendly_id', '~> 5.2', '>= 5.2.5'
 gem 'turbolinks', '~> 5.2'
 gem 'bootstrap_form', '~> 4.1'
@@ -17,6 +18,10 @@ gem 'audited', '~> 4.8'
 gem 'local_time', '~> 2.1'
 gem 'json_schema', '~> 0.20.1'
 gem 'crypt_keeper', '~> 2.0', '>= 2.0.1'
+gem 'default_value_for', '~> 3.1'
+gem 'attr_json', '~> 0.6.0'
+gem 'jwt', '~> 2.1'
+gem 'octokit', '~> 4.13'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
@@ -24,7 +29,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.8', '>= 3.8.2'
   gem 'factory_bot_rails', '~> 4.11', '>= 4.11.1'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.4'
-  gem 'shoulda-matchers', '~> 4.0.0.rc1'
+  gem 'shoulda-matchers', '~> 4.0.1'
   gem 'pry-rails', '~> 0.3.9'
   gem 'pry-byebug', '~> 3.6'
 end
