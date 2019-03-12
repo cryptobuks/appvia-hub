@@ -8,5 +8,8 @@ FactoryBot.define do
 
     factory :code_repo, class: 'Resources::CodeRepo' do
     end
+
+    factory :docker_repo, class: 'Resources::DockerRepo' do
+    end
   end
 end
