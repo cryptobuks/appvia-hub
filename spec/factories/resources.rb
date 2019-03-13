@@ -11,5 +11,8 @@ FactoryBot.define do
 
     factory :docker_repo, class: 'Resources::DockerRepo' do
     end
+
+    factory :kube_namespace, class: 'Resources::KubeNamespace' do
+    end
   end
 end
