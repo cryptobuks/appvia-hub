@@ -24,6 +24,22 @@
       - app_installation_id
       - org
 
+- id: quay
+  name: Quay
+  config_spec:
+    properties:
+      api_access_token:
+        title: Quay API access token
+        description: An API token to be used to communicate with the Quay.io API. This must have enough permissions to create and manage repos.
+        type: string
+      org:
+        title: Your Quay organisation
+        description: The organisation on Quay to manage repos for. This will be used as the namespace for all Docker repos created.
+        type: string
+    required:
+      - api_access_token
+      - org
+
 - id: kubernetes
   name: Kubernetes
   config_spec:
