@@ -6,7 +6,8 @@ module Resources
       with_resource(resource_id) do |resource|
         with_agent(resource.provider) do |agent|
           with_handler(resource) do |handler|
-            handler.call resource, agent
+            result = handler.call resource, agent
+            result ? finalise(resource) : resource.failed!
           rescue StandardError => ex
             error_serialised = "[#{ex.class.name}] #{ex.message} - #{ex.backtrace.join(' | ')}"
 
@@ -23,6 +24,10 @@ module Resources
     end
 
     def handler_for(_resource)
+      raise NotImplementedError
+    end
+
+    def finalise(_resource)
       raise NotImplementedError
     end
 
@@ -48,6 +53,18 @@ module Resources
                   app_private_key: config['app_private_key'],
                   app_installation_id: config['app_installation_id'],
                   org: config['org']
+                )
+              when 'quay'
+                QuayAgent.new(
+                  access_token: config['access_token'],
+                  org: config['org'],
+                  global_robot_token_name: config['global_robot_token_name'],
+                  global_robot_token: config['global_robot_token']
+                )
+              when 'kubernetes'
+                KubernetesAgent.new(
+                  api_url: config['api_url'],
+                  token: config['token']
                 )
               end
 
