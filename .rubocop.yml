@@ -39,6 +39,10 @@ Metrics/MethodLength:
     - "db/migrate/*"
     - "spec/**/*"
 
+Metrics/ModuleLength:
+  Exclude:
+    - "spec/**/*"
+
 Metrics/ParameterLists:
   Enabled: false
 
