@@ -13,7 +13,8 @@ module Resources
       'Resources::DockerRepo' => {
         'quay' => lambda do |resource, agent|
           result = agent.create_repository resource.name
-          resource.base_uri = result.base_uri
+          resource.visibility = result.spec.visibility
+          resource.base_uri = result.spec.url
           true
         end
       },

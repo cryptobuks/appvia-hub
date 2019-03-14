@@ -22,6 +22,9 @@ gem 'default_value_for', '~> 3.1'
 gem 'attr_json', '~> 0.6.0'
 gem 'jwt', '~> 2.1'
 gem 'octokit', '~> 4.13'
+gem 'faraday', '~> 0.15.4'
+gem 'faraday_middleware', '~> 0.13.1'
+gem 'typhoeus', '~> 1.3', '>= 1.3.1'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

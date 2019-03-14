@@ -2,6 +2,36 @@ module Resources
   class BaseWorker
     include Sidekiq::Worker
 
+    AGENT_INITIALISERS = {
+      'git_hub' => lambda do |config|
+        GitHubAgent.new(
+          app_id: config['app_id'],
+          app_private_key: config['app_private_key'],
+          app_installation_id: config['app_installation_id'],
+          org: config['org']
+        )
+      end,
+      'quay' => lambda do |config|
+        QuayAgent.new(
+          agent_base_url: Rails.configuration.agents.quay.base_url,
+          agent_token: Rails.configuration.agents.quay.token,
+          quay_access_token: config['api_access_token'],
+          org: config['org'],
+          global_robot_name: config['global_robot_name']
+        )
+      end,
+      'kubernetes' => lambda do |config|
+        KubernetesAgent.new(
+          agent_base_url: Rails.configuration.agents.kubernetes.base_url,
+          agent_token: Rails.configuration.agents.kubernetes.token,
+          kube_api_url: config['api_url'],
+          kube_ca_cert: config['ca_cert'],
+          kube_token: config['token'],
+          global_service_account_name: config['global_service_account_name']
+        )
+      end
+    }.freeze
+
     def perform(resource_id)
       with_resource(resource_id) do |resource|
         with_agent(resource.provider) do |agent|
@@ -9,12 +39,10 @@ module Resources
             result = handler.call resource, agent
             result ? finalise(resource) : resource.failed!
           rescue StandardError => ex
-            error_serialised = "[#{ex.class.name}] #{ex.message} - #{ex.backtrace.join(' | ')}"
-
             logger.error [
               "Failed to process request for resource #{resource.id}",
               "(type: #{resource.type}, provider: #{resource.provider.kind})",
-              "- error: #{error_serialised}"
+              "- error: #{ex.inspect}"
             ].join(' ')
 
             resource.failed!
@@ -44,29 +72,9 @@ module Resources
     end
 
     def with_agent(configured_provider)
-      config = configured_provider.config
+      agent_initialiser = AGENT_INITIALISERS[configured_provider.kind]
 
-      agent = case configured_provider.kind
-              when 'git_hub'
-                GitHubAgent.new(
-                  app_id: config['app_id'],
-                  app_private_key: config['app_private_key'],
-                  app_installation_id: config['app_installation_id'],
-                  org: config['org']
-                )
-              when 'quay'
-                QuayAgent.new(
-                  access_token: config['access_token'],
-                  org: config['org'],
-                  global_robot_token_name: config['global_robot_token_name'],
-                  global_robot_token: config['global_robot_token']
-                )
-              when 'kubernetes'
-                KubernetesAgent.new(
-                  api_url: config['api_url'],
-                  token: config['token']
-                )
-              end
+      agent = agent_initialiser&.call configured_provider.config
 
       if agent
         yield agent

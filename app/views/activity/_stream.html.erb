@@ -9,19 +9,19 @@
         <%- when 'User' -%>
           <%- case a.action -%>
           <%- when 'create' -%>
-            <%= activity_entry 'user-plus', a.created_at do %>
+            <%= activity_entry icon('user-plus'), a.created_at do %>
               <%= a.user_email %> joined the hub
             <% end %>
           <%- end -%>
         <%- when 'App' -%>
           <%- case a.action -%>
           <%- when 'create' -%>
-            <%= activity_entry 'cube', a.created_at do %>
+            <%= activity_entry icon('cube'), a.created_at do %>
               <%= a.user_email %> created a new app:
               <%= link_to a.auditable_descriptor, app_path(a.auditable_id), class: 'text-monospace' %>
             <% end %>
           <%- when 'destroy' -%>
-            <%= activity_entry 'cube', a.created_at do %>
+            <%= activity_entry icon('cube'), a.created_at do %>
               <%= a.user_email %> deleted app:
               <span class="text-monospace"><%= a.auditable_descriptor %></span>
             <% end %>
@@ -29,7 +29,7 @@
         <%- when 'Resource' -%>
           <%- case a.action -%>
           <%- when 'request_create' -%>
-            <%= activity_entry resource_icon_name, a.created_at do %>
+            <%= activity_entry resource_icon(a.auditable_model_name), a.created_at do %>
               <% if a.user_email %>
                 <%= a.user_email %> requested a new resource:
               <% else %>
@@ -46,7 +46,7 @@
           <%- when 'update' -%>
             <% status_changes = Array(a.audited_changes['status']).flatten %>
             <% if status_changes.uniq.size == 2 && status_changes.last != Resource.statuses[:deleting] %>
-              <%= activity_entry resource_icon_name, a.created_at do %>
+              <%= activity_entry resource_icon(a.auditable_model_name), a.created_at do %>
                 Resource
                 <span class="font-weight-bold">
                   <%= a.auditable_descriptor %>
@@ -59,7 +59,7 @@
               <% end %>
             <% end %>
           <%- when 'request_delete' -%>
-            <%= activity_entry resource_icon_name, a.created_at do %>
+            <%= activity_entry resource_icon(a.auditable_model_name), a.created_at do %>
               <% if a.user_email %>
                 <%= a.user_email %> requested deletion of resource:
               <% else %>
@@ -75,7 +75,7 @@
               <%= link_to a.associated_descriptor, app_path(a.associated_id), class: 'text-monospace' %>
             <% end %>
           <%- when 'destroy' -%>
-            <%= activity_entry resource_icon_name(a.auditable), a.created_at do %>
+            <%= activity_entry resource_icon(a.auditable_model_name), a.created_at do %>
               <% if a.user_email %>
                 <%= a.user_email %> deleted resource:
               <% else %>
