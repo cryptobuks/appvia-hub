@@ -36,9 +36,16 @@
         title: Your Quay organisation
         description: The organisation on Quay to manage repos for. This will be used as the namespace for all Docker repos created.
         type: string
+      global_robot_token_name:
+        title: The name of the global robot token
+        description: This global robot token will be given access to repos created on Quay.
+      global_robot_token:
+        title: The value of the global robot token
     required:
       - api_access_token
       - org
+      - global_robot_token_name
+      - global_robot_token
 
 - id: kubernetes
   name: Kubernetes

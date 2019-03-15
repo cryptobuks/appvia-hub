@@ -17,6 +17,18 @@ RSpec.describe AppResourcesService, type: :service do
   end
 
   describe '#bootstrap' do
+    shared_examples 'logs an audit for app_resources_bootstrap' do
+      it 'logs an audit for app_resources_bootstrap' do
+        expect do
+          subject.bootstrap
+        end.to change(app.audits, :count).by(1)
+
+        audit = app.audits.order(:created_at).last
+        expect(audit.action).to eq 'app_resources_bootstrap'
+        expect(audit.created_at.to_i).to eq now.to_i
+      end
+    end
+
     context 'when app has some resources already' do
       before do
         provider = create_mocked_provider
@@ -39,7 +51,7 @@ RSpec.describe AppResourcesService, type: :service do
     end
 
     context 'when app has no resources yet' do
-      context 'when no GitHub provider is configured yet' do
+      context 'when no providers are configured yet' do
         before do
           expect(resource_provisioning_service).to receive(:request_create).never
         end
@@ -50,35 +62,35 @@ RSpec.describe AppResourcesService, type: :service do
           end.not_to change(Resource, :count)
         end
 
-        it 'does not log an audit' do
-          expect do
-            subject.bootstrap
-          end.not_to change(app.audits, :count)
-        end
+        include_examples 'logs an audit for app_resources_bootstrap'
       end
 
-      context 'when a GitHub provider is configured' do
+      context 'when the necessary providers are configured' do
         before do
           create_mocked_provider(kind: 'git_hub')
+          create_mocked_provider(kind: 'quay')
+          create_mocked_provider(kind: 'kubernetes')
 
           expect(resource_provisioning_service).to receive(:request_create)
+            .exactly(3)
+            .times
         end
 
-        it 'provisions a GitHub repo' do
+        it 'provisions a GitHub repo, Quay repo and Kube namespace' do
+          expect(Resources::CodeRepo.count).to be 0
+          expect(Resources::DockerRepo.count).to be 0
+          expect(Resources::KubeNamespace.count).to be 0
+
           expect do
             expect(subject.bootstrap).to be true
-          end.to change(Resources::CodeRepo, :count).by(1)
+          end.to change(Resource, :count).by(3)
+
+          expect(Resources::CodeRepo.count).to be 1
+          expect(Resources::DockerRepo.count).to be 1
+          expect(Resources::KubeNamespace.count).to be 1
         end
 
-        it 'logs an Audit' do
-          expect do
-            subject.bootstrap
-          end.to change(app.audits, :count).by(1)
-
-          audit = app.audits.order(:created_at).last
-          expect(audit.action).to eq 'app_resources_bootstrap'
-          expect(audit.created_at.to_i).to eq now.to_i
-        end
+        include_examples 'logs an audit for app_resources_bootstrap'
       end
     end
   end
