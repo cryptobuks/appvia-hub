@@ -23,7 +23,7 @@ services:
       - 9000:9000
 
   auth_proxy:
-    image: keycloak/keycloak-gatekeeper:4.6.0.Final
+    image: keycloak/keycloak-gatekeeper:5.0.0
     depends_on:
       - mock_user_service
     environment:
