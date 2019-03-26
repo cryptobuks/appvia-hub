@@ -24,7 +24,7 @@ RSpec.describe ResourceProvisioningService, type: :service do
 
       audit = resource.audits.last
       expect(audit.action).to eq 'request_create'
-      expect(audit.associated).to eq resource.app
+      expect(audit.associated).to eq resource.project
     end
   end
 
@@ -47,7 +47,7 @@ RSpec.describe ResourceProvisioningService, type: :service do
 
       audit = resource.audits.last
       expect(audit.action).to eq 'request_delete'
-      expect(audit.associated).to eq resource.app
+      expect(audit.associated).to eq resource.project
     end
   end
 end

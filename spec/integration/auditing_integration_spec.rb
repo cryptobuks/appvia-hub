@@ -5,7 +5,7 @@ RSpec.describe 'Auditing integration' do
 
   before do
     @user = create :user
-    @app = create :app
+    @project = create :project
   end
 
   it 'has one create audit for the User' do
@@ -15,9 +15,9 @@ RSpec.describe 'Auditing integration' do
     expect(audit.created_at.to_i).to eq now.to_i
   end
 
-  it 'has one create audit for the App' do
-    expect(@app.audits.count).to be 1
-    audit = @app.audits.first
+  it 'has one create audit for the Project' do
+    expect(@project.audits.count).to be 1
+    audit = @project.audits.first
     expect(audit.action).to eq 'create'
     expect(audit.created_at.to_i).to eq now.to_i
   end
@@ -43,15 +43,15 @@ RSpec.describe 'Auditing integration' do
     expect do
       audit = Audit.create(
         action: action,
-        auditable: @app,
+        auditable: @project,
         user: @user,
         comment: comment
       )
 
       persisted = Audit.find audit.id
       expect(persisted.action).to eq action
-      expect(persisted.auditable).to eq @app
-      expect(persisted.auditable_descriptor).to eq @app.slug
+      expect(persisted.auditable).to eq @project
+      expect(persisted.auditable_descriptor).to eq @project.slug
       expect(persisted.user).to eq @user
       expect(persisted.user_email).to eq @user.email
       expect(persisted.comment).to eq comment

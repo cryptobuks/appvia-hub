@@ -1,10 +1,10 @@
-<div class="card app-resources">
+<div class="card project-resources">
   <div class="card-header">
     <strong>Resources</strong>
   </div>
   <div class="list-group list-group-flush">
-    <% if app.resources.present? %>
-      <% app.resources.each do |r| %>
+    <% if project.resources.present? %>
+      <% project.resources.each do |r| %>
         <div class="list-group-item">
           <p class="d-flex align-items-center">
             <%= resource_icon(r) %>
@@ -42,7 +42,7 @@
 
         <%=
           link_to 'Provision a new set of resources',
-            provision_app_resources_path(@app),
+            provision_project_resources_path(@project),
             method: :post,
             class: 'btn btn-primary',
             role: 'button'

@@ -1,18 +1,18 @@
 class ResourcesController < ApplicationController
-  before_action :find_app
+  before_action :find_project
 
-  # POST /apps/:app_id/resources/provision
+  # POST /projects/:project_id/resources/provision
   def provision
-    result = AppResourcesService.new(@app).bootstrap
+    result = ProjectResourcesService.new(@project).bootstrap
 
-    notice = ('A new set of resources have been requested for this app' if result)
+    notice = ('A new set of resources have been requested for this project' if result)
 
-    redirect_to @app, notice: notice
+    redirect_to @project, notice: notice
   end
 
   private
 
-  def find_app
-    @app = App.friendly.find params[:app_id]
+  def find_project
+    @project = Project.friendly.find params[:project_id]
   end
 end

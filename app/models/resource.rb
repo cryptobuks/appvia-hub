@@ -4,11 +4,11 @@ class Resource < ApplicationRecord
 
   attr_json_config default_container_attribute: :metadata
 
-  audited associated_with: :app
+  audited associated_with: :project
 
   before_validation :build_name
 
-  belongs_to :app,
+  belongs_to :project,
     -> { readonly },
     inverse_of: :resources
 
@@ -31,7 +31,7 @@ class Resource < ApplicationRecord
     uniqueness: { scope: :provider_id },
     readonly: true
 
-  attr_readonly :app_id, :provider_id
+  attr_readonly :project_id, :provider_id
 
   default_value_for :status, :pending
 
@@ -46,10 +46,10 @@ class Resource < ApplicationRecord
   protected
 
   def build_name
-    return if persisted? || name.blank? || app.blank?
-    return if name.starts_with?(app.friendly_id)
+    return if persisted? || name.blank? || project.blank?
+    return if name.starts_with?(project.friendly_id)
 
-    self.name = "#{app.friendly_id}_#{name}"
+    self.name = "#{project.friendly_id}_#{name}"
   end
 end
 
