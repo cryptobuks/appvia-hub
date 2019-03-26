@@ -2,7 +2,7 @@ version: 2
 
 jobs:
 
-  build:
+  test:
     parallelism: 1
 
     environment:
@@ -10,7 +10,7 @@ jobs:
       SECRET_SALT: test_secret_salt
 
     docker:
-      - image: circleci/ruby:2.5.3-node-browsers
+      - image: circleci/ruby:2.5.5-node-browsers
 
       - image: circleci/postgres:10.6-alpine
         environment:
@@ -39,16 +39,16 @@ jobs:
             - ./vendor/bundle
           key: v1-dependencies-{{ checksum "Gemfile.lock" }}
 
-      # Database setup
-      - run: bundle exec rake db:create
-      - run: bundle exec rake db:schema:load
-
       # Lint
       - run:
           name: lint
           command: bundle exec rubocop && yarn lint
 
-      # run tests!
+      # Database setup
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:schema:load
+
+      # Run Ruby tests
       - run:
           name: run tests
           command: |
@@ -60,9 +60,86 @@ jobs:
                             --out /tmp/test-results/rspec.xml \
                             $TEST_FILES
 
-      # collect reports
+      # Collect reports
       - store_test_results:
           path: /tmp/test-results
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
+
+      # Build assets (in production mode)
+      # - to test that the build process goes through okay
+      - run: yarn install --frozen-lockfile --production && NODE_ENV=production bin/rails assets:precompile
+
+  build_only:
+    machine: true
+    parallelism: 1
+    steps:
+      - checkout
+      - run:
+          name: Build Docker image
+          command: docker build -t quay.io/appvia/appvia-hub:$CIRCLE_SHA1 .
+
+  build_and_push_latest:
+    machine: true
+    parallelism: 1
+    steps:
+      - checkout
+      - run:
+          name: Build image and push to Quay with tag latest
+          command: |
+            docker login quay.io --username $QUAY_USERNAME --password $QUAY_PASSWORD
+            docker build -t quay.io/appvia/appvia-hub:$CIRCLE_SHA1 .
+            docker tag quay.io/appvia/appvia-hub:$CIRCLE_SHA1 quay.io/appvia/appvia-hub:latest
+            docker push quay.io/appvia/appvia-hub:$CIRCLE_SHA1
+            docker push quay.io/appvia/appvia-hub:latest
+
+  build_and_push_tag:
+    machine: true
+    parallelism: 1
+    steps:
+      - checkout
+      - run:
+          name: Build image and push to Quay with Git tag
+          command: |
+            docker login quay.io --username $QUAY_USERNAME --password $QUAY_PASSWORD
+            docker build -t quay.io/appvia/appvia-hub:$CIRCLE_TAG .
+            docker push quay.io/appvia/appvia-hub:$CIRCLE_TAG
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - test:
+          filters:
+            tags:
+              only: /.*/
+
+      - build_only:
+          requires:
+            - test
+          filters:
+            branches:
+              ignore:
+                - master
+            tags:
+              ignore: /.*/
+
+      - build_and_push_latest:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+            tags:
+              ignore: /.*/
+
+      - build_and_push_tag:
+          requires:
+            - test
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/

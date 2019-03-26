@@ -6,7 +6,7 @@
 
 ### Prerequisites
 
-- Ruby 2.5.3
+- Ruby 2.5.5
   - with Bundler v1.17+
 - NodeJS 10+
   - with Yarn 1.10+
