@@ -55,5 +55,25 @@ services:
     ports:
       - 6379:6379
 
+  quay_agent:
+    image: quay.io/appvia/hub-quay-agent:latest # FIXME: use a release version at some point
+    environment:
+      - DEBUG=true
+      - HTTP_PORT=10001
+      - LISTEN=0.0.0.0
+      - AUTH_TOKEN=secret-quay-agent-token
+    ports:
+      - 10001:10001
+
+  kube_agent:
+    image: quay.io/appvia/hub-kubernetes-agent:v0.0.1-rc.1
+    environment:
+      - DEBUG=true
+      - HTTP_PORT=10002
+      - LISTEN=0.0.0.0
+      - AUTH_TOKEN=secret-kube-agent-token
+    ports:
+      - 10002:10002
+
 volumes:
   pgdata:

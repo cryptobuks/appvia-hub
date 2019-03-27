@@ -30,21 +30,22 @@
     properties:
       api_access_token:
         title: Quay API access token
-        description: An API token to be used to communicate with the Quay.io API. This must have enough permissions to create and manage repos.
+        description: An API token to be used to communicate with the Quay.io API. This must have enough permissions to create and manage repos. This is not shown to regular users of the hub.
         type: string
       org:
         title: Your Quay organisation
         description: The organisation on Quay to manage repos for. This will be used as the namespace for all Docker repos created.
         type: string
-      global_robot_token_name:
-        title: The name of the global robot token
-        description: This global robot token will be given access to repos created on Quay.
+      global_robot_name:
+        title: Global robot name
+        description: "MUST be in the format: <org>+<robot_name>. This global robot token will be given access to all repos created within the org on Quay. It will be shown to users so they can access repositories."
       global_robot_token:
-        title: The value of the global robot token
+        title: Global robot token
+        description: The value of the token for the global robot.
     required:
       - api_access_token
       - org
-      - global_robot_token_name
+      - global_robot_name
       - global_robot_token
 
 - id: kubernetes
@@ -57,18 +58,26 @@
         type: string
       api_url:
         title: API URL
-        description: The Kubernetes API URL. This can be found using `kubectl cluster-info`
+        description: The Kubernetes API URL. This can be found using `kubectl cluster-info`.
         type: string
       ca_cert:
         title: CA Certificate
-        description: The CA bundle (pem format) used by the Kubernetes API server
+        description: MUST be base64 encoded. This is the CA bundle (pem format) used by the Kubernetes API server.
         type: string
       token:
         title: Service account token
-        description: A service account token used by the hub to interact with the Kubernetes API. The service account must have `cluster-admin` level permissions in order to manage namespaces, deployments and service accounts among other things.
+        description: A service account token used by the hub to interact with the Kubernetes API. The service account must have `cluster-admin` level permissions in order to manage namespaces, deployments and service accounts among other things. This is not shown to regular users of the hub.
         type: string
+      global_service_account_name:
+        title: Global service account name
+        description: "This global service account will be given access to all namespaces created within the Kube cluster. It will be shown to users so they can access these namespaces."
+      global_service_account_token:
+        title: Global service account token
+        description: The value of the token for the global service account.
     required:
       - cluster_name
       - api_url
       - ca_cert
       - token
+      - global_service_account_name
+      - global_service_account_token

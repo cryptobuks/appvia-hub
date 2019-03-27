@@ -3,7 +3,7 @@ module AppsHelper
     'pending' => 'secondary',
     'active' => 'success',
     'deleting' => 'warning',
-    'failed' => 'error'
+    'failed' => 'danger'
   }.freeze
 
   def delete_app_link(app, css_class: nil)
@@ -20,12 +20,16 @@ module AppsHelper
       role: 'button'
   end
 
-  def resource_icon_name(resource_class_or_name = nil)
+  def resource_icon(resource_class_or_name = nil)
     case resource_class_or_name
-    when Resources::CodeRepo, 'Resources::CodeRepo', 'CodeRepo', 'Code Repo'
-      'code'
+    when Resources::CodeRepo, 'Resources::CodeRepo', 'CodeRepo'
+      icon 'code'
+    when Resources::DockerRepo, 'Resources::DockerRepo', 'DockerRepo'
+      brand_icon 'docker'
+    when Resources::KubeNamespace, 'Resources::KubeNamespace', 'KubeNamespace'
+      icon 'cloud'
     else
-      'cogs'
+      icon 'cogs'
     end
   end
 
