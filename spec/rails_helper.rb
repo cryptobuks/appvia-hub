@@ -41,7 +41,7 @@ RSpec.configure do |config|
 
   config.include_context 'authentication helpers', type: :request
 
-  config.include_context 'mocked configured provider helper'
+  config.include_context 'mocked integration helper'
 
   config.before(:each) do
     Sidekiq::Worker.clear_all

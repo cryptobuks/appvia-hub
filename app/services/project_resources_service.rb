@@ -20,12 +20,12 @@ class ProjectResourcesService
   private
 
   def bootstrap_code_repo
-    git_hub_provider = ConfiguredProvider.git_hub.first
+    git_hub_integration = Integration.git_hub.first
 
-    return false if git_hub_provider.blank?
+    return false if git_hub_integration.blank?
 
     code_repo = @project.code_repos.create!(
-      provider: git_hub_provider,
+      integration: git_hub_integration,
       name: @project.slug
     )
 
@@ -35,12 +35,12 @@ class ProjectResourcesService
   end
 
   def bootstrap_docker_repo
-    quay_provider = ConfiguredProvider.quay.first
+    quay_integration = Integration.quay.first
 
-    return false if quay_provider.blank?
+    return false if quay_integration.blank?
 
     docker_repo = @project.docker_repos.create!(
-      provider: quay_provider,
+      integration: quay_integration,
       name: @project.slug
     )
 
@@ -50,12 +50,12 @@ class ProjectResourcesService
   end
 
   def bootstrap_kube_namespace
-    kube_provider = ConfiguredProvider.kubernetes.first
+    kube_integration = Integration.kubernetes.first
 
-    return false if kube_provider.blank?
+    return false if kube_integration.blank?
 
     kube_namespace = @project.kube_namespaces.create!(
-      provider: kube_provider,
+      integration: kube_integration,
       name: @project.slug
     )
 

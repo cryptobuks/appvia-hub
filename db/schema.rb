@@ -43,9 +43,9 @@ ActiveRecord::Schema.define(version: 2019_03_06_153823) do
     t.index ["user_type", "user_id"], name: "index_audits_on_user_type_and_user_id"
   end
 
-  create_table "configured_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "integrations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
-    t.string "kind", null: false
+    t.string "provider_id", null: false
     t.text "config", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -63,16 +63,16 @@ ActiveRecord::Schema.define(version: 2019_03_06_153823) do
   create_table "resources", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type", null: false
     t.uuid "project_id", null: false
-    t.uuid "provider_id", null: false
+    t.uuid "integration_id", null: false
     t.string "status", null: false
     t.string "name", null: false
     t.jsonb "metadata", default: {}, null: false
     t.string "lock_version"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name", "provider_id"], name: "index_resources_on_name_and_provider_id", unique: true
+    t.index ["integration_id"], name: "index_resources_on_integration_id"
+    t.index ["name", "integration_id"], name: "index_resources_on_name_and_integration_id", unique: true
     t.index ["project_id"], name: "index_resources_on_project_id"
-    t.index ["provider_id"], name: "index_resources_on_provider_id"
     t.index ["type"], name: "index_resources_on_type"
   end
 
@@ -85,6 +85,6 @@ ActiveRecord::Schema.define(version: 2019_03_06_153823) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "resources", "configured_providers", column: "provider_id"
+  add_foreign_key "resources", "integrations"
   add_foreign_key "resources", "projects"
 end

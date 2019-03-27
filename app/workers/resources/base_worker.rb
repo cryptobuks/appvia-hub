@@ -34,14 +34,14 @@ module Resources
 
     def perform(resource_id)
       with_resource(resource_id) do |resource|
-        with_agent(resource.provider) do |agent|
+        with_agent(resource.integration) do |agent|
           with_handler(resource) do |handler|
             result = handler.call resource, agent
             result ? finalise(resource) : resource.failed!
           rescue StandardError => ex
             logger.error [
               "Failed to process request for resource #{resource.id}",
-              "(type: #{resource.type}, provider: #{resource.provider.kind})",
+              "(type: #{resource.type}, provider: #{resource.integration.provider_id})",
               "- error: #{ex.inspect}"
             ].join(' ')
 
@@ -71,15 +71,15 @@ module Resources
       end
     end
 
-    def with_agent(configured_provider)
-      agent_initialiser = AGENT_INITIALISERS[configured_provider.kind]
+    def with_agent(integration)
+      agent_initialiser = AGENT_INITIALISERS[integration.provider_id]
 
-      agent = agent_initialiser&.call configured_provider.config
+      agent = agent_initialiser&.call integration.config
 
       if agent
         yield agent
       else
-        logger.error "No agent available for configured provider of kind: #{configured_provider.kind} (ID: #{configured_provider.id})"
+        logger.error "No agent available for provider: #{integration.provider_id} (ID: #{integration.id})"
       end
     end
 
@@ -89,7 +89,7 @@ module Resources
       if handler
         yield handler
       else
-        logger.error "No handler found for resource type: #{resource.type}, provider: #{resource.provider.kind}"
+        logger.error "No handler found for resource type: #{resource.type}, provider: #{resource.integration.provider_id}"
       end
     end
   end

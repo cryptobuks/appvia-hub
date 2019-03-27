@@ -12,10 +12,9 @@ class Resource < ApplicationRecord
     -> { readonly },
     inverse_of: :resources
 
-  belongs_to :provider,
+  belongs_to :integration,
     -> { readonly },
-    class_name: 'ConfiguredProvider',
-    inverse_of: false
+    inverse_of: :resources
 
   enum status: {
     pending: 'pending',
@@ -28,15 +27,15 @@ class Resource < ApplicationRecord
 
   slugged_attribute :name,
     presence: true,
-    uniqueness: { scope: :provider_id },
+    uniqueness: { scope: :integration_id },
     readonly: true
 
-  attr_readonly :project_id, :provider_id
+  attr_readonly :project_id, :integration_id
 
   default_value_for :status, :pending
 
   def classification
-    "#{self.class.model_name.human} - #{provider.kind.camelize}"
+    "#{self.class.model_name.human} - #{integration.provider_id.camelize}"
   end
 
   def descriptor

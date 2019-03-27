@@ -19,7 +19,7 @@ module Resources
     }.freeze
 
     def handler_for(resource)
-      HANDLERS.dig resource.type, resource.provider.kind
+      HANDLERS.dig resource.type, resource.integration.provider_id
     end
 
     def finalise(resource)
