@@ -5,7 +5,7 @@ class Project < ApplicationRecord
   audited
 
   has_many :resources,
-    -> { includes :provider },
+    -> { includes :integration },
     dependent: :restrict_with_exception,
     inverse_of: :project
 

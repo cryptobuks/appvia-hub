@@ -3,18 +3,18 @@ module IsAResourceExamples
     describe 'is a Resource' do
       let(:factory) { described_class.model_name.element.to_sym }
 
-      let(:provider) { create_mocked_provider }
+      let(:integration) { create_mocked_integration }
 
-      subject { create factory, provider: provider }
+      subject { create factory, integration: integration }
 
       describe '#project' do
         it { is_expected.to belong_to(:project) }
         it { is_expected.to have_readonly_attribute(:project_id) }
       end
 
-      describe '#provider' do
-        it { is_expected.to belong_to(:provider).class_name('ConfiguredProvider') }
-        it { is_expected.to have_readonly_attribute(:provider_id) }
+      describe '#integration' do
+        it { is_expected.to belong_to(:integration).class_name('Integration') }
+        it { is_expected.to have_readonly_attribute(:integration_id) }
       end
 
       describe '#status' do
@@ -30,14 +30,14 @@ module IsAResourceExamples
         include_examples 'slugged_attribute',
           :name,
           presence: true,
-          uniqueness: { scope: :provider_id },
+          uniqueness: { scope: :integration_id },
           readonly: true
 
         describe 'uniqueness check' do
           let(:project) { create :project, name: 'project-1' }
           let(:other_project) { create :project, name: 'project-2' }
 
-          let(:other_provider) { create_mocked_provider }
+          let(:other_integration) { create_mocked_integration }
 
           let(:name) { 'foo' }
           let(:other_name) { 'bar' }
@@ -47,50 +47,50 @@ module IsAResourceExamples
               factory,
               name: name,
               project: project,
-              provider: provider
+              integration: integration
             )
           end
 
-          it 'does not allow the same name for resources, for the same provider, in the same project' do
+          it 'does not allow the same name for resources, for the same integration, in the same project' do
             other_resource = build(
               factory,
               name: name,
               project: project,
-              provider: provider
+              integration: integration
             )
 
             expect(other_resource).not_to be_valid
             expect(other_resource.errors[:name].first).to eq 'has already been taken'
           end
 
-          it 'allows different names for resources, for the same provider, in the same project' do
+          it 'allows different names for resources, for the same integration, in the same project' do
             other_resource = build(
               factory,
               name: other_name,
               project: project,
-              provider: provider
+              integration: integration
             )
 
             expect(other_resource).to be_valid
           end
 
-          it 'allows the same name for resources, for different providers, in the same project' do
+          it 'allows the same name for resources, for different integrations, in the same project' do
             other_resource = build(
               factory,
               name: name,
               project: project,
-              provider: other_provider
+              integration: other_integration
             )
 
             expect(other_resource).to be_valid
           end
 
-          it 'allows the same name for resources, for the same provider, in different projects' do
+          it 'allows the same name for resources, for the same integration, in different projects' do
             other_resource = build(
               factory,
               name: name,
               project: other_project,
-              provider: provider
+              integration: integration
             )
 
             expect(other_resource).to be_valid
@@ -105,7 +105,7 @@ module IsAResourceExamples
               factory,
               name: 'foo',
               project: project,
-              provider: provider
+              integration: integration
             )
             expect(resource.name).to eq "#{project.slug}_foo"
           end
@@ -115,7 +115,7 @@ module IsAResourceExamples
               factory,
               name: project.slug,
               project: project,
-              provider: provider
+              integration: integration
             )
             expect(resource.name).to eq project.slug
           end

@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe ResourceProvisioningService, type: :service do
-  let(:provider) { create_mocked_provider }
+  let(:integration) { create_mocked_integration }
 
   let! :resource do
-    create :code_repo, provider: provider
+    create :code_repo, integration: integration
   end
 
   describe '#request_create' do

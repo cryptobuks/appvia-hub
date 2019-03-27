@@ -31,8 +31,8 @@ RSpec.describe ProjectResourcesService, type: :service do
 
     context 'when project has some resources already' do
       before do
-        provider = create_mocked_provider
-        create :code_repo, project: project, provider: provider
+        integration = create_mocked_integration
+        create :code_repo, project: project, integration: integration
 
         expect(resource_provisioning_service).to receive(:request_create).never
       end
@@ -51,7 +51,7 @@ RSpec.describe ProjectResourcesService, type: :service do
     end
 
     context 'when project has no resources yet' do
-      context 'when no providers are configured yet' do
+      context 'when no integrations are configured yet' do
         before do
           expect(resource_provisioning_service).to receive(:request_create).never
         end
@@ -65,11 +65,11 @@ RSpec.describe ProjectResourcesService, type: :service do
         include_examples 'logs an audit for project_resources_bootstrap'
       end
 
-      context 'when the necessary providers are configured' do
+      context 'when the necessary integrations are configured' do
         before do
-          create_mocked_provider(kind: 'git_hub')
-          create_mocked_provider(kind: 'quay')
-          create_mocked_provider(kind: 'kubernetes')
+          create_mocked_integration(provider_id: 'git_hub')
+          create_mocked_integration(provider_id: 'quay')
+          create_mocked_integration(provider_id: 'kubernetes')
 
           expect(resource_provisioning_service).to receive(:request_create)
             .exactly(3)

@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe ConfiguredProvider, type: :model do
+RSpec.describe Integration, type: :model do
   describe '#name' do
     it { is_expected.to validate_presence_of(:name) }
   end
 
-  describe '#kind' do
-    it { is_expected.to validate_presence_of(:kind) }
+  describe '#provider_id' do
+    it { is_expected.to validate_presence_of(:provider_id) }
   end
 
   describe '#config' do
@@ -18,19 +18,19 @@ RSpec.describe ConfiguredProvider, type: :model do
       end
 
       subject do
-        create_mocked_provider config: initial_config
+        create_mocked_integration config: initial_config
       end
 
       it 'persists and loads up the config from the db as expected' do
         subject.save!
-        cp = ConfiguredProvider.find subject.id
+        cp = Integration.find subject.id
         expect(cp.config).to be_a Hash
         expect(cp.config).to eq initial_config
       end
 
       it 'has encrypted the value in the database' do
         subject.save!
-        cp = ConfiguredProvider.find subject.id
+        cp = Integration.find subject.id
         expect(cp[:config]).to be_a String
         expect(cp[:config]).not_to be_blank
         expect(cp.config_before_type_cast).to be_a String
@@ -40,7 +40,7 @@ RSpec.describe ConfiguredProvider, type: :model do
 
       it 'updates as expected only if you assign the whole `config` again' do
         subject.save!
-        cp = ConfiguredProvider.find subject.id
+        cp = Integration.find subject.id
         cp.config = cp.config.merge('foo' => 'updated')
         expect(cp).to be_changed
         cp.save!
@@ -50,7 +50,7 @@ RSpec.describe ConfiguredProvider, type: :model do
       it 'doesn\'t update if you update values in place' do
         # This is just down to how ActiveRecord works :(
         subject.save!
-        cp = ConfiguredProvider.find subject.id
+        cp = Integration.find subject.id
         cp.config['foo'] = 'updated'
         expect(cp).to be_changed # Says it's changed ...
         cp.save!
@@ -67,7 +67,7 @@ RSpec.describe ConfiguredProvider, type: :model do
     end
 
     context 'JSON Schema validation' do
-      let(:kind) { ConfiguredProvider.kinds.keys.first }
+      let(:provider_id) { Integration.provider_ids.keys.first }
 
       let :schema do
         JsonSchema.parse!(
@@ -84,12 +84,12 @@ RSpec.describe ConfiguredProvider, type: :model do
       end
 
       subject do
-        build :configured_provider, kind: kind
+        build :integration, provider_id: provider_id
       end
 
       before do
         allow(PROVIDERS_REGISTRY).to receive(:config_schemas)
-          .and_return(kind => schema)
+          .and_return(provider_id => schema)
       end
 
       context 'for a valid config hash' do
@@ -116,7 +116,7 @@ RSpec.describe ConfiguredProvider, type: :model do
 
         context 'still with a valid config hash' do
           it 'updates as expected' do
-            cp = ConfiguredProvider.find subject.id
+            cp = Integration.find subject.id
             cp.config = cp.config.merge('foo' => 'updated')
             expect(cp).to be_valid
           end
@@ -124,7 +124,7 @@ RSpec.describe ConfiguredProvider, type: :model do
 
         context 'now with an invalid config hash' do
           it 'registers an error on the field' do
-            cp = ConfiguredProvider.find subject.id
+            cp = Integration.find subject.id
             cp.config = cp.config.merge('foo' => 1)
             expect(cp).not_to be_valid
             expect(cp.errors).to_not be_empty
