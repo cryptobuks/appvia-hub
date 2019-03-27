@@ -5,7 +5,7 @@ class ResourceProvisioningService
     Audit.create!(
       action: 'request_create',
       auditable: resource,
-      associated: resource.app
+      associated: resource.project
     )
 
     true
@@ -19,7 +19,7 @@ class ResourceProvisioningService
     Audit.create!(
       action: 'request_delete',
       auditable: resource,
-      associated: resource.app
+      associated: resource.project
     )
 
     true

@@ -7,9 +7,9 @@ module IsAResourceExamples
 
       subject { create factory, provider: provider }
 
-      describe '#app' do
-        it { is_expected.to belong_to(:app) }
-        it { is_expected.to have_readonly_attribute(:app_id) }
+      describe '#project' do
+        it { is_expected.to belong_to(:project) }
+        it { is_expected.to have_readonly_attribute(:project_id) }
       end
 
       describe '#provider' do
@@ -34,8 +34,8 @@ module IsAResourceExamples
           readonly: true
 
         describe 'uniqueness check' do
-          let(:app) { create :app, name: 'app-1' }
-          let(:other_app) { create :app, name: 'app-2' }
+          let(:project) { create :project, name: 'project-1' }
+          let(:other_project) { create :project, name: 'project-2' }
 
           let(:other_provider) { create_mocked_provider }
 
@@ -46,16 +46,16 @@ module IsAResourceExamples
             create(
               factory,
               name: name,
-              app: app,
+              project: project,
               provider: provider
             )
           end
 
-          it 'does not allow the same name for resources, for the same provider, in the same app' do
+          it 'does not allow the same name for resources, for the same provider, in the same project' do
             other_resource = build(
               factory,
               name: name,
-              app: app,
+              project: project,
               provider: provider
             )
 
@@ -63,33 +63,33 @@ module IsAResourceExamples
             expect(other_resource.errors[:name].first).to eq 'has already been taken'
           end
 
-          it 'allows different names for resources, for the same provider, in the same app' do
+          it 'allows different names for resources, for the same provider, in the same project' do
             other_resource = build(
               factory,
               name: other_name,
-              app: app,
+              project: project,
               provider: provider
             )
 
             expect(other_resource).to be_valid
           end
 
-          it 'allows the same name for resources, for different providers, in the same app' do
+          it 'allows the same name for resources, for different providers, in the same project' do
             other_resource = build(
               factory,
               name: name,
-              app: app,
+              project: project,
               provider: other_provider
             )
 
             expect(other_resource).to be_valid
           end
 
-          it 'allows the same name for resources, for the same provider, in different apps' do
+          it 'allows the same name for resources, for the same provider, in different projects' do
             other_resource = build(
               factory,
               name: name,
-              app: other_app,
+              project: other_project,
               provider: provider
             )
 
@@ -98,26 +98,26 @@ module IsAResourceExamples
         end
 
         describe '#build_name' do
-          let(:app) { create :app, name: 'test-app' }
+          let(:project) { create :project, name: 'test-project' }
 
-          it 'prefixes the name with the app slug' do
+          it 'prefixes the name with the project slug' do
             resource = create(
               factory,
               name: 'foo',
-              app: app,
+              project: project,
               provider: provider
             )
-            expect(resource.name).to eq "#{app.slug}_foo"
+            expect(resource.name).to eq "#{project.slug}_foo"
           end
 
-          it 'can have the same value as the app slug' do
+          it 'can have the same value as the project slug' do
             resource = create(
               factory,
-              name: app.slug,
-              app: app,
+              name: project.slug,
+              project: project,
               provider: provider
             )
-            expect(resource.name).to eq app.slug
+            expect(resource.name).to eq project.slug
           end
         end
       end

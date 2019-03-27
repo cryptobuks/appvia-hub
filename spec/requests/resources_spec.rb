@@ -1,31 +1,31 @@
 require 'rails_helper'
 
-RSpec.describe 'App resources', type: :request do
+RSpec.describe 'Project resources', type: :request do
   include_context 'time helpers'
 
-  describe 'provision - POST /apps/:app_id/resources/provision' do
+  describe 'provision - POST /projects/:project_id/resources/provision' do
     before do
-      @app = create :app
+      @project = create :project
     end
 
     it_behaves_like 'unauthenticated not allowed' do
       before do
-        post provision_app_resources_path(@app)
+        post provision_project_resources_path(@project)
       end
     end
 
     it_behaves_like 'authenticated' do
       before do
-        app_bootstrap_service = instance_double('AppResourcesService')
-        expect(AppResourcesService).to receive(:new)
-          .with(@app)
-          .and_return(app_bootstrap_service)
-        expect(app_bootstrap_service).to receive(:bootstrap)
+        project_bootstrap_service = instance_double('ProjectResourcesService')
+        expect(ProjectResourcesService).to receive(:new)
+          .with(@project)
+          .and_return(project_bootstrap_service)
+        expect(project_bootstrap_service).to receive(:bootstrap)
       end
 
-      it 'calls the AppResourcesService as expected and redirects to the app page' do
-        post provision_app_resources_path(@app)
-        expect(response).to redirect_to(@app)
+      it 'calls the ProjectResourcesService as expected and redirects to the project page' do
+        post provision_project_resources_path(@project)
+        expect(response).to redirect_to(@project)
       end
     end
   end

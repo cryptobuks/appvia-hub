@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :resource do
-    app
+    project
     status { Resource.statuses.keys.first }
     sequence :name do |n|
       "resource-#{n}"

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe App, type: :model do
-  subject { create :app }
+RSpec.describe Project, type: :model do
+  subject { create :project }
 
   describe '#name' do
     it { is_expected.to validate_presence_of(:name) }

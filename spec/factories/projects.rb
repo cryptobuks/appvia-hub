@@ -1,10 +1,10 @@
 FactoryBot.define do
-  factory :app do
+  factory :project do
     sequence :name do |n|
-      "App #{n}"
+      "Project #{n}"
     end
     sequence :slug do |n|
-      "app-#{n}"
+      "project-#{n}"
     end
   end
 end

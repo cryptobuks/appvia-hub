@@ -1,4 +1,4 @@
-module AppsHelper
+module ProjectsHelper
   RESOURCE_STATUS_TO_CLASS = {
     'pending' => 'secondary',
     'active' => 'success',
@@ -6,16 +6,16 @@ module AppsHelper
     'failed' => 'danger'
   }.freeze
 
-  def delete_app_link(app, css_class: nil)
+  def delete_project_link(project, css_class: nil)
     link_to 'Delete',
-      app_path(app),
+      project_path(project),
       method: :delete,
       class: css_class,
       data: {
-        confirm: 'Are you sure you want to delete this app permanently?',
-        title: "Delete app: #{app.slug}",
-        verify: app.slug,
-        verify_text: "Type '#{app.slug}' to confirm"
+        confirm: 'Are you sure you want to delete this project permanently?',
+        title: "Delete project: #{project.slug}",
+        verify: project.slug,
+        verify_text: "Type '#{project.slug}' to confirm"
       },
       role: 'button'
   end

@@ -2,7 +2,7 @@ class CreateResources < ActiveRecord::Migration[5.2]
   def change
     create_table :resources, id: :uuid do |t|
       t.string :type, null: false # For Single Table Inheritance
-      t.references :app, type: :uuid, null: false, foreign_key: true
+      t.references :project, type: :uuid, null: false, foreign_key: true
       t.references :provider, type: :uuid, null: false, foreign_key: { to_table: :configured_providers }
       t.string :status, null: false
       t.string :name, null: false

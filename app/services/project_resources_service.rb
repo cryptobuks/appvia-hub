@@ -1,15 +1,15 @@
-class AppResourcesService
-  def initialize(app, resource_provisioning_service: ResourceProvisioningService.new)
-    @app = app
+class ProjectResourcesService
+  def initialize(project, resource_provisioning_service: ResourceProvisioningService.new)
+    @project = project
     @resource_provisioning_service = resource_provisioning_service
   end
 
   def bootstrap
-    return false if @app.resources.count.positive?
+    return false if @project.resources.count.positive?
 
     Audit.create!(
-      action: 'app_resources_bootstrap',
-      auditable: @app
+      action: 'project_resources_bootstrap',
+      auditable: @project
     )
 
     bootstrap_code_repo &&
@@ -24,9 +24,9 @@ class AppResourcesService
 
     return false if git_hub_provider.blank?
 
-    code_repo = @app.code_repos.create!(
+    code_repo = @project.code_repos.create!(
       provider: git_hub_provider,
-      name: @app.slug
+      name: @project.slug
     )
 
     @resource_provisioning_service.request_create code_repo
@@ -39,9 +39,9 @@ class AppResourcesService
 
     return false if quay_provider.blank?
 
-    docker_repo = @app.docker_repos.create!(
+    docker_repo = @project.docker_repos.create!(
       provider: quay_provider,
-      name: @app.slug
+      name: @project.slug
     )
 
     @resource_provisioning_service.request_create docker_repo
@@ -54,9 +54,9 @@ class AppResourcesService
 
     return false if kube_provider.blank?
 
-    kube_namespace = @app.kube_namespaces.create!(
+    kube_namespace = @project.kube_namespaces.create!(
       provider: kube_provider,
-      name: @app.slug
+      name: @project.slug
     )
 
     @resource_provisioning_service.request_create kube_namespace

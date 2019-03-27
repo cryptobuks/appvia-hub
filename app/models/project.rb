@@ -1,4 +1,4 @@
-class App < ApplicationRecord
+class Project < ApplicationRecord
   include SluggedAttribute
   include FriendlyId
 
@@ -7,7 +7,7 @@ class App < ApplicationRecord
   has_many :resources,
     -> { includes :provider },
     dependent: :restrict_with_exception,
-    inverse_of: :app
+    inverse_of: :project
 
   has_many :code_repos,
     class_name: 'Resources::CodeRepo',
