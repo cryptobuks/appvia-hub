@@ -6,7 +6,7 @@ ruby '2.5.5'
 gem 'rails', '~> 5.2.3'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
-gem 'webpacker', '~> 3.5', '>= 3.5.5'
+gem 'webpacker', '~> 4.0', '>= 4.0.2'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'memoist', '~> 0.16.0'
 gem 'sidekiq', '~> 5.2.5'

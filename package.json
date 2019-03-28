@@ -21,19 +21,19 @@
     "lint-staged"
   ],
   "dependencies": {
-    "@rails/webpacker": "3.5",
-    "bootstrap": "^4.2.1",
+    "@rails/webpacker": "4.0",
+    "bootstrap": "^4.3.1",
     "data-confirm-modal": "^1.6.2",
     "jquery": "^3.3.1",
     "local-time": "^2.1.0",
-    "popper.js": "^1.14.6",
+    "popper.js": "^1.14.7",
     "rails-erb-loader": "^5.5.2",
-    "rails-ujs": "^5.2.2",
+    "rails-ujs": "^5.2.3",
     "turbolinks": "^5.2.0",
-    "vue": "^2.5.22",
-    "vue-loader": "14.2.2",
-    "vue-template-compiler": "^2.5.22",
-    "webpack": "^3.12.0"
+    "vue": "^2.6.10",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.29.6"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
@@ -46,6 +46,6 @@
     "lint-staged": "^8.1.0",
     "pre-commit": "^1.2.2",
     "prettier": "^1.16.1",
-    "webpack-dev-server": "2.11.2"
+    "webpack-dev-server": "^3.2.1"
   }
 }
