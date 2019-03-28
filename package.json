@@ -28,7 +28,7 @@
     "local-time": "^2.1.0",
     "popper.js": "^1.14.7",
     "rails-erb-loader": "^5.5.2",
-    "rails-ujs": "^5.2.2",
+    "rails-ujs": "^5.2.3",
     "turbolinks": "^5.2.0",
     "vue": "^2.5.22",
     "vue-loader": "^15.7.0",
