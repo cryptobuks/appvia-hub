@@ -1,0 +1,16 @@
+<h1>Users</h1>
+
+<% @users.each do |user| %>
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <h5 class="card-title">
+        <%= user.email %>
+      </h5>
+      <% if user.name.present? %>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <%= user.name %>
+        </h6>
+      <% end %>
+    </div>
+  </div>
+<% end %>

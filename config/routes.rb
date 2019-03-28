@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :users, only: %i[index]
+
   root to: 'home#show'
   mount Sidekiq::Web => '/sidekiq'
 end
