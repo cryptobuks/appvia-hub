@@ -56,7 +56,7 @@ services:
       - 6379:6379
 
   quay_agent:
-    image: quay.io/appvia/hub-quay-agent:latest # FIXME: use a release version at some point
+    image: quay.io/appvia/hub-quay-agent:v0.0.1
     environment:
       - DEBUG=true
       - HTTP_PORT=10001
