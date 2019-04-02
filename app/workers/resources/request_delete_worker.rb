@@ -4,16 +4,19 @@ module Resources
       'Resources::CodeRepo' => {
         'git_hub' => lambda do |resource, agent|
           agent.delete_repository(resource.full_name)
+          true
         end
       },
       'Resources::DockerRepo' => {
         'quay' => lambda do |resource, agent|
           agent.delete_repository(resource.name)
+          true
         end
       },
       'Resources::KubeNamespace' => {
         'kubernetes' => lambda do |resource, agent|
           agent.delete_namespace(resource.name)
+          true
         end
       }
     }.freeze
