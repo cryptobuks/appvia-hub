@@ -48,6 +48,6 @@ class KubernetesAgent
   end
 
   def namespace_path(name)
-    "/namespaces/#{name}"
+    "namespaces/#{name}"
   end
 end
