@@ -29,4 +29,43 @@ RSpec.describe 'Project resources', type: :request do
       end
     end
   end
+
+  describe 'destroy - DELETE /projects/:project_id/resources/:id' do
+    let!(:project) { create :project }
+
+    let(:integration) { create_mocked_integration }
+
+    let! :resource do
+      create :code_repo, project: project, integration: integration
+    end
+
+    let :resource_provisioning_service do
+      instance_double('ResourceProvisioningService')
+    end
+
+    before do
+      allow(ResourceProvisioningService).to receive(:new)
+        .and_return(resource_provisioning_service)
+    end
+
+    it_behaves_like 'unauthenticated not allowed' do
+      before do
+        expect(resource_provisioning_service).to receive(:request_delete).never
+        delete project_resource_path(project, resource)
+      end
+    end
+
+    it_behaves_like 'authenticated' do
+      it 'requests deletion of the resource' do
+        expect(resource_provisioning_service).to receive(:request_delete)
+          .with(resource)
+
+        expect do
+          delete project_resource_path(project, resource)
+        end.not_to change(Resource, :count)
+
+        expect(response).to redirect_to(project_url(project))
+      end
+    end
+  end
 end
