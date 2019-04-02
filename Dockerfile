@@ -6,7 +6,7 @@ LABEL source="https://github.com/appvia/appvia-hub"
 ENV RAILS_ENV production
 ENV NODE_ENV production
 
-RUN apt-get update && apt-get upgrade -u && apt-get install -qq -y \
+RUN apt-get update && apt-get upgrade -u -y && apt-get install -qq -y \
     bash curl gnupg2 build-essential \
     --fix-missing --no-install-recommends
 
