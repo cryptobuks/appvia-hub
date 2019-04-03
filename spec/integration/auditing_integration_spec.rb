@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Auditing integration' do
+RSpec.describe 'Auditing' do
   include_context 'time helpers'
 
   before do
