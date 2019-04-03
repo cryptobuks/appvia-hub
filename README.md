@@ -12,7 +12,7 @@
   - with Yarn 1.10+
 - Docker Compose v1.23+
 
-### Dependent Services
+### Dependent services
 
 A database, mock user service and auth proxy can all be run locally using Docker Compose, using the provided `docker-compose.yml`.
 
@@ -28,7 +28,7 @@ To shut them all down:
 docker-compose down
 ```
 
-### Initial Setup
+### Initial setup
 
 Once you have the prerequisites above, the codebase cloned and the dependent services running locally…
 
@@ -44,7 +44,7 @@ bin/setup
 
 Then you're ready to use the usual `rails` commands (like `bin/rails serve`) to run / work with the app. See the [Rails CLI guide](http://guides.rubyonrails.org/command_line.html) for details.
 
-### Running the App
+### Running the app locally
 
 Start up the Rails server with:
 
@@ -56,8 +56,13 @@ This serves the entire app, including all frontend assets (bundled using [Webpac
 
 You can **also** run `bin/webpack-dev-server` in a separate terminal shell if you want live reloading (in your browser) of CSS and JavaScript changes (note: only changes made within the `app/webpack` folder will cause live reloads).
 
+Start up the background processor with:
 
-### Dev Tips
+```shell
+bundle exec sidekiq -c 1
+```
+
+### Dev tips
 
 To get Rubocop to fix detected issues automatically (where it can):
 
