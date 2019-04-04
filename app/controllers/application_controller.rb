@@ -5,4 +5,10 @@ class ApplicationController < ActionController::Base
   before_action :record_last_seen!
 
   helper_method :current_user
+
+  protected
+
+  def require_admin
+    redirect_to root_path, alert: 'You need to be an admin to do that' unless current_user.admin?
+  end
 end

@@ -4,6 +4,12 @@
   <div class="card shadow-sm mb-3">
     <div class="card-body">
       <h5 class="card-title">
+        <% if user.admin? %>
+          <span class="badge badge-success float-right">
+            Admin
+          </span>
+        <% end %>
+
         <%= user.email %>
       </h5>
       <% if user.name.present? %>
@@ -12,5 +18,14 @@
         </h6>
       <% end %>
     </div>
+    <% if current_user.admin? %>
+      <div class="card-footer text-muted">
+        <% if user.admin? %>
+          <%= update_user_role_link 'Revoke Admin', user, :user %>
+        <% else %>
+          <%= update_user_role_link 'Make Admin', user, :admin %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 <% end %>

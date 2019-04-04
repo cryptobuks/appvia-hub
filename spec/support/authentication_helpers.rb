@@ -4,12 +4,18 @@ module AuthenticationHelpers
     let(:auth_email) { 'foo@example.com' }
     let(:auth_name) { 'Ms Foo' }
 
-    def auth_headers
+    let :auth_headers do
       {
         'X-Auth-Subject' => auth_subject,
         'X-Auth-Email' => auth_email,
         'X-Auth-Username' => auth_name
       }.compact
+    end
+
+    def current_user
+      User.find_or_create_by!(email: auth_email) do |u|
+        u.name = auth_name
+      end
     end
   end
 
