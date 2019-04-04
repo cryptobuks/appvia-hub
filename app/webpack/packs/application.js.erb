@@ -14,4 +14,8 @@ Rails.start();
 Turbolinks.start();
 LocalTime.start()
 
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
+
 console.log('Hello World from Webpacker'); // eslint-disable-line

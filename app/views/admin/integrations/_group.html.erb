@@ -1,0 +1,55 @@
+<div class="integrations-group py-2">
+  <h3 class="my-3">
+    <%= resource_icon group[:resource_type] %>
+    <%= group[:name] %>
+  </h3>
+
+  <% group[:providers].each do |provider| %>
+    <% definition = provider[:definition] %>
+    <% id = group[:resource_type] + '-' + definition['id'] %>
+    <% switch_id = "#{id}-switch" %>
+    <% panel_id = "#{id}-panel" %>
+    <% integrations = provider[:integrations] %>
+
+    <div class="card shadow-sm mb-4">
+      <%=
+        tag.div(
+          class: 'card-header',
+          style: 'cursor: pointer',
+          data: {
+            toggle: 'collapse',
+            target: "##{panel_id}"
+          },
+          aria: {
+            expanded: integrations.present?.to_s,
+            controls: panel_id
+          }
+        ) do
+      %>
+        <strong>
+          <%= definition['name'] %>
+        </strong>
+        <span class="text-muted ml-2 float-right">
+          <%= pluralize integrations.size, 'integration' -%>
+        </span>
+      <% end %>
+
+      <%=
+        tag.div(
+          id: panel_id,
+          class: 'card-body collapse'
+        ) do
+      %>
+        <% if integrations.present? %>
+          <% integrations.each do |i| %>
+            <%= render partial: 'card', locals: { integration: i } %>
+          <% end %>
+        <% end %>
+
+        <div class="text-center">
+          <%= link_to 'New', new_admin_integration_path(provider_id: definition['id']), class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

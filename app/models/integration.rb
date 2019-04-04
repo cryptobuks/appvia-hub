@@ -12,13 +12,25 @@ class Integration < ApplicationRecord
     dependent: :restrict_with_exception,
     inverse_of: :integration
 
-  validates :name, presence: true
+  validates :name,
+    presence: true,
+    uniqueness: true
 
   validates :provider_id, presence: true
 
   validates :config, presence: true
 
   validate :validate_config_matches_schema
+
+  attr_readonly :provider_id
+
+  default_value_for :config, -> { {} }
+
+  def provider
+    return if provider_id.blank?
+
+    PROVIDERS_REGISTRY.get provider_id
+  end
 
   def config=(hash)
     super hash.try(:to_json)

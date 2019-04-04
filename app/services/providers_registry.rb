@@ -12,6 +12,10 @@ class ProvidersRegistry
   end
   memoize :ids
 
+  def get(id)
+    @providers.find { |p| p['id'] == id }
+  end
+
   private
 
   def prepare_and_validate!(data)

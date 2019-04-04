@@ -1,0 +1,40 @@
+<% config_spec = integration.provider['config_spec'] %>
+
+<%=
+  bootstrap_form_with(
+    model: [:admin, integration],
+    local: true,
+    layout: :horizontal,
+    label_col: 'col-md-3',
+    control_col: 'col-md-9'
+  ) do |form|
+%>
+  <%= form.alert_message "Please fix the issues below:" %>
+
+  <h5>For: <%= integration.provider['name'] -%></h5>
+  <%= form.hidden_field :provider_id %>
+
+  <%= form.text_field :name, layout: :default, input_group_class: 'input-group-lg' %>
+
+  <div class="card mb-3">
+    <div class="card-header">
+      Config
+    </div>
+    <div class="card-body">
+      <%= form.fields_for :config do |config| %>
+        <% config_spec['properties'].each do |(k,v)| %>
+          <%# For now we just assume `string` fields %>
+          <%=
+            config.text_field k,
+              value: integration.config[k],
+              required: config_spec['required'].include?(k),
+              label: raw(v['title'] + ' ' + config_field_tooltip(k, config_spec))
+          %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <% submit_label = integration.new_record? ? 'Create integration' : 'Update integration' %>
+  <%= form.primary submit_label %>
+<% end %>

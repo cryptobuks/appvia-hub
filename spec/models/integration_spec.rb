@@ -1,12 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe Integration, type: :model do
+  subject { create_mocked_integration }
+
   describe '#name' do
     it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_uniqueness_of(:name) }
   end
 
   describe '#provider_id' do
     it { is_expected.to validate_presence_of(:provider_id) }
+    it { is_expected.to have_readonly_attribute(:provider_id) }
   end
 
   describe '#config' do

@@ -3,6 +3,10 @@ module HubAdminHelpers
   # authentication_helpers, otherwise they won't work.
 
   RSpec.shared_examples 'not a hub admin so not allowed' do
+    before do
+      current_user.update! role: User.roles[:user]
+    end
+
     it 'redirects to the root page' do
       expect(response).to redirect_to root_path
     end
