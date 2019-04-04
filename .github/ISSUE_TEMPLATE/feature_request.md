@@ -7,10 +7,13 @@ assignees: ''
 
 ---
 
-**What feature would you like to see in the hub and why? Please describe.**
+**What problem do you have that this product could help with and why? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...] and why this feature would add value
 
 **Describe the solution you'd like**
 A clear and concise description of what you want to happen.
+
+**What value would this add?**
+This would add x value because of [...]
 
 **Any additional comments**
