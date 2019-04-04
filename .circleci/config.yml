@@ -113,6 +113,7 @@ jobs:
       - checkout
       - run: pip install mkdocs mkdocs-material markdown-include
       - run: mkdocs build
+      - run: mkdocs gh-deploy
 
 workflows:
   version: 2
@@ -146,7 +147,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - doc_update
             tags:
               ignore: /.*/
 
