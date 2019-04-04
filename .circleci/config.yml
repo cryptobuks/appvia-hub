@@ -113,24 +113,12 @@ jobs:
       - checkout
       - run: pip install mkdocs mkdocs-material markdown-include
       - run: mkdocs build
-      
+
 workflows:
   version: 2
   main:
     jobs:
-      - test:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              ignore: /.*/
-
-      - make_docs:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              ignore: /.*/
+      - test
 
       - build_only:
           requires:
@@ -144,8 +132,17 @@ workflows:
 
       - build_and_push_latest:
           requires:
-            - make_docs
             - test
+          filters:
+            branches:
+              only:
+                - master
+            tags:
+              ignore: /.*/
+
+      - make_docs:
+          requires:
+            - build_and_push_latest
           filters:
             branches:
               only:
