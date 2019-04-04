@@ -110,6 +110,24 @@ describe 'Authentication Concern', type: :controller do
         expect(User.count).to eq 1
         expect(current_user).to eq User.first
       end
+
+      it 'makes the first user an admin' do
+        hit_endpoint
+
+        current_user = @controller.current_user
+        expect(current_user.admin?).to be true
+      end
+
+      it 'doesn\'t make subsequent users admins' do
+        create :user
+
+        hit_endpoint
+
+        expect(User.count).to eq 2
+
+        current_user = @controller.current_user
+        expect(current_user.admin?).to be false
+      end
     end
 
     context 'when no email is provided' do

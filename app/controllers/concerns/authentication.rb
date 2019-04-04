@@ -52,6 +52,7 @@ module Authentication
 
     User.find_or_create_by!(email: email) do |u|
       u.name = auth_data[:name]
+      u.role = User.roles[:admin] if User.count.zero?
     end
   end
 end
