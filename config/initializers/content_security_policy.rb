@@ -27,9 +27,9 @@
 # Ref: https://github.com/rails/webpacker/tree/3-x-stable#vue
 Rails.application.config.content_security_policy do |policy|
   if Rails.env.development?
-    policy.script_src :self, :https, :unsafe_eval
+    policy.script_src :self, :https, :unsafe_eval, :unsafe_inline
     policy.connect_src :self, :https, 'http://localhost:3035', 'ws://localhost:3035' # If running webpack-dev-server in HTTPS mode
   else
-    policy.script_src :self, :https
+    policy.script_src :self, :https, :unsafe_inline
   end
 end

@@ -7,7 +7,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users, only: %i[index]
+  resources :users, only: %i[index] do
+    resource :role, only: %i[update], controller: 'users', action: :update_role
+  end
 
   root to: 'home#show'
   mount Sidekiq::Web => '/sidekiq'
