@@ -111,9 +111,17 @@ jobs:
       - image: python:2.7-alpine
     steps:
       - checkout
+      - run: apk add -U git openssh git-fast-import
       - run: pip install mkdocs mkdocs-material markdown-include
       - run: mkdocs build
-      - run: mkdocs gh-deploy
+      - add_ssh_keys:
+          fingerprints:
+            - "6d:08:97:74:96:77:60:1a:28:6e:0c:a8:e6:6d:6f:7e"
+      - run:
+         environment: 
+          GIT_SSH_COMMAND: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+         command: mkdocs gh-deploy
+
 
 workflows:
   version: 2
@@ -147,7 +155,7 @@ workflows:
           filters:
             branches:
               only:
-                - doc_update
+                - master
             tags:
               ignore: /.*/
 
