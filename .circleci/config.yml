@@ -106,14 +106,31 @@ jobs:
             docker build -t quay.io/appvia/appvia-hub:$CIRCLE_TAG .
             docker push quay.io/appvia/appvia-hub:$CIRCLE_TAG
 
+  make_docs:
+    docker:
+      - image: python:2.7-alpine
+    steps:
+      - checkout
+      - run: pip install mkdocs mkdocs-material markdown-include
+      - run: mkdocs build
+      
 workflows:
   version: 2
   main:
     jobs:
       - test:
           filters:
+            branches:
+              ignore: /.*/
             tags:
-              only: /.*/
+              ignore: /.*/
+
+      - make_docs:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              ignore: /.*/
 
       - build_only:
           requires:
@@ -127,6 +144,7 @@ workflows:
 
       - build_and_push_latest:
           requires:
+            - make_docs
             - test
           filters:
             branches:

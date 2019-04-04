@@ -1,0 +1,12 @@
+site_name: Appvia Hub
+theme: material
+use_directory_urls: false
+nav:
+  - Home: index.md
+  - Who: who.md 
+
+markdown_extensions:
+  - toc:
+      permalink: "#"
+      toc_depth: 3
+  - markdown_include.include
