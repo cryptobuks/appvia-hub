@@ -1,5 +1,7 @@
 - id: git_hub
   name: GitHub
+  for_resource_types:
+    - CodeRepo
   config_spec:
     properties:
       app_id:
@@ -26,6 +28,8 @@
 
 - id: quay
   name: Quay
+  for_resource_types:
+    - DockerRepo
   config_spec:
     properties:
       api_access_token:
@@ -50,6 +54,8 @@
 
 - id: kubernetes
   name: Kubernetes
+  for_resource_types:
+    - KubeName
   config_spec:
     properties:
       cluster_name:

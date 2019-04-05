@@ -16,32 +16,47 @@ class ProvidersRegistry
 
   def prepare_and_validate!(data)
     data = data.deep_dup
-    config_schemas = {}
 
-    # Must be an Array
+    must_be_an_array data
+
+    must_have_unique_ids data
+
+    must_reference_valid_resource_types data
+
+    config_schemas = prepare_and_validate_config_specs data
+
+    [
+      data.freeze,
+      config_schemas.freeze
+    ]
+  end
+
+  def must_be_an_array(data)
     raise 'Providers data must be an Array' unless data.is_a?(Array)
+  end
 
-    # Providers must have unique IDs
+  def must_have_unique_ids(data)
     ids = data.map { |p| p['id'] }.compact
     raise 'Provider IDs must be set and unique' if ids.size != data.size
+  end
 
+  def must_reference_valid_resource_types(data)
+
+  end
+
+  def prepare_and_validate_config_specs(data)
     # For each provider `config_spec`:
     # - Add certain assumed JSON Schema fields
     # - Validate that each is valid JSON Schema
-    # - Store the JSON Schema object
-    data.each do |p|
+    # - Try to instantiate a valid JsonSchema object
+    data.each_with_object({}) do |p, _acc|
       id = p['id']
       config_spec = p['config_spec']
 
       config_spec['type'] = 'object'
       config_spec['additionalProperties'] = false
 
-      config_schemas[id] = JsonSchema.parse!(config_spec)
+      _acc[id] = JsonSchema.parse!(config_spec)
     end
-
-    [
-      data.freeze,
-      config_schemas.freeze
-    ]
   end
 end
