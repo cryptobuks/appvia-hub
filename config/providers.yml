@@ -55,7 +55,7 @@
 - id: kubernetes
   name: Kubernetes
   for_resource_types:
-    - KubeName
+    - KubeNamespace
   config_spec:
     properties:
       cluster_name:
