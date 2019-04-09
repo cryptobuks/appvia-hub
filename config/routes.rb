@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     resources :integrations, except: %i[show destroy]
   end
 
-  resources :projects do
+  resources :projects, path: 'spaces' do
     resources :resources, only: [:destroy] do
       post :provision, on: :collection
     end

@@ -17,12 +17,12 @@
           <%- case a.action -%>
           <%- when 'create' -%>
             <%= activity_entry icon('cube'), a.created_at do %>
-              <%= a.user_email %> created a new project:
+              <%= a.user_email %> created a new space:
               <%= link_to a.auditable_descriptor, project_path(a.auditable_id), class: 'text-monospace' %>
             <% end %>
           <%- when 'destroy' -%>
             <%= activity_entry icon('cube'), a.created_at do %>
-              <%= a.user_email %> deleted project:
+              <%= a.user_email %> deleted space:
               <span class="text-monospace"><%= a.auditable_descriptor %></span>
             <% end %>
           <%- end -%>
@@ -40,7 +40,7 @@
               </span>
               <% status = 'pending' %>
               <%= tag.span(status, class: "badge badge-#{resource_status_class(status)}") %>
-              for project:
+              for space:
               <%= link_to a.associated_descriptor, project_path(a.associated_id), class: 'text-monospace' %>
             <% end %>
           <%- when 'update' -%>
@@ -54,7 +54,7 @@
                 is now
                 <% status = a.audited_changes['status'].last %>
                 <%= tag.span(status, class: "badge badge-#{resource_status_class(status)}") %>
-                for project:
+                for space:
                 <%= link_to a.associated_descriptor, project_path(a.associated_id), class: 'text-monospace' %>
               <% end %>
             <% end %>
@@ -71,7 +71,7 @@
               </span>
               <% status = 'deleting' %>
               <%= tag.span(status, class: "badge badge-#{resource_status_class(status)}") %>
-              for project:
+              for space:
               <%= link_to a.associated_descriptor, project_path(a.associated_id), class: 'text-monospace' %>
             <% end %>
           <%- when 'destroy' -%>
@@ -85,7 +85,7 @@
               <span class="font-weight-bold">
                 <%= a.auditable_descriptor %>
               </span>
-              for project:
+              for space:
               <%= link_to a.associated_descriptor, project_path(a.associated_id), class: 'text-monospace' %>
             <% end %>
           <%- end -%>

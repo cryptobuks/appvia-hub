@@ -3,17 +3,15 @@ class ResourcesController < ApplicationController
 
   before_action :find_resource, only: [:destroy]
 
-  # DELETE /projects/:project_id/resources/:id
   def destroy
     ResourceProvisioningService.new.request_delete @resource
     redirect_to @project, notice: 'Deletion of resource has been requested.'
   end
 
-  # POST /projects/:project_id/resources/provision
   def provision
     result = ProjectResourcesService.new(@project).bootstrap
 
-    notice = ('A new set of resources have been requested for this project' if result)
+    notice = ('A new set of resources have been requested for this space' if result)
 
     redirect_to @project, notice: notice
   end
