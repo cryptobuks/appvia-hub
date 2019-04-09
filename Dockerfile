@@ -1,47 +1,57 @@
-FROM ruby:2.5.5-slim
+##############################################################
+# Stage: builder
+FROM ruby:2.5.5-alpine3.9 AS builder
+
+ENV RAILS_ENV production
+ENV NODE_ENV production
+
+WORKDIR /app
+
+RUN apk add --update --no-cache bash curl make gcc libc-dev postgresql-client postgresql-dev tzdata nodejs-current yarn
+
+# install gems
+COPY Gemfile Gemfile.lock ./
+RUN bundle install --jobs 20 --retry 5 --deployment --without development test
+
+# install yarn packages
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --no-cache --production
+
+# copy app
+COPY . /app
+
+# precompile assets
+RUN SECRET_KEY_BASE=foo SECRET_SALT=bar DATABASE_URL=postgresql://user:pass@127.0.0.1/dbname bin/rails assets:precompile \
+ && rm -rf node_modules tmp/cache app/webpack
+
+##############################################################
+# Stage: final
+FROM ruby:2.5.5-alpine3.9
 
 LABEL maintainer="info@appvia.io"
 LABEL source="https://github.com/appvia/appvia-hub"
 
 ENV RAILS_ENV production
 ENV NODE_ENV production
-
-RUN apt-get update && apt-get upgrade -u -y && apt-get install -qq -y \
-    bash curl gnupg2 build-essential \
-    --fix-missing --no-install-recommends
-
-RUN echo "deb [arch=amd64] http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
-    && curl -sSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-
-RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -
-RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-
-RUN apt-get update && apt-get install -qq -y \
-    nodejs yarn libpq-dev \
-    --fix-missing --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
-
 ENV APP_PATH /app
-WORKDIR $APP_PATH
 
-COPY Gemfile Gemfile.lock ./
-RUN bundle install --jobs 20 --retry 5 --deployment --without development test
+RUN apk add --update --no-cache bash curl postgresql-client tzdata && \
+    rm -rf /var/cache/apk/*
 
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --no-cache --production && yarn cache clean
+RUN addgroup -g 1000 -S appuser \
+ && adduser -u 1000 -S appuser -G appuser
 
-COPY . .
-RUN SECRET_KEY_BASE=foo SECRET_SALT=bar DATABASE_URL=postgresql://user:pass@127.0.0.1/dbname bin/rails assets:precompile \
-    && rm -rf node_modules/
-
-RUN adduser --system --group --uid 1000 app \
-    && chown -R app:app $APP_PATH
-
-ENV HOME $APP_PATH
 USER 1000
 
+COPY --from=builder /usr/local/bundle/ /usr/local/bundle/
+COPY --from=builder --chown=1000:1000 /app $APP_PATH
+
+WORKDIR $APP_PATH
+
+ENV HOME $APP_PATH
 ENV PORT 3001
+ENV RAILS_LOG_TO_STDOUT true
+ENV RAILS_SERVE_STATIC_FILES true
 
 ENTRYPOINT ["bin/rails"]
 CMD ["server"]
