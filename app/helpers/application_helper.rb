@@ -13,11 +13,11 @@ module ApplicationHelper
     end
   end
 
-  def icon(name, size: '1x')
-    tag.i '', class: "fas fa-#{name} fa-#{size}"
+  def icon(name, size: '1x', title: nil, data_attrs: nil)
+    tag.i '', class: "fas fa-#{name} fa-#{size}", title: title, data: data_attrs
   end
 
-  def brand_icon(name, size: '1x')
-    tag.i '', class: "fab fa-#{name} fa-#{size}"
+  def brand_icon(name, size: '1x', title: nil, data_attrs: nil)
+    tag.i '', class: "fab fa-#{name} fa-#{size}", title: title, data: data_attrs
   end
 end

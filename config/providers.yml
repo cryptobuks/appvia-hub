@@ -2,6 +2,10 @@
   name: GitHub
   config_spec:
     properties:
+      org:
+        title: Your GitHub organisation
+        description: "The organisation on GitHub to manage repos for. This should be the 'login' value as specified in https://developer.github.com/v3/orgs/."
+        type: string
       app_id:
         title: Your GitHub App ID
         description: "The app ID for the [GitHub App](https://developer.github.com/apps/about-apps/) you have set up."
@@ -14,15 +18,11 @@
         title: Your GitHub App installation on your org
         description: "The specific installation of your GitHub App within your GitHub organisation."
         type: string
-      org:
-        title: Your GitHub organisation
-        description: "The organisation on GitHub to manage repos for. This should be the 'login' value as specified in https://developer.github.com/v3/orgs/."
-        type: string
     required:
+      - org
       - app_id
       - app_private_key
       - app_installation_id
-      - org
 
 - id: quay
   name: Quay
@@ -71,9 +71,11 @@
       global_service_account_name:
         title: Global service account name
         description: "This global service account will be given access to all namespaces created within the Kube cluster. It will be shown to users so they can access these namespaces."
+        type: string
       global_service_account_token:
         title: Global service account token
         description: The value of the token for the global service account.
+        type: string
     required:
       - cluster_name
       - api_url

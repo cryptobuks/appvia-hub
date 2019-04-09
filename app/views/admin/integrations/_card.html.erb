@@ -1,0 +1,26 @@
+<% config_spec = integration.provider['config_spec'] %>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">
+      Name: <%= integration.name %>
+    </h5>
+
+    <p class="text-muted">
+      <%= pluralize integration.resources.count, 'resource' %>
+    </p>
+
+    <dl class="row mb-0">
+      <% integration.config.each do |(k,v)| %>
+        <dt class="col-md-3">
+          <%= config_field_title k, config_spec %>
+          <%= config_field_tooltip k, config_spec %>
+        </dt>
+        <dd class="col-md-9"><%= v -%></dd>
+      <% end %>
+    </dl>
+  </div>
+  <div class="card-footer">
+    <%= link_to 'Edit', edit_admin_integration_path(integration), class: 'btn btn-primary' %>
+  </div>
+</div>

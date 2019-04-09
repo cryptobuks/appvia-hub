@@ -172,6 +172,7 @@ RSpec.describe 'Projects', type: :request do
       context 'with valid params' do
         it 'updates the existing Project with the given params and redirects to the project page' do
           expect do
+            move_time_to 1.minute.from_now
             put project_path(@project), params: { project: updated_params }
             project = Project.find @project.id
             expect(response).to redirect_to(project)

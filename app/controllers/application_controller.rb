@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include ErrorHandlers
   include Authentication
 
   before_action :require_authentication
