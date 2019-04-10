@@ -1,4 +1,9 @@
 module ApplicationHelper
+  def show_requires_setup?
+    !current_page?(admin_integrations_path) &&
+      Integration.count.zero?
+  end
+
   def nav_item(text, path, icon_name: nil)
     link_classes = ['nav-link', 'text-nowrap']
     is_active = current_page? path
