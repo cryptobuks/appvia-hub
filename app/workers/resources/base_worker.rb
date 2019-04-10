@@ -38,11 +38,11 @@ module Resources
           with_handler(resource) do |handler|
             result = handler.call resource, agent
             result ? finalise(resource) : resource.failed!
-          rescue StandardError => ex
+          rescue StandardError => e
             logger.error [
               "Failed to process request for resource #{resource.id}",
               "(type: #{resource.type}, provider: #{resource.integration.provider_id})",
-              "- error: #{ex.inspect}"
+              "- error: #{e.inspect}"
             ].join(' ')
 
             resource.failed!

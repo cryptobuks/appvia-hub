@@ -28,13 +28,13 @@ gem 'typhoeus', '~> 1.3', '>= 1.3.1'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'dotenv-rails', '~> 2.6'
+  gem 'dotenv-rails', '~> 2.7.2'
   gem 'rspec-rails', '~> 3.8', '>= 3.8.2'
-  gem 'factory_bot_rails', '~> 4.11', '>= 4.11.1'
+  gem 'factory_bot_rails', '~> 5.0.1'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.4'
   gem 'shoulda-matchers', '~> 4.0.1'
   gem 'pry-rails', '~> 0.3.9'
-  gem 'pry-byebug', '~> 3.6'
+  gem 'pry-byebug', '~> 3.7'
 end
 
 group :development do
@@ -42,8 +42,8 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'rubocop', '~> 0.63.1', require: false
-  gem 'better_errors', '~> 2.5'
+  gem 'rubocop', '~> 0.67.2', require: false
+  gem 'better_errors', '~> 2.5.1'
   gem 'binding_of_caller', '~> 0.8.0'
 end
 
