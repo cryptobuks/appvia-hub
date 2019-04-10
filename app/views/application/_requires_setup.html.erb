@@ -1,0 +1,16 @@
+<div class="jumbotron" role="alert">
+  <h1>Welcome to The Hub!</h1>
+  <p class="lead">
+    No integrations have been configured yet.
+  </p>
+  <% if current_user.admin? %>
+    <p class="mb-4">
+      As an admin, you can set up some integrations so that users can provision resources within spaces.
+    </p>
+    <%= link_to 'Set up integrations', admin_integrations_path, class: 'btn btn-lg btn-primary', role: 'button' %>
+  <% else %>
+    <p>
+      Please ask an admin to set up some integrations so you can provision resources within spaces.
+    </p>
+  <% end %>
+</div>
