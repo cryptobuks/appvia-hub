@@ -1,6 +1,6 @@
 module ApplicationHelper
   def show_requires_setup?
-    !current_page?(admin_integrations_path) &&
+    controller.controller_name != 'integrations' &&
       Integration.count.zero?
   end
 
