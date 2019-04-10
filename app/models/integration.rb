@@ -53,7 +53,7 @@ class Integration < ApplicationRecord
     PROVIDERS_REGISTRY
       .config_schemas[provider_id]
       .validate!(config)
-  rescue JsonSchema::AggregateError => ex
-    errors.add :config, ex.to_s
+  rescue JsonSchema::AggregateError => e
+    errors.add :config, e.to_s
   end
 end
