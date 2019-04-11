@@ -31,6 +31,39 @@
               <%- end -%>
             </p>
 
+            <% credentials = global_credentials_for r %>
+            <% if credentials.present? %>
+              <% panel_id = "credentials-panel-#{r.id}" %>
+              <%=
+                tag.a(
+                  href: '#',
+                  data: {
+                    toggle: 'collapse',
+                    target: "##{panel_id}"
+                  },
+                  aria: {
+                    controls: panel_id
+                  }
+                ) do
+              %>
+                Credentials
+              <% end %>
+
+              <%=
+                tag.div(
+                  id: panel_id,
+                  class: 'card-body collapse'
+                ) do
+              %>
+                <dl class="mb-0">
+                  <% credentials.each do |(k, v)| %>
+                    <dt><%= k -%></dt>
+                    <dd><%= v -%></dd>
+                  <% end %>
+                </dl>
+              <% end %>
+            <% end %>
+
             <div>
               <div class="btn-group float-right" role="group" aria-label="Resource actions">
                 <button id="resource<%= r.id -%>ActionsGroupDropdown" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

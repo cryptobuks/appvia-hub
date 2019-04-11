@@ -6,9 +6,7 @@
 
   <% group[:providers].each do |provider| %>
     <% definition = provider[:definition] %>
-    <% id = group[:resource_type] + '-' + definition['id'] %>
-    <% switch_id = "#{id}-switch" %>
-    <% panel_id = "#{id}-panel" %>
+    <% panel_id = "#{group[:resource_type]}-#{definition['id']}-panel" %>
     <% integrations = provider[:integrations] %>
 
     <div class="card shadow-sm mb-4">
@@ -16,12 +14,12 @@
         tag.div(
           class: 'card-header',
           style: 'cursor: pointer',
+          role: 'tab',
           data: {
             toggle: 'collapse',
             target: "##{panel_id}"
           },
           aria: {
-            expanded: integrations.present?.to_s,
             controls: panel_id
           }
         ) do
@@ -37,7 +35,8 @@
       <%=
         tag.div(
           id: panel_id,
-          class: 'card-body collapse'
+          class: 'card-body collapse',
+          role: 'tabpanel'
         ) do
       %>
         <% if integrations.present? %>
