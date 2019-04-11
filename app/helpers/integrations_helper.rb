@@ -1,17 +1,15 @@
 module IntegrationsHelper
   def config_field_title(name, spec)
-    if spec['properties'].key? name
-      spec['properties'][name]['title']
+    if spec
+      spec['title']
     else
       name.humanize
     end
   end
 
-  def config_field_tooltip(name, spec)
-    return unless spec['properties'].key?(name)
-
+  def config_field_tooltip(text)
     icon 'question-circle',
-      title: spec['properties'][name]['description'],
+      title: text,
       data_attrs: {
         toggle: 'tooltip'
       }

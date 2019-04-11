@@ -14,6 +14,7 @@
         title: Your GitHub App private key
         description: "A private key for the [GitHub App](https://developer.github.com/apps/about-apps/) you have set up."
         type: string
+        masked: true
       app_installation_id:
         title: Your GitHub App installation on your org
         description: "The specific installation of your GitHub App within your GitHub organisation."
@@ -28,23 +29,25 @@
   name: Quay
   config_spec:
     properties:
-      api_access_token:
-        title: Quay API access token
-        description: An API token to be used to communicate with the Quay.io API. This must have enough permissions to create and manage repos. This is not shown to regular users of the hub.
-        type: string
       org:
         title: Your Quay organisation
         description: The organisation on Quay to manage repos for. This will be used as the namespace for all Docker repos created.
         type: string
+      api_access_token:
+        title: Quay API access token
+        description: An API token to be used to communicate with the Quay.io API. This must have enough permissions to create and manage repos. This is not shown to regular users of the hub.
+        type: string
+        masked: true
       global_robot_name:
         title: Global robot name
         description: "MUST be in the format: <org>+<robot_name>. This global robot token will be given access to all repos created within the org on Quay. It will be shown to users so they can access repositories."
       global_robot_token:
         title: Global robot token
         description: The value of the token for the global robot.
+        masked: true
     required:
-      - api_access_token
       - org
+      - api_access_token
       - global_robot_name
       - global_robot_token
 
@@ -64,10 +67,12 @@
         title: CA Certificate
         description: MUST be base64 encoded. This is the CA bundle (pem format) used by the Kubernetes API server.
         type: string
+        masked: true
       token:
         title: Service account token
         description: A service account token used by the hub to interact with the Kubernetes API. The service account must have `cluster-admin` level permissions in order to manage namespaces, deployments and service accounts among other things. This is not shown to regular users of the hub.
         type: string
+        masked: true
       global_service_account_name:
         title: Global service account name
         description: "This global service account will be given access to all namespaces created within the Kube cluster. It will be shown to users so they can access these namespaces."
@@ -76,6 +81,7 @@
         title: Global service account token
         description: The value of the token for the global service account.
         type: string
+        masked: true
     required:
       - cluster_name
       - api_url
