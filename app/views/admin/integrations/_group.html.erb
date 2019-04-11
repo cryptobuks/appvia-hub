@@ -42,7 +42,7 @@
       %>
         <% if integrations.present? %>
           <% integrations.each do |i| %>
-            <%= render partial: 'card', locals: { integration: i } %>
+            <%= render partial: 'card', locals: { integration: i, unmask: unmask } %>
           <% end %>
         <% end %>
 

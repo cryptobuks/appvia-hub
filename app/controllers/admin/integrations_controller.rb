@@ -7,6 +7,8 @@ module Admin
     def index
       integrations_by_provider = Integration.all.group_by(&:provider_id)
 
+      @unmask = params.key? 'unmask'
+
       @groups = [
         {
           name: 'Code Repositories',

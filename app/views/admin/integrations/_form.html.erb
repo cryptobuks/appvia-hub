@@ -22,13 +22,13 @@
     </div>
     <div class="card-body">
       <%= form.fields_for :config do |config| %>
-        <% config_spec['properties'].each do |(k,v)| %>
+        <% config_spec['properties'].each do |(name, property_spec)| %>
           <%# For now we just assume `string` fields %>
           <%=
-            config.text_field k,
-              value: integration.config[k],
-              required: config_spec['required'].include?(k),
-              label: raw(v['title'] + ' ' + config_field_tooltip(k, config_spec))
+            config.text_field name,
+              value: integration.config[name],
+              required: config_spec['required'].include?(name),
+              label: raw(config_field_title(name, property_spec) + ' ' + config_field_tooltip(property_spec['description']))
           %>
         <% end %>
       <% end %>

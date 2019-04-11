@@ -11,12 +11,28 @@
     </p>
 
     <dl class="row mb-0">
-      <% integration.config.each do |(k,v)| %>
+      <% config_spec['properties'].each do |(name, property_spec)| %>
         <dt class="col-md-3">
-          <%= config_field_title k, config_spec %>
-          <%= config_field_tooltip k, config_spec %>
+          <%= config_field_title name, property_spec %>
+          <%= config_field_tooltip property_spec['description'] %>
         </dt>
-        <dd class="col-md-9"><%= v -%></dd>
+        <dd class="col-md-9">
+          <% value = integration.config[name] %>
+          <% if value.blank? %>
+            <span class="none-text">
+              not set
+            </span>
+          <% else %>
+            <% if !property_spec['masked'] || unmask %>
+              <%= value -%>
+            <% else %>
+              <span class="text-muted font-weight-light">
+                hidden
+              </span>
+              <%= link_to 'show all hidden', { unmask: true }, class: 'ml-3' %>
+            <% end %>
+          <% end %>
+        </dd>
       <% end %>
     </dl>
   </div>
