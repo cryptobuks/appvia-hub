@@ -33,4 +33,11 @@ class Project < ApplicationRecord
   def descriptor
     slug
   end
+
+  def resources_by_type
+    ResourceTypesService.all.map do |rt|
+      resources = send rt[:id].tableize
+      rt.merge resources: resources
+    end
+  end
 end

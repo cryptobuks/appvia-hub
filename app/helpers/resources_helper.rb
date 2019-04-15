@@ -23,9 +23,9 @@ module ResourcesHelper
     RESOURCE_STATUS_TO_CLASS[status]
   end
 
-  def delete_resource_link(project, resource, css_class: nil)
+  def delete_resource_link(project_id, resource, css_class: nil)
     link_to 'Delete',
-      project_resource_path(project, resource),
+      project_resource_path(project_id, resource),
       method: :delete,
       class: css_class,
       data: {

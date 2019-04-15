@@ -3,46 +3,22 @@ module Admin
     before_action :find_integration, only: %i[edit update]
 
     # GET /admin/integrations
-    # rubocop:disable Metrics/MethodLength
     def index
       integrations_by_provider = Integration.all.group_by(&:provider_id)
 
       @unmask = params.key? 'unmask'
 
-      @groups = [
-        {
-          name: 'Code Repositories',
-          resource_type: 'CodeRepo',
-          providers: [
-            {
-              definition: PROVIDERS_REGISTRY.get('git_hub'),
-              integrations: Array(integrations_by_provider['git_hub'])
-            }
-          ]
-        },
-        {
-          name: 'Docker Repositories',
-          resource_type: 'DockerRepo',
-          providers: [
-            {
-              definition: PROVIDERS_REGISTRY.get('quay'),
-              integrations: Array(integrations_by_provider['quay'])
-            }
-          ]
-        },
-        {
-          name: 'Kubernetes Namespaces',
-          resource_type: 'KubeNamespace',
-          providers: [
-            {
-              definition: PROVIDERS_REGISTRY.get('kubernetes'),
-              integrations: Array(integrations_by_provider['kubernetes'])
-            }
-          ]
-        }
-      ]
+      @groups = ResourceTypesService.all.map do |rt|
+        providers = rt[:providers].map do |provider_id|
+          {
+            definition: PROVIDERS_REGISTRY.get(provider_id),
+            integrations: Array(integrations_by_provider[provider_id])
+          }
+        end
+
+        rt.merge providers: providers
+      end
     end
-    # rubocop:enable Metrics/MethodLength
 
     # GET /admin/integrations/new
     def new
