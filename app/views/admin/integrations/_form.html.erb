@@ -28,7 +28,10 @@
             config.text_field name,
               value: integration.config[name],
               required: config_spec['required'].include?(name),
-              label: raw(config_field_title(name, property_spec) + ' ' + config_field_tooltip(property_spec['description']))
+              label: label_with_tooltip(
+                config_field_title(name, property_spec),
+                icon_with_tooltip(property_spec['description'])
+              )
           %>
         <% end %>
       <% end %>

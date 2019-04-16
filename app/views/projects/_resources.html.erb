@@ -1,8 +1,21 @@
 <div class="project-resources">
-  <% project.resources_by_type.each do |group| %>
+  <% grouped_resources.each do |group| %>
     <% resources = group[:resources] %>
 
     <h4 class="m-0 p-3 bg-light">
+      <% if group[:integrations].empty? %>
+        <span class="float-right">
+          <%=
+            icon_with_tooltip(
+              'No integrations are currently available for this resource type - a hub admin can set up a new integration if required',
+              icon_name: 'exclamation-circle'
+            )
+          %>
+        </span>
+      <% else %>
+        <%= link_to 'New', new_project_resource_path(project, type: group[:id]), class: 'float-right btn btn-sm btn-primary' %>
+      <% end %>
+
       <%= resource_icon group[:id] %>
       <%= group[:name] %>
       <span class="text-muted ml-2">(<%= resources.count -%>)</span>

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   end
 
   resources :projects, path: 'spaces' do
-    resources :resources, only: [:destroy] do
+    resources :resources, only: %i[new create destroy] do
       post :provision, on: :collection
     end
   end

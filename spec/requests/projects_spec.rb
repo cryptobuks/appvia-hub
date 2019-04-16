@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Projects', type: :request do
   include_context 'time helpers'
 
-  describe 'index - GET /projects' do
+  describe 'index - GET /spaces' do
     it_behaves_like 'unauthenticated not allowed' do
       before do
         get projects_path
@@ -24,7 +24,7 @@ RSpec.describe 'Projects', type: :request do
     end
   end
 
-  describe 'show - GET /projects/:id' do
+  describe 'show - GET /spaces/:id' do
     before do
       @project = create :project
     end
@@ -51,12 +51,13 @@ RSpec.describe 'Projects', type: :request do
         expect(response).to be_successful
         expect(response).to render_template(:show)
         expect(assigns(:project)).to eq @project
+        expect(assigns(:grouped_resources)).to be_present
         expect(assigns(:activity)).to eq []
       end
     end
   end
 
-  describe 'new - GET /projects/new' do
+  describe 'new - GET /spaces/new' do
     it_behaves_like 'unauthenticated not allowed' do
       before do
         get new_project_path
@@ -74,7 +75,7 @@ RSpec.describe 'Projects', type: :request do
     end
   end
 
-  describe 'edit - GET /projects/edit' do
+  describe 'edit - GET /spaces/edit' do
     before do
       @project = create :project
     end
@@ -95,7 +96,7 @@ RSpec.describe 'Projects', type: :request do
     end
   end
 
-  describe 'create - POST /projects' do
+  describe 'create - POST /spaces' do
     let :params do
       {
         name: 'Foo',
@@ -150,7 +151,7 @@ RSpec.describe 'Projects', type: :request do
     end
   end
 
-  describe 'update - PUT /projects/:id' do
+  describe 'update - PUT /spaces/:id' do
     before do
       @project = create :project
     end
@@ -213,7 +214,7 @@ RSpec.describe 'Projects', type: :request do
     end
   end
 
-  describe 'destroy - DELETE /projects/:id' do
+  describe 'destroy - DELETE /spaces/:id' do
     before do
       @project = create :project
     end
