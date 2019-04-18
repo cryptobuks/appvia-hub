@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.1.1">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.1.2">
     
     
       
@@ -75,7 +75,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#what-is-the-hub" tabindex="1" class="md-skip">
+      <a href="#the-vision" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -176,45 +176,9 @@
       
     
     
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Home
-      </label>
-    
     <a href="index.html" title="Home" class="md-nav__link md-nav__link--active">
       Home
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-the-difference-between-this-and-a-paas" title="What is the difference between this and a PaaS?" class="md-nav__link">
-    What is the difference between this and a PaaS?
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-are-these-resources" title="What are these resources?" class="md-nav__link">
-    What are these resources?
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
     
   </li>
 
@@ -248,29 +212,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-the-difference-between-this-and-a-paas" title="What is the difference between this and a PaaS?" class="md-nav__link">
-    What is the difference between this and a PaaS?
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-are-these-resources" title="What are these resources?" class="md-nav__link">
-    What are these resources?
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -282,21 +223,24 @@
               
                 
                 
-                <h1 id="what-is-the-hub">What is the Hub<a class="headerlink" href="#what-is-the-hub" title="Permanent link">#</a></h1>
+                <p><strong> NOTE THIS IS ALPHA AND NOT FOR PRODUCTION USE </strong></p>
+<h1 id="the-vision">The Vision<a class="headerlink" href="#the-vision" title="Permanent link">#</a></h1>
 <p>Developers can do incredible things. If you think about how important they are for enabling their company to operate, deliver, grow and "wow" customers, they're pretty valuable. But their abilities - just like other departments - are affected by the tools and support they're provided with.</p>
+<p>The hub believes that engineers should get to choose the right tools for the job and still have a simple user journey in terms of building, deploying and managing applications. We want to enable developers to focus on what matters and for the organisation not to be locked in to any specific technology. This means that we want a platform that can facilitate delivery and enable development, but work across different cloud providers and product suites.</p>
+<h1 id="what-is-the-hub">What is the Hub<a class="headerlink" href="#what-is-the-hub" title="Permanent link">#</a></h1>
 <p>In some cases the tools provided to Developers abstract them away from how the application has been deployed and managed i.e. a traditional PaaS which will test,  build and deploy the application on behalf of a developer. Making it difficult to troubleshoot issues or understand how something has happened when it isn't the expected outcome.</p>
 <p>The hub sits somewhere in the middle! We want to enable developers as much as possible to focus on the important things, but we want them to be in control and have autonomy on how they are deploying the application and what resources they may need.</p>
 <h2 id="what-is-the-difference-between-this-and-a-paas">What is the difference between this and a PaaS?<a class="headerlink" href="#what-is-the-difference-between-this-and-a-paas" title="Permanent link">#</a></h2>
 <p>We don't see the hub as being a PaaS platform in the traditional sense, but more an orchestrator and aggregator of useful information. We don't want to abstract developers from being close to their application in terms of CI, deployments and operational implementation details i.e. good logging, monitoring, tracing etc. We want people to use what makes sense for their application with some healthy best practice defaults.</p>
 <p>What we want to achieve is being able to provision resources quickly, simply and with minimal configuration that gets a developer going; but also, to provide useful information around the applications being managed i.e. what recent builds failed, what is deployed in what environment, the relationships between resources.</p>
 <h2 id="what-are-these-resources">What are these resources?<a class="headerlink" href="#what-are-these-resources" title="Permanent link">#</a></h2>
-<p>We have noticed that a lot of teams require additional resources or as the industry has coined 'DevOps Resources' to facilitate a developers needs. This tends to involve some onboarding of people into the github organisation, creating access to docker repositories, provisioning CI robot accounts, creating a kubernetes cluster, namespaces for the project, RBAC controls etc. </p>
-<p>As projects grow or as organisations grow, the demand for the above resources increases and eventually ends up a mix of manual and automated workloads. Visibility becomes poor and the resource provisioning becomes slow and results in developers being blocked, mistakes being made and time being consumed. </p>
-<p>We have split resources into themes:
+<p>We have noticed that a lot of teams require additional resources or as the industry has coined 'DevOps Resources' to facilitate a developers needs. This tends to involve some onboarding of people into the github organisation, creating access to docker repositories, provisioning CI robot accounts, creating a kubernetes cluster, namespaces for the project, RBAC controls etc.</p>
+<p>As projects grow or as organisations grow, the demand for the above resources increases and eventually ends up a mix of manual and automated workloads. Visibility becomes poor and the resource provisioning becomes slow and results in developers being blocked, mistakes being made and time being consumed.</p>
+<p>We have split resources into capabilities:
 - Code Management
 - Docker Repositories
 - Deployment Management</p>
-<p>These themes are then split into provider type resources we are primarily focused on are:
+<p>These capabilities are then split into provider type resources we are primarily focused on are:
 - Code Repositories (github provider)
 - Docker Repositories (quay provider)
 - Kubernetes namespaces (deployment spaces) (kubernetes provider)</p>
@@ -355,7 +299,7 @@
       
     </div>
     
-      <script src="assets/javascripts/application.dc02f8ce.js"></script>
+      <script src="assets/javascripts/application.267712eb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
       
