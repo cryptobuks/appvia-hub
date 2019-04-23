@@ -1,12 +1,12 @@
 <div class="integrations-group py-2">
   <h3 class="my-3">
-    <%= resource_icon group[:resource_type] %>
+    <%= resource_icon group[:id] %>
     <%= group[:name] %>
   </h3>
 
   <% group[:providers].each do |provider| %>
     <% definition = provider[:definition] %>
-    <% panel_id = "#{group[:resource_type]}-#{definition['id']}-panel" %>
+    <% panel_id = "#{group[:id]}-#{definition['id']}-panel" %>
     <% integrations = provider[:integrations] %>
 
     <div class="card shadow-sm mb-4">

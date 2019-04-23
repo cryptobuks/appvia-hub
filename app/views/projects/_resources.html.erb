@@ -1,99 +1,25 @@
-<div class="card project-resources">
-  <div class="card-header">
-    <strong>Resources</strong>
-  </div>
-  <div class="list-group list-group-flush">
-    <% if project.resources.present? %>
-      <% project.resources.each do |r| %>
-        <div class="list-group-item">
-          <p class="d-flex align-items-center">
-            <%= resource_icon(r) %>
-            <span class="font-weight-light">
-              <%= r.classification %>
-            </span>
-            <%= tag.span(r.status, class: "badge badge-#{resource_status_class(r.status)} ml-auto") %>
-          </p>
+<div class="project-resources">
+  <% project.resources_by_type.each do |group| %>
+    <% resources = group[:resources] %>
 
-          <h5 class="text-primary">
-            <%= r.name %>
-          </h5>
+    <h4 class="m-0 p-3 bg-light">
+      <%= resource_icon group[:id] %>
+      <%= group[:name] %>
+      <span class="text-muted ml-2">(<%= resources.count -%>)</span>
+    </h4>
 
-          <% unless r.pending? %>
-            <p>
-              <%- case r -%>
-              <%- when Resources::CodeRepo -%>
-                <%= r.private ? 'Private' : 'Public' %><br />
-                <%= link_to r.full_name, r.url, target: '_blank' %>
-              <%- when Resources::DockerRepo -%>
-                <%= r.visibility.try(:capitalize) %><br />
-                <%= r.base_uri %>
-              <%- when Resources::KubeNamespace -%>
-              <%- end -%>
-            </p>
-
-            <% credentials = global_credentials_for r %>
-            <% if credentials.present? %>
-              <% panel_id = "credentials-panel-#{r.id}" %>
-              <%=
-                tag.a(
-                  href: '#',
-                  data: {
-                    toggle: 'collapse',
-                    target: "##{panel_id}"
-                  },
-                  aria: {
-                    controls: panel_id
-                  }
-                ) do
-              %>
-                Credentials
-              <% end %>
-
-              <%=
-                tag.div(
-                  id: panel_id,
-                  class: 'card-body collapse'
-                ) do
-              %>
-                <dl class="mb-0">
-                  <% credentials.each do |(k, v)| %>
-                    <dt><%= k -%></dt>
-                    <dd><%= v -%></dd>
-                  <% end %>
-                </dl>
-              <% end %>
-            <% end %>
-
-            <div>
-              <div class="btn-group float-right" role="group" aria-label="Resource actions">
-                <button id="resource<%= r.id -%>ActionsGroupDropdown" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Actions
-                </button>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="resource<%= r.id -%>ActionsGroupDropdown">
-                  <%= delete_resource_link project, r, css_class: 'dropdown-item' %>
-                </div>
-              </div>
-            </div>
-          <% end %>
+    <div class="list-group list-group-flush">
+      <% if resources.present? %>
+        <% resources.each do |r| %>
+          <%= render partial: 'resources/list-item', locals: { resource: r } %>
+        <% end %>
+      <% else %>
+        <div class="list-group-item text-center">
+          <span class="none-text inline-block">
+            No resources of this type yet
+          </span>
         </div>
-      <%- end -%>
-    <% else %>
-      <li class="list-group-item text-center">
-        <span class="none-text mt-2 inline-block">
-          No resources yet
-        </span>
-
-        <br />
-        <br />
-
-        <%=
-          link_to 'Provision a new set of resources',
-            provision_project_resources_path(@project),
-            method: :post,
-            class: 'btn btn-primary',
-            role: 'button'
-        %>
-      </li>
-    <% end %>
-  </div>
+      <% end %>
+    </div>
+  <% end %>
 </div>
