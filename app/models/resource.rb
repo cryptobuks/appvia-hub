@@ -6,8 +6,6 @@ class Resource < ApplicationRecord
 
   audited associated_with: :project
 
-  before_validation :build_name
-
   belongs_to :project,
     -> { readonly },
     inverse_of: :resources
@@ -40,15 +38,6 @@ class Resource < ApplicationRecord
 
   def descriptor
     "#{name} (#{classification})"
-  end
-
-  protected
-
-  def build_name
-    return if persisted? || name.blank? || project.blank?
-    return if name.starts_with?(project.friendly_id)
-
-    self.name = "#{project.friendly_id}_#{name}"
   end
 end
 

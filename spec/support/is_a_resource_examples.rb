@@ -63,6 +63,18 @@ module IsAResourceExamples
             expect(other_resource.errors[:name].first).to eq 'has already been taken'
           end
 
+          it 'does not allow the same name for resources, for the same integration, in different projects' do
+            other_resource = build(
+              factory,
+              name: name,
+              project: other_project,
+              integration: integration
+            )
+
+            expect(other_resource).not_to be_valid
+            expect(other_resource.errors[:name].first).to eq 'has already been taken'
+          end
+
           it 'allows different names for resources, for the same integration, in the same project' do
             other_resource = build(
               factory,
@@ -83,41 +95,6 @@ module IsAResourceExamples
             )
 
             expect(other_resource).to be_valid
-          end
-
-          it 'allows the same name for resources, for the same integration, in different projects' do
-            other_resource = build(
-              factory,
-              name: name,
-              project: other_project,
-              integration: integration
-            )
-
-            expect(other_resource).to be_valid
-          end
-        end
-
-        describe '#build_name' do
-          let(:project) { create :project, name: 'test-project' }
-
-          it 'prefixes the name with the project slug' do
-            resource = create(
-              factory,
-              name: 'foo',
-              project: project,
-              integration: integration
-            )
-            expect(resource.name).to eq "#{project.slug}_foo"
-          end
-
-          it 'can have the same value as the project slug' do
-            resource = create(
-              factory,
-              name: project.slug,
-              project: project,
-              integration: integration
-            )
-            expect(resource.name).to eq project.slug
           end
         end
       end
