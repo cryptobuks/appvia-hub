@@ -4,7 +4,7 @@ class GitHubAgent
     @app_private_key = OpenSSL::PKey::RSA.new(app_private_key.gsub('\n', "\n"))
     @app_installation_id = app_installation_id
     @org = org
-    @app_require_protection = app_require_protection.match?("true")
+    @app_require_protection = app_require_protection.match?('true')
 
     setup_client
   end
@@ -15,33 +15,31 @@ class GitHubAgent
         name,
         organization: @org,
         private: private,
-        auto_init: @app_require_protection,
+        auto_init: @app_require_protection
       )
     end
 
+    return unless @app_require_protection
+
     # https://github.community/t5/GitHub-API-Development-and/REST-API-v3-wildcard-branch-protection/td-p/14547
-    if @app_require_protection
-      full_name = "#{@org}/#{name}"
-      app_installation_client.protect_branch(full_name, "master", {
-        enforce_admins: true,
-        required_status_checks: {
-          contexts: [],
-          strict: true,
-        },
-        required_pull_request_reviews: {
-          dismiss_stale_reviews: true,
-          require_code_owner_reviews: true,
-        },
+    full_name = "#{@org}/#{name}"
+    app_installation_client.protect_branch(full_name, 'master',
+      enforce_admins: true,
+      required_status_checks: {
+        contexts: [],
+        strict: true
+      },
+      required_pull_request_reviews: {
+        dismiss_stale_reviews: true,
+        require_code_owner_reviews: true
       })
-    end
   end
 
   def delete_repository(full_name)
-    slug = full_name.split("/").last
+    slug = full_name.split('/').last
+    return unless app_installation_client.repository?(slug, organization: @org)
 
-    if app_installation_client.repository?(slug, organization: @org)
-     app_installation_client.delete_repository(full_name)
-    end
+    app_installation_client.delete_repository(full_name)
   end
 
   private
