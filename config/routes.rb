@@ -7,7 +7,10 @@ Rails.application.routes.draw do
 
   resources :projects, path: 'spaces' do
     resources :resources, only: %i[new create destroy] do
-      post :provision, on: :collection
+      collection do
+        get :bootstrap, action: :prepare_bootstrap
+        post :bootstrap
+      end
     end
   end
 

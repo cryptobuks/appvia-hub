@@ -2,7 +2,7 @@ class ResourcesController < ApplicationController
   before_action :find_project
 
   before_action :find_resource_type, only: %i[new create]
-  before_action :find_integrations, only: %i[new create]
+  before_action :find_integrations_for_resource_type, only: %i[new create]
 
   before_action :find_resource, only: [:destroy]
 
@@ -27,10 +27,19 @@ class ResourcesController < ApplicationController
     redirect_to @project, notice: 'Deletion of resource has been requested.'
   end
 
-  def provision
-    result = ProjectResourcesService.new(@project).bootstrap
+  def prepare_bootstrap
+    @prepare_results = ProjectResourcesBootstrapService.new(@project).prepare_bootstrap
 
-    notice = ('A new set of resources have been requested for this space' if result)
+    if @prepare_results.blank? # rubocop:disable Style/GuardClause
+      flash[:warning] = 'Can\'t bootstrap resources for the space - the space may already have some resources'
+      redirect_back fallback_location: root_path, allow_other_host: false
+    end
+  end
+
+  def bootstrap
+    result = ProjectResourcesBootstrapService.new(@project).bootstrap
+
+    notice = ('A default set of resources have been requested for this space' if result)
 
     redirect_to @project, notice: notice
   end
@@ -45,7 +54,7 @@ class ResourcesController < ApplicationController
     @resource_type = ResourceTypesService.get params.require(:type)
   end
 
-  def find_integrations
+  def find_integrations_for_resource_type
     @integrations = ResourceTypesService.integrations_for @resource_type[:id]
 
     if @integrations.empty? # rubocop:disable Style/GuardClause
