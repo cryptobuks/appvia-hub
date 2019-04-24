@@ -38,7 +38,7 @@
 <div class="tab-content border border-top-0">
   <div class="tab-pane active" id="resources" role="tabpanel" aria-labelledby="resources-tab">
     <% if @project.resources.count > 0 %>
-      <%= render partial: 'resources', locals: { project: @project } %>
+      <%= render partial: 'resources', locals: { project: @project, grouped_resources: @grouped_resources } %>
     <% else %>
       <div class="p-3 text-center">
         <span class="none-text mt-2 inline-block">

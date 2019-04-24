@@ -2,6 +2,7 @@
 @import './variables';
 
 @import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-select/sass/bootstrap-select';
 
 @import './theme/bootswatch';
 
@@ -38,7 +39,8 @@ label.required:after {
   @extend .alert-success;
 }
 
-.alert-alert {
+.alert-alert,
+.alert-error {
   @extend .alert-danger;
 }
 
