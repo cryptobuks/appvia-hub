@@ -20,10 +20,10 @@
         description: "The specific installation of your GitHub App within your GitHub organisation."
         type: string
     required:
-      - app_id
-      - app_installation_id
-      - app_private_key
       - org
+      - app_id
+      - app_private_key
+      - app_installation_id
 
 - id: quay
   name: Quay

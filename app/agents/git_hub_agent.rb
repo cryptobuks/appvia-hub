@@ -9,20 +9,17 @@ class GitHubAgent
   end
 
   def create_repository(name, private: false, best_practices: false)
-    unless app_installation_client.repository?(name, organization: @org)
-      app_installation_client.create_repository(
-        name,
-        organization: @org,
-        private: private,
-        auto_init: best_practices
-      )
-    end
+    resource = app_installation_client.create_repository(
+      name,
+      organization: @org,
+      private: private,
+      auto_init: best_practices
+    )
 
-    return unless best_practices
+    return resource unless best_practices
 
     # https://github.community/t5/GitHub-API-Development-and/REST-API-v3-wildcard-branch-protection/td-p/14547
-    full_name = "#{@org}/#{name}"
-    app_installation_client.protect_branch(full_name, 'master',
+    app_installation_client.protect_branch(resource.full_name, 'master',
       enforce_admins: true,
       required_status_checks: {
         contexts: [],
@@ -32,6 +29,8 @@ class GitHubAgent
         dismiss_stale_reviews: true,
         require_code_owner_reviews: true
       })
+
+    resource
   end
 
   def delete_repository(full_name)
