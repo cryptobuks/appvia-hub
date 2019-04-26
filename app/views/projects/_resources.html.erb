@@ -2,7 +2,7 @@
   <% grouped_resources.each do |group| %>
     <% resources = group[:resources] %>
 
-    <h4 class="m-0 p-3 bg-light">
+    <h2 class="h6 m-0 p-3">
       <% if group[:integrations].empty? %>
         <span class="float-right">
           <%=
@@ -13,13 +13,15 @@
           %>
         </span>
       <% else %>
-        <%= link_to 'New', new_project_resource_path(project, type: group[:id]), class: 'float-right btn btn-sm btn-primary' %>
+        <%= link_to 'New', new_project_resource_path(project, type: group[:id]), class: 'float-right btn btn-sm btn-primary mr-1' %>
       <% end %>
 
       <%= resource_icon group[:id] %>
-      <%= group[:name] %>
+      <strong>
+        <%= group[:name] %>
+      </strong>
       <span class="text-muted ml-2">(<%= resources.count -%>)</span>
-    </h4>
+    </h2>
 
     <div class="list-group list-group-flush">
       <% if resources.present? %>
