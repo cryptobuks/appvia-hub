@@ -1,25 +1,24 @@
 class GitHubAgent
-  def initialize(app_id:, app_private_key:, app_installation_id:, org:, app_require_protection:)
+  def initialize(app_id:, app_private_key:, app_installation_id:, org:)
     @app_id = app_id
     @app_private_key = OpenSSL::PKey::RSA.new(app_private_key.gsub('\n', "\n"))
     @app_installation_id = app_installation_id
     @org = org
-    @app_require_protection = app_require_protection.match?('true')
 
     setup_client
   end
 
-  def create_repository(name, private: false)
+  def create_repository(name, private: false, best_practices: false)
     unless app_installation_client.repository?(name, organization: @org)
       app_installation_client.create_repository(
         name,
         organization: @org,
         private: private,
-        auto_init: @app_require_protection
+        auto_init: best_practices
       )
     end
 
-    return unless @app_require_protection
+    return unless best_practices
 
     # https://github.community/t5/GitHub-API-Development-and/REST-API-v3-wildcard-branch-protection/td-p/14547
     full_name = "#{@org}/#{name}"

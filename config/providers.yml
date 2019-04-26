@@ -19,15 +19,10 @@
         title: Your GitHub App installation on your org
         description: "The specific installation of your GitHub App within your GitHub organisation."
         type: string
-      app_require_protection:
-        title: Enforce Branch Protection (Master Branch)
-        description: "Ensures protection against push-force, deletes and requires reviewes on master branch. (true|false)"
-        type: string
     required:
       - app_id
       - app_installation_id
       - app_private_key
-      - app_require_protection
       - org
 
 - id: quay

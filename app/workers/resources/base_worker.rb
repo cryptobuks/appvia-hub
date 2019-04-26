@@ -8,7 +8,6 @@ module Resources
           app_id: config['app_id'],
           app_private_key: config['app_private_key'],
           app_installation_id: config['app_installation_id'],
-          app_require_protection: config['app_require_protection'],
           org: config['org']
         )
       end,

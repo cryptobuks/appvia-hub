@@ -9,7 +9,6 @@ RSpec.describe 'Code Repos - GitHub' do
         'app_id' => 'foo_app',
         'app_private_key' => 'foo_private_key',
         'app_installation_id' => 'foo_installation',
-        'app_require_protection' => 'false',
         'org' => 'foo'
       }
     end
