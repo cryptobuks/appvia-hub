@@ -213,24 +213,56 @@ RSpec.describe 'Project resources', type: :request do
     end
   end
 
-  describe 'provision - POST /spaces/:project_id/resources/provision' do
+  describe 'prepare_bootstrap - GET /spaces/:project_id/resources/bootstrap' do
     it_behaves_like 'unauthenticated not allowed' do
       before do
-        post provision_project_resources_path(@project)
+        get bootstrap_project_resources_path(@project)
+      end
+    end
+
+    it_behaves_like 'authenticated' do
+      context 'when project already has resources' do
+        before do
+          integration = create_mocked_integration
+          create :code_repo, project: @project, integration: integration
+        end
+
+        it 'calls the ProjectResourcesBootstrapService as expected but redirects back to home' do
+          get bootstrap_project_resources_path(@project)
+          expect(response).to redirect_to(root_path)
+          expect(flash[:warning]).not_to be_empty
+        end
+      end
+
+      context 'when project has no resources' do
+        it 'calls the ProjectResourcesBootstrapService as expected and loads the page' do
+          get bootstrap_project_resources_path(@project)
+          expect(response).to be_successful
+          expect(response).to render_template(:prepare_bootstrap)
+          expect(assigns(:prepare_results)).to be_present
+        end
+      end
+    end
+  end
+
+  describe 'bootstrap - POST /spaces/:project_id/resources/bootstrap' do
+    it_behaves_like 'unauthenticated not allowed' do
+      before do
+        post bootstrap_project_resources_path(@project)
       end
     end
 
     it_behaves_like 'authenticated' do
       before do
-        project_bootstrap_service = instance_double('ProjectResourcesService')
-        expect(ProjectResourcesService).to receive(:new)
+        project_bootstrap_service = instance_double('ProjectResourcesBootstrapService')
+        expect(ProjectResourcesBootstrapService).to receive(:new)
           .with(@project)
           .and_return(project_bootstrap_service)
         expect(project_bootstrap_service).to receive(:bootstrap)
       end
 
-      it 'calls the ProjectResourcesService as expected and redirects to the project page' do
-        post provision_project_resources_path(@project)
+      it 'calls the ProjectResourcesBootstrapService as expected and redirects to the project page' do
+        post bootstrap_project_resources_path(@project)
         expect(response).to redirect_to(@project)
       end
     end

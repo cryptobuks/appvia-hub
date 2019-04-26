@@ -46,7 +46,9 @@ class ResourceTypesService
     def integrations_for(id)
       entry = get id
 
-      Integration.where(provider_id: entry[:providers]).entries
+      Integration
+        .where(provider_id: entry[:providers])
+        .order(:created_at)
     end
   end
 end
