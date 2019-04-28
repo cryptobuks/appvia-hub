@@ -1,0 +1,65 @@
+<h1>
+  Request default resources for
+  <%= @project.name %> space
+</h1>
+
+<div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th scope="col">Resource Type</th>
+        <th scope="col">Name</th>
+        <th scope="col">Integration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @prepare_results.each do |item| %>
+        <% has_integration = item[:resource][:integration].present? %>
+        <%= tag.tr class: ('text-black-50' unless has_integration) do %>
+          <td class="text-center">
+            <% if has_integration %>
+              <%= icon 'check-circle' %>
+            <% end %>
+          </td>
+          <td>
+            <%= item[:name].singularize %>
+          </td>
+          <td>
+            <% if has_integration %>
+              <%= item[:resource][:name] %>
+            <% else %>
+              -
+            <% end %>
+          </td>
+          <td>
+            <% if has_integration %>
+              <%= item[:resource][:integration].name %>
+            <% else %>
+              <span class="text-warning font-italic">
+                No integration available
+              </span>
+            <% end %>
+          </td>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div>
+    <%= link_to 'Back to space', project_path(@project), class: 'btn btn-secondary' %>
+
+    <%=
+      link_to 'Request these resources',
+        bootstrap_project_resources_path(@project),
+        remote: true,
+        method: :post,
+        class: 'btn btn-primary',
+        data: {
+          turbolinks: false,
+          'disable-with': 'Requesting...'
+        },
+        role: 'button'
+    %>
+  </div>
+</div>

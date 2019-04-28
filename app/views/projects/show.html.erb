@@ -38,26 +38,33 @@
 
 <div class="tab-content border border-top-0">
   <div class="tab-pane active" id="resources" role="tabpanel" aria-labelledby="resources-tab">
-    <% if @project.resources.count > 0 %>
-      <%= render partial: 'resources', locals: { project: @project, grouped_resources: @grouped_resources } %>
-    <% else %>
-      <div class="p-3 text-center">
-        <span class="none-text mt-2 inline-block">
-          No resources yet
-        </span>
+    <% if @project.resources.count.zero? %>
+      <div class="p-3 border-bottom">
+        <div class="card bg-light p-3 text-center">
+          <p class="lead">
+            This space has no resources at the moment.
+          </p>
 
-        <br />
-        <br />
-
-        <%=
-          link_to 'Provision a new set of resources',
-            provision_project_resources_path(@project),
-            method: :post,
-            class: 'btn btn-primary',
-            role: 'button'
-        %>
+          <% if Integration.count.zero? %>
+            <p class="text-warning">
+              No integrations currently available - before you can request resources, you will need some integrations. Speak to a hub admin about setting these up.
+            </p>
+          <% else %>
+            <p>
+              You can request a default set of resources using the button below, or request individual resources in the sections below, using the 'new' buttons.
+            </p>
+            <%=
+              link_to 'Request a default set of resources...',
+                bootstrap_project_resources_path(@project),
+                class: 'btn btn-primary',
+                role: 'button'
+            %>
+          <% end %>
+        </div>
       </div>
     <% end %>
+
+    <%= render partial: 'resources', locals: { project: @project, grouped_resources: @grouped_resources } %>
   </div>
   <div class="tab-pane" id="activity" role="tabpanel" aria-labelledby="activity-tab">
     <%= render partial: 'activity/stream', locals: { activity: @activity } %>

@@ -5,12 +5,12 @@
   </p>
   <% if current_user.admin? %>
     <p class="mb-4">
-      As an admin, you can set up some integrations so that users can provision resources within spaces.
+      As an admin, you can set up some integrations so that users can create and manage resources within spaces.
     </p>
     <%= link_to 'Set up integrations', admin_integrations_path, class: 'btn btn-lg btn-primary', role: 'button' %>
   <% else %>
     <p>
-      Please ask an admin to set up some integrations so you can provision resources within spaces.
+      Please ask an admin to set up some integrations so you can create and manage resources within spaces.
     </p>
   <% end %>
 </div>
