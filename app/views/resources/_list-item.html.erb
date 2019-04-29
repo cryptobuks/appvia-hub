@@ -32,29 +32,31 @@
       <%- when Resources::KubeNamespace -%>
       <%- end -%>
     </div>
+
     <% credentials = global_credentials_for resource %>
-      <% if credentials.present? %>
-        <% panel_id = "credentials-panel-#{resource.id}" %>
-          <%=
-            tag.a(
-              href: '#',
-              data: {
-                toggle: 'collapse',
-                target: "##{panel_id}"
-              },
-              aria: {
-                controls: panel_id
-              }
-            ) do
-          %>
-            Credentials
-          <% end %>
-          <%=
-            tag.div(
-              id: panel_id,
-              class: 'collapse'
-            ) do
-          %>
+    <% if credentials.present? %>
+      <% panel_id = "credentials-panel-#{resource.id}" %>
+      <%=
+        tag.a(
+          href: '#',
+          data: {
+            toggle: 'collapse',
+            target: "##{panel_id}"
+          },
+          aria: {
+            controls: panel_id
+          }
+        ) do
+      %>
+        Credentials
+      <% end %>
+
+      <%=
+        tag.div(
+          id: panel_id,
+          class: 'collapse'
+        ) do
+      %>
         <dl class="mt-2 card p-3 bg-light overflow-auto">
           <% credentials.each do |(k, v)| %>
             <dt><%= k -%></dt>
