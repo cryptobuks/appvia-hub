@@ -12,7 +12,7 @@
   <%= @project.name %>
 </h1>
 
-<div class="mb-2">
+<div class="mb-4">
   <span class="badge badge-info text-monospace mr-2">
     <%= @project.slug %>
   </span>
@@ -22,7 +22,7 @@
 </div>
 
 <% if @project.description.present? %>
-  <div class="lead">
+  <div class="lead mb-4">
     <%= simple_format @project.description %>
   </div>
 <% end %>
@@ -53,12 +53,14 @@
             <p>
               You can request a default set of resources using the button below, or request individual resources in the sections below, using the 'new' buttons.
             </p>
-            <%=
-              link_to 'Request a default set of resources...',
-                bootstrap_project_resources_path(@project),
-                class: 'btn btn-primary',
-                role: 'button'
-            %>
+            <div>
+              <%=
+                link_to 'Request a default set of resources...',
+                  bootstrap_project_resources_path(@project),
+                  class: 'btn btn-primary',
+                  role: 'button'
+              %>
+            </div>
           <% end %>
         </div>
       </div>
