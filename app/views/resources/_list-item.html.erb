@@ -1,26 +1,37 @@
 <div class="list-group-item">
-  <%= tag.span(resource.status, class: "badge badge-#{resource_status_class(resource.status)} float-right ml-3") %>
-
-  <h5 class="text-primary">
-    <%= resource.name %>
-
-    <small class="text-muted ml-2">
-      on <%= resource.integration.name %>
-    </small>
-  </h5>
-
   <% unless resource.pending? %>
-    <p>
+    <div class="btn-group float-right" role="group" aria-label="Resource actions">
+      <button id="resource<%= resource.id -%>ActionsGroupDropdown" type="button" class="btn btn-sm btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Actions
+      </button>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="resource<%= resource.id -%>ActionsGroupDropdown">
+        <%= delete_resource_link resource.project_id, resource, css_class: 'dropdown-item' %>
+      </div>
+    </div>
+  <%- end -%>
+  <h3 class="h6">
+    <%= resource.name %>
+    <span class="text-muted">
+      on <%= resource.integration.name %>
+    </span>
+    <%= tag.span(resource.status, class: "badge badge-#{resource_status_class(resource.status)} text-capitalize ml-2") %>
+  </h3>
+  <% unless resource.pending? %>
+    <div class="mb-2">
       <%- case resource -%>
       <%- when Resources::CodeRepo -%>
-        <%= resource.private ? 'Private' : 'Public' %><br />
         <%= link_to resource.full_name, resource.url, target: '_blank' %>
+        <span class="badge badge-secondary ml-2">
+          <%= resource.private ? 'Private' : 'Public' %>
+        </span>
       <%- when Resources::DockerRepo -%>
-        <%= resource.visibility.try(:capitalize) %><br />
         <%= resource.base_uri %>
+        <span class="badge badge-secondary ml-2">
+          <%= resource.visibility.try(:capitalize) %>
+        </span>
       <%- when Resources::KubeNamespace -%>
       <%- end -%>
-    </p>
+    </div>
 
     <% credentials = global_credentials_for resource %>
     <% if credentials.present? %>
@@ -43,10 +54,10 @@
       <%=
         tag.div(
           id: panel_id,
-          class: 'card-body collapse'
+          class: 'collapse'
         ) do
       %>
-        <dl class="mb-0 overflow-auto">
+        <dl class="mt-2 card p-3 bg-light overflow-auto">
           <% credentials.each do |(k, v)| %>
             <dt><%= k -%></dt>
             <dd class="text-wrap text-break"><%= v -%></dd>
@@ -54,16 +65,5 @@
         </dl>
       <% end %>
     <% end %>
-
-    <div>
-      <div class="btn-group float-right" role="group" aria-label="Resource actions">
-        <button id="resource<%= resource.id -%>ActionsGroupDropdown" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Actions
-        </button>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="resource<%= resource.id -%>ActionsGroupDropdown">
-          <%= delete_resource_link resource.project_id, resource, css_class: 'dropdown-item' %>
-        </div>
-      </div>
-    </div>
   <% end %>
 </div>
