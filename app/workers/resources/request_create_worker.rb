@@ -3,7 +3,8 @@ module Resources
     HANDLERS = {
       'Resources::CodeRepo' => {
         'git_hub' => lambda do |resource, agent|
-          result = agent.create_repository resource.name
+          enforce_best_practices = resource.integration.config['enforce_best_practices']
+          result = agent.create_repository resource.name, best_practices: enforce_best_practices
           resource.private = result.private
           resource.full_name = result.full_name
           resource.url = result.html_url

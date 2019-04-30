@@ -1,5 +1,3 @@
-<% config_spec = integration.provider['config_spec'] %>
-
 <%=
   bootstrap_form_with(
     model: [:admin, integration],
@@ -21,19 +19,8 @@
       Config
     </div>
     <div class="card-body">
-      <%= form.fields_for :config do |config| %>
-        <% config_spec['properties'].each do |(name, property_spec)| %>
-          <%# For now we just assume `string` fields %>
-          <%=
-            config.text_field name,
-              value: integration.config[name],
-              required: config_spec['required'].include?(name),
-              label: label_with_tooltip(
-                config_field_title(name, property_spec),
-                icon_with_tooltip(property_spec['description'])
-              )
-          %>
-        <% end %>
+      <%= form.fields_for :config do |config_form| %>
+        <%= render partial: 'application/forms/json_schema_fields', locals: { form: config_form, object: integration, spec: integration.provider['config_spec'] } %>
       <% end %>
     </div>
   </div>
