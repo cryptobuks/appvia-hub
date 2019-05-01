@@ -11,7 +11,7 @@
   <%- end -%>
   <h3 class="h6">
     <%= resource.name %>
-    <span class="text-muted">
+    <span class="text-muted ml-1">
       on <%= resource.integration.name %>
     </span>
     <%= tag.span(resource.status, class: "badge badge-#{resource_status_class(resource.status)} text-capitalize ml-2") %>
@@ -20,15 +20,19 @@
     <div class="mb-2">
       <%- case resource -%>
       <%- when Resources::CodeRepo -%>
-        <%= link_to resource.full_name, resource.url, target: '_blank' %>
-        <span class="badge badge-secondary ml-2">
+        <span class="badge badge-secondary mr-1">
           <%= resource.private ? 'Private' : 'Public' %>
         </span>
+        <% if resource.full_name.present? %>
+          <%= link_to resource.full_name, resource.url, target: '_blank' %>
+        <% end %>
       <%- when Resources::DockerRepo -%>
-        <%= resource.base_uri %>
-        <span class="badge badge-secondary ml-2">
+        <span class="badge badge-secondary mr-1">
           <%= resource.visibility.try(:capitalize) %>
         </span>
+        <% if resource.base_uri.present? %>
+          <%= resource.base_uri %>
+        <% end %>
       <%- when Resources::KubeNamespace -%>
       <%- end -%>
     </div>
