@@ -3,7 +3,7 @@ module Resources
     HANDLERS = {
       'Resources::CodeRepo' => {
         'git_hub' => lambda do |resource, agent|
-          agent.delete_repository(resource.full_name)
+          agent.delete_repository(resource.full_name) if resource.full_name.present?
           true
         end
       },
