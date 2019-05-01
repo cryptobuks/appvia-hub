@@ -1,6 +1,6 @@
 module MockedIntegrationHelper
   RSpec.shared_context 'mocked integration helper' do
-    let(:config_schema) { instance_double(JsonSchema::Schema) }
+    let(:config_schema) { instance_double(JsonSchema::Schema, properties: {}) }
 
     def mock_provider_config_schema(provider_id)
       allow(PROVIDERS_REGISTRY).to receive(:config_schemas)

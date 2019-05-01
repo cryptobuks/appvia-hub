@@ -19,6 +19,10 @@
         title: Your GitHub App installation on your org
         description: "The specific installation of your GitHub App within your GitHub organisation."
         type: string
+      enforce_best_practices:
+        title: Enforce best practices
+        description: "If enabled, all repositories created will have their master branches protected for all users (including admins) with: require pull request reviews before merging and require branches to be up to date before merging."
+        type: boolean
     required:
       - org
       - app_id

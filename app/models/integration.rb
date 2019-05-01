@@ -8,6 +8,8 @@ class Integration < ApplicationRecord
     key: Rails.application.secrets.secret_key_base,
     salt: Rails.application.secrets.secret_salt
 
+  before_validation :process_config
+
   has_many :resources,
     dependent: :restrict_with_exception,
     inverse_of: :integration
@@ -47,12 +49,24 @@ class Integration < ApplicationRecord
 
   private
 
-  def validate_config_matches_schema
+  def with_config_schema
     return if provider_id.blank?
 
-    PROVIDERS_REGISTRY
-      .config_schemas[provider_id]
-      .validate!(config)
+    yield PROVIDERS_REGISTRY.config_schemas[provider_id]
+  end
+
+  def process_config
+    return if config.blank?
+
+    with_config_schema do |schema|
+      self.config = JsonSchemaHelpers.ensure_booleans(config, schema)
+    end
+  end
+
+  def validate_config_matches_schema
+    with_config_schema do |schema|
+      schema.validate! config
+    end
   rescue JsonSchema::AggregateError => e
     errors.add :config, e.to_s
   end

@@ -70,6 +70,35 @@ RSpec.describe Integration, type: :model do
       # end
     end
 
+    context '#process_config' do
+      let(:provider_id) { Integration.provider_ids.keys.first }
+
+      let :schema do
+        JsonSchema.parse!(
+          'properties' => {
+            'foo' => { 'type' => 'boolean' }
+          }
+        )
+      end
+
+      let :initial_config do
+        { 'foo' => '1' }
+      end
+
+      before do
+        expect(PROVIDERS_REGISTRY).to receive(:config_schemas)
+          .and_return(provider_id => schema)
+      end
+
+      subject do
+        create_mocked_integration provider_id: provider_id, config: initial_config
+      end
+
+      it 'ensures that boolean fields are stored in the correct format' do
+        expect(subject.config['foo']).to be true
+      end
+    end
+
     context 'JSON Schema validation' do
       let(:provider_id) { Integration.provider_ids.keys.first }
 

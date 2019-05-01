@@ -10,15 +10,15 @@
       <%= pluralize integration.resources.count, 'resource' %>
     </p>
 
-    <dl class="row mb-0">
-      <% config_spec['properties'].each do |(name, property_spec)| %>
-        <dt class="col-md-3">
+    <% config_spec['properties'].each do |(name, property_spec)| %>
+      <dl>
+        <dt>
           <%= config_field_title name, property_spec %>
           <%= icon_with_tooltip property_spec['description'] %>
         </dt>
-        <dd class="col-md-9">
+        <dd>
           <% value = integration.config[name] %>
-          <% if value.blank? %>
+          <% if value.nil? || value == '' %>
             <span class="none-text">
               not set
             </span>
@@ -33,8 +33,8 @@
             <% end %>
           <% end %>
         </dd>
-      <% end %>
-    </dl>
+      </dl>
+    <% end %>
   </div>
   <div class="card-footer">
     <%= link_to 'Edit', edit_admin_integration_path(integration), class: 'btn btn-primary' %>

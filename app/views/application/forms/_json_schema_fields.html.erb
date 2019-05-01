@@ -1,0 +1,27 @@
+<% spec['properties'].each do |(name, property_spec)| %>
+  <%- case property_spec['type'] -%>
+  <%- when 'boolean' -%>
+    <%= form.form_group name do %>
+      <%=
+        form.check_box name,
+          value: object.config[name],
+          checked: object.config[name],
+          label: label_with_tooltip(
+            config_field_title(name, property_spec),
+            icon_with_tooltip(property_spec['description'])
+          ),
+          custom: :checkbox
+      %>
+    <% end %>
+  <%- else -%>
+    <%=
+      form.text_field name,
+        value: object.config[name],
+        required: spec['required'].include?(name),
+        label: label_with_tooltip(
+          config_field_title(name, property_spec),
+          icon_with_tooltip(property_spec['description'])
+        )
+    %>
+  <%- end -%>
+<% end %>
