@@ -57,3 +57,8 @@ label.required:after {
   @extend .font-italic;
   @extend .text-muted;
 }
+
+.indented {
+  padding-left: 0.75em;
+  border-left: 2px solid rgba($gray-600, 0.3);
+}

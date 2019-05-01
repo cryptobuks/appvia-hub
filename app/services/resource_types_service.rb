@@ -17,19 +17,29 @@ class ResourceTypesService
           id: 'CodeRepo',
           class: 'Resources::CodeRepo',
           name: 'Code Repositories',
+          top_level: true,
           providers: %w[git_hub].freeze
         },
         {
           id: 'DockerRepo',
           class: 'Resources::DockerRepo',
           name: 'Docker Repositories',
+          top_level: true,
           providers: %w[ecr quay].freeze
         },
         {
           id: 'KubeNamespace',
           class: 'Resources::KubeNamespace',
           name: 'Kubernetes Namespaces',
+          top_level: true,
           providers: %w[kubernetes].freeze
+        },
+        {
+          id: 'MonitoringDashboard',
+          class: 'Resources::MonitoringDashboard',
+          name: 'Monitoring Dashboards',
+          top_level: false,
+          providers: %w[grafana].freeze
         }
       ].map(&:freeze).freeze
     end

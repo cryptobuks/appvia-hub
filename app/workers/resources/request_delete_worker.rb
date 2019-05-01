@@ -22,6 +22,12 @@ module Resources
           agent.delete_namespace(resource.name)
           true
         end
+      },
+      'Resources::MonitoringDashboard' => {
+        'grafana' => lambda do |resource, agent|
+          agent.delete_dashboard_dashboard resource.name
+          true
+        end
       }
     }.freeze
 
@@ -30,6 +36,12 @@ module Resources
     end
 
     def finalise(resource)
+      resource_provisioning_service = ResourceProvisioningService.new
+
+      resource.children.each do |r|
+        resource_provisioning_service.request_delete r
+      end
+
       resource.destroy!
     end
   end

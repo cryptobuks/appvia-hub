@@ -7,10 +7,13 @@ class ProjectsController < ApplicationController
 
   def show
     @grouped_resources = ResourceTypesService.all.map do |rt|
+      next nil unless rt[:top_level]
+
       integrations = ResourceTypesService.integrations_for rt[:id]
       resources = @project.send rt[:id].tableize
       rt.merge integrations: integrations, resources: resources
-    end
+    end.compact
+
     @activity = ActivityService.new.for_project @project
   end
 

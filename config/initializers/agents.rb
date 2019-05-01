@@ -2,6 +2,7 @@ agents_config = %i[
   ecr
   quay
   kubernetes
+  grafana
 ].each_with_object(ActiveSupport::OrderedOptions.new) do |a, h|
   h.send(
     "#{a}=",

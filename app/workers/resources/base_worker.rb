@@ -41,6 +41,15 @@ module Resources
           kube_token: config['token'],
           global_service_account_name: config['global_service_account_name']
         )
+      end,
+      'grafana' => lambda do |config|
+        GrafanaAgent.new(
+          agent_base_url: Rails.configuration.agents.grafana.base_url,
+          agent_token: Rails.configuration.agents.grafana.token,
+          grafana_url: config['url'],
+          grafana_api_key: config['api_key'],
+          grafana_ca_cert: config['ca_cert']
+        )
       end
     }.freeze
 

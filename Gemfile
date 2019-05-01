@@ -25,6 +25,7 @@ gem 'octokit', '~> 4.13'
 gem 'faraday', '~> 0.15.4'
 gem 'faraday_middleware', '~> 0.13.1'
 gem 'typhoeus', '~> 1.3', '>= 1.3.1'
+gem 'closure_tree', '~> 7.0'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
