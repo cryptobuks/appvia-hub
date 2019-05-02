@@ -47,6 +47,11 @@ module ResourcesHelper
           'Robot name' => config['global_robot_name'],
           'Robot token' => config['global_robot_token']
         }
+      when 'ecr'
+        {
+          'Robot name' => config['global_robot_name'],
+          'Robot token' => config['global_robot_token']
+        }
       end
     when Resources::KubeNamespace
       case resource.integration.provider_id

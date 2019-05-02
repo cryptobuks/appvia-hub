@@ -29,6 +29,49 @@
       - app_private_key
       - app_installation_id
 
+- id: ecr
+  name: ECR
+  config_spec:
+    properties:
+      account:
+        title: AWS Account ID
+        description: The AWS Account ID the ECR registry is running within
+        type: string
+      access_id:
+        title: AWS Access ID
+        description: The access id element of the credentials for provision ECR
+        type: string
+      access_token:
+        title: AWS Access Secret
+        description: The secret key element of the credentials used for speak to ECR api
+        type: string
+        masked: true
+      region:
+        title: AWS Region
+        description: The AWS region the ECR registry exists within i.e. eu-west-2
+        type: string
+      global_robot_name:
+        title: Global Robot Username
+        description: The IAM ARN of the user being used as the robot entity i.e arn:aws:iam::ACCOUNT_NO:user/USERNAME
+        type: string
+      global_robot_token:
+        title: Global Robot Token
+        description: The IAM ARN of the user being used as the robot entity i.e arn:aws:iam::ACCOUNT_NO:user/USERNAME
+        type: string
+        masked: true
+      org:
+        title: Your organisation
+        description: The organisation to manage repos for. This will be used as the namespace for all Docker repos created.
+        type: string
+    required:
+      - access_id
+      - access_token
+      - account
+      - global_robot_name
+      - global_robot_token
+      - org
+      - region
+
 - id: quay
   name: Quay
   config_spec:
