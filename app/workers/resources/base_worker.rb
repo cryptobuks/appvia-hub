@@ -20,7 +20,7 @@ module Resources
           account: config['account'],
           global_robot_name: config['global_robot_name'],
           region: config['region'],
-          org: config['org'],
+          org: config['org']
         )
       end,
       'quay' => lambda do |config|
