@@ -12,18 +12,18 @@ module Resources
         end
       },
       'Resources::DockerRepo' => {
-        'quay' => lambda { |resource, agent|
+        'quay' => lambda do |resource, agent|
           result = agent.create_repository resource.name
           resource.visibility = result.spec.visibility
           resource.base_uri = result.spec.url
           true
-        },
-        'ecr' => lambda { |resource, agent|
+        end,
+        'ecr' => lambda do |resource, agent|
           result = agent.create_repository resource.name
           resource.visibility = result.spec.visibility
           resource.base_uri = result.spec.url
           true
-        }
+        end
       },
       'Resources::KubeNamespace' => {
         'kubernetes' => lambda do |resource, agent|

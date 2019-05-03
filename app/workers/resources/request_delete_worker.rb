@@ -8,14 +8,14 @@ module Resources
         end
       },
       'Resources::DockerRepo' => {
-        'quay' => lambda { |resource, agent|
+        'quay' => lambda do |resource, agent|
           agent.delete_repository(resource.name)
           true
-        },
-        'ecr' => lambda { |resource, agent|
+        end,
+        'ecr' => lambda do |resource, agent|
           agent.delete_repository(resource.name)
           true
-        }
+        end
       },
       'Resources::KubeNamespace' => {
         'kubernetes' => lambda do |resource, agent|
