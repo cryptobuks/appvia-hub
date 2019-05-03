@@ -1,22 +1,22 @@
 class ECRAgent
   include AgentHttpClient
 
-  def initialize(agent_base_url:, agent_token:, account:, access_id:, access_token:, region:, global_robot_name:, org:)
+  def initialize(agent_base_url:, agent_token:, org:, account:, access_id:, access_token:, region:, global_robot_name:)
     @agent_base_url = agent_base_url
     @agent_token = agent_token
 
+    @org = org
+    @account = account
     @access_id = access_id
     @access_token = access_token
-    @account = account
-    @global_robot_name = global_robot_name
-    @organization = org
     @region = region
+    @global_robot_name = global_robot_name
   end
 
   def create_repository(name, visibility: 'private')
     path = repo_path name
     body = {
-      namespace: @organization,
+      namespace: @org,
       name: name,
       spec: {
         robots: [
@@ -53,6 +53,6 @@ class ECRAgent
   end
 
   def repo_path(name)
-    "registry/#{@organization}/#{name}"
+    "registry/#{@org}/#{name}"
   end
 end

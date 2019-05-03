@@ -73,10 +73,10 @@
       - account
       - access_id
       - access_token
-      - global_robot_access_id
-      - global_robot_name
-      - global_robot_token
       - region
+      - global_robot_name
+      - global_robot_access_id
+      - global_robot_token
 
 - id: quay
   name: Quay
