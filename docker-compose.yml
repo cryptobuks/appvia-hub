@@ -75,5 +75,15 @@ services:
     ports:
       - 10002:10002
 
+  ecr_agent:
+    image: quay.io/appvia/hub-ecr-agent:v0.0.1
+    environment:
+      - DEBUG=true
+      - HTTP_PORT=10003
+      - LISTEN=0.0.0.0
+      - AUTH_TOKEN=secret-ecr-agent-token
+    ports:
+      - 10003:10003
+
 volumes:
   pgdata:

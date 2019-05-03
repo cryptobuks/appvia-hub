@@ -11,6 +11,18 @@ module Resources
           org: config['org']
         )
       end,
+      'ecr' => lambda do |config|
+        ECRAgent.new(
+          agent_base_url: Rails.configuration.agents.ecr.base_url,
+          agent_token: Rails.configuration.agents.ecr.token,
+          org: config['org'],
+          access_id: config['access_id'],
+          access_token: config['access_token'],
+          region: config['region'],
+          account: config['account'],
+          global_robot_name: config['global_robot_name']
+        )
+      end,
       'quay' => lambda do |config|
         QuayAgent.new(
           agent_base_url: Rails.configuration.agents.quay.base_url,

@@ -1,14 +1,18 @@
 require 'rails_helper'
 
-RSpec.describe 'Docker Repos – Quay' do
+RSpec.describe 'Docker Repos – ECR' do
   include_examples 'resource integration specs' do
-    let(:provider_id) { 'quay' }
+    let(:provider_id) { 'ecr' }
 
     let :integration_config do
       {
-        'api_access_token' => 'quay API token',
-        'org' => 'foo',
+        'org' => 'my_org',
+        'account' => 'AWS account ID',
+        'access_id' => 'access ID',
+        'access_token' => 'access token',
+        'region' => 'AWS region',
         'global_robot_name' => 'global robot name',
+        'global_robot_access_id' => 'global robot name',
         'global_robot_token' => 'global robot token'
       }
     end
@@ -17,13 +21,16 @@ RSpec.describe 'Docker Repos – Quay' do
       create :docker_repo, integration: integration
     end
 
-    let(:agent_class) { QuayAgent }
+    let(:agent_class) { ECRAgent }
     let :agent_initializer_params do
       {
-        agent_base_url: Rails.configuration.agents.quay.base_url,
-        agent_token: Rails.configuration.agents.quay.token,
-        quay_access_token: integration_config['api_access_token'],
+        agent_base_url: Rails.configuration.agents.ecr.base_url,
+        agent_token: Rails.configuration.agents.ecr.token,
         org: integration_config['org'],
+        account: integration_config['account'],
+        access_id: integration_config['access_id'],
+        access_token: integration_config['access_token'],
+        region: integration_config['region'],
         global_robot_name: integration_config['global_robot_name']
       }
     end
@@ -32,7 +39,7 @@ RSpec.describe 'Docker Repos – Quay' do
       double(
         spec: double(
           visibility: 'private',
-          url: "quay.io/foo/#{resource.name}"
+          url: "http://foo.bar/#{resource.name}"
         )
       )
     end

@@ -17,6 +17,12 @@ module Resources
           resource.visibility = result.spec.visibility
           resource.base_uri = result.spec.url
           true
+        end,
+        'ecr' => lambda do |resource, agent|
+          result = agent.create_repository resource.name
+          resource.visibility = result.spec.visibility
+          resource.base_uri = result.spec.url
+          true
         end
       },
       'Resources::KubeNamespace' => {

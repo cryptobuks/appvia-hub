@@ -11,6 +11,10 @@ module Resources
         'quay' => lambda do |resource, agent|
           agent.delete_repository(resource.name)
           true
+        end,
+        'ecr' => lambda do |resource, agent|
+          agent.delete_repository(resource.name)
+          true
         end
       },
       'Resources::KubeNamespace' => {

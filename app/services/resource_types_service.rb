@@ -23,7 +23,7 @@ class ResourceTypesService
           id: 'DockerRepo',
           class: 'Resources::DockerRepo',
           name: 'Docker Repositories',
-          providers: %w[quay].freeze
+          providers: %w[ecr quay].freeze
         },
         {
           id: 'KubeNamespace',

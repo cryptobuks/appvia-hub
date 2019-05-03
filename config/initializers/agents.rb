@@ -1,4 +1,5 @@
 agents_config = %i[
+  ecr
   quay
   kubernetes
 ].each_with_object(ActiveSupport::OrderedOptions.new) do |a, h|
