@@ -9,8 +9,8 @@ class ECRAgent
     @access_token = access_token
     @account = account
     @global_robot_name = global_robot_name
-    @region = region
     @organization = org
+    @region = region
   end
 
   def create_repository(name, visibility: 'private')

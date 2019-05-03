@@ -49,8 +49,9 @@ module ResourcesHelper
         }
       when 'ecr'
         {
-          'Robot name' => config['global_robot_name'],
-          'Robot token' => config['global_robot_token']
+          'Robot Username' => config['global_robot_name'],
+          'Robot Access ID' => config['global_robot_access_id'],
+          'Robot Secret' => config['global_robot_token']
         }
       end
     when Resources::KubeNamespace

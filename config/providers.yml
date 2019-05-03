@@ -44,7 +44,7 @@
         description: The AWS Account ID the ECR registry is running within.
         type: string
       access_id:
-        title: AWS Access ID
+        title: AWS Access ID Credential
         description: The access ID element of the credentials used to speak to the ECR API.
         type: string
       access_token:
@@ -59,18 +59,21 @@
         title: Global Robot Username
         description: The IAM ARN of the user being used as the robot entity i.e arn:aws:iam::ACCOUNT_NO:user/USERNAME
         type: string
+      global_robot_access_id:
+        title: Global Robot Access ID
+        description: The IAM access id credential for global robot user
+        type: string
       global_robot_token:
         title: Global Robot Token
         description: The IAM secret key credential for the global robot user.
         type: string
         masked: true
-
     required:
       - org
       - account
       - access_id
       - access_token
-      - region
+      - global_robot_access_id
       - global_robot_name
       - global_robot_token
 
