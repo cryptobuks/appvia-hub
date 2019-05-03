@@ -33,22 +33,27 @@
   name: ECR
   config_spec:
     properties:
+      org:
+        title: Your organisation name
+        description: The organisation to manage repos for. This will be used as the namespace for all Docker repos created.
+        type: string
+        pattern: "^[a-z]+[a-z0-9\\-_]*$"
+        pattern_text: MUST start with a letter and can only contain lowercase letters, numbers, hyphens and underscores.
       account:
         title: AWS Account ID
-        description: The AWS Account ID the ECR registry is running within
+        description: The AWS Account ID the ECR registry is running within.
         type: string
       access_id:
         title: AWS Access ID
-        description: The access id element of the credentials for provision ECR
+        description: The access ID element of the credentials used to speak to the ECR API.
         type: string
       access_token:
         title: AWS Access Secret
-        description: The secret key element of the credentials used for speak to ECR api
-        type: string
+        description: The secret key element of the credentials used to speak to the ECR API.
         masked: true
       region:
         title: AWS Region
-        description: The AWS region the ECR registry exists within i.e. eu-west-2
+        description: The AWS region the ECR registry exists within. E.g. eu-west-2
         type: string
       global_robot_name:
         title: Global Robot Username
@@ -56,21 +61,18 @@
         type: string
       global_robot_token:
         title: Global Robot Token
-        description: The IAM ARN of the user being used as the robot entity i.e arn:aws:iam::ACCOUNT_NO:user/USERNAME
+        description: The IAM secret key credential for the global robot user.
         type: string
         masked: true
-      org:
-        title: Your organisation
-        description: The organisation to manage repos for. This will be used as the namespace for all Docker repos created.
-        type: string
+
     required:
+      - org
+      - account
       - access_id
       - access_token
-      - account
+      - region
       - global_robot_name
       - global_robot_token
-      - org
-      - region
 
 - id: quay
   name: Quay
