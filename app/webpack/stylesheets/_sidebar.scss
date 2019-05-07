@@ -33,25 +33,25 @@
   }
 
   .nav-link {
-      padding: 0.2rem 2rem;
-      @extend .pl-3;
-      font-weight: 500;
-      color: $blue;
+    padding: 0.2rem 2rem;
+    @extend .pl-3;
+    font-weight: 500;
+    color: $blue;
 
-      &:hover, &:hover i{
-          color: darken($blue, 15%);
-      }
-      &:hover{
-          text-decoration: underline;
-      }
-      &.active {
+    &:hover, &:hover i{
+      color: darken($blue, 15%);
+    }
+    &:hover{
+      text-decoration: underline;
+    }
+    &.active {
+      color: $mustard;
+      .fas,
+      .fab {
         color: $mustard;
-            .fas,
-            .fab {
-              color: $mustard;
-            }
       }
     }
+  }
 
   .fas,
   .fab {
