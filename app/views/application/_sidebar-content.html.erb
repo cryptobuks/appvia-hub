@@ -1,29 +1,29 @@
-<ul class="nav flex-column mt-1">
-  <%= nav_item 'Home', root_path, icon_name: 'home' %>
-</ul>
+<h6 class="sidebar-heading pt-2">
+  <%= nav_item 'Home', root_path %>
+</h6>
 
-<hr class="mt-2" />
+<hr />
 
 <h6 class="sidebar-heading">
-  <%= link_to 'New space', new_project_path, class: 'btn btn-sm btn-primary float-right' %>
-  <%= link_to 'Spaces', projects_path %>
+  <%= link_to 'New space', new_project_path, class: 'btn btn-sm btn-primary float-right mr-3' %>
+  <%= nav_item 'Spaces', projects_path %>
 </h6>
 <ul class="nav flex-column mb-3">
   <% Project.order(:name).each do |project| %>
-    <%= nav_item project.name, project_path(project), icon_name: 'cube' %>
+    <%= nav_list_item project.name, project_path(project), icon_name: 'cube' %>
   <% end %>
 </ul>
 
 <hr />
 
 <h6 class="sidebar-heading">
-  <%= link_to 'Users', users_path %>
+  <%= nav_item 'Users', users_path %>
 </h6>
 
 <% if current_user.admin? %>
   <hr />
 
   <h6 class="sidebar-heading">
-    <%= link_to 'Admin', admin_integrations_path %>
+    <%= nav_item 'Admin', admin_integrations_path %>
   </h6>
 <% end %>
