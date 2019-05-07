@@ -10,8 +10,10 @@
     </div>
   <%- end -%>
   <h3 class="h6">
-    <%= resource.name %>
-    <span class="text-accent ml-1">
+    <span class="text-accent">
+      <%= resource.name %>
+    </span>
+    <span class="ml-1">
       on <%= resource.integration.name %>
     </span>
     <%= tag.span(resource.status, class: "badge badge-#{resource_status_class(resource.status)} text-capitalize ml-2") %>
