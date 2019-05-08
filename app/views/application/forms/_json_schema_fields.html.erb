@@ -8,7 +8,7 @@
           checked: object.config[name],
           label: label_with_tooltip(
             config_field_title(name, property_spec),
-            icon_with_tooltip(property_spec['description'])
+            property_spec['description']
           ),
           custom: :checkbox
       %>
@@ -20,7 +20,7 @@
         required: spec['required'].include?(name),
         label: label_with_tooltip(
           config_field_title(name, property_spec),
-          icon_with_tooltip(property_spec['description'])
+          property_spec['description']
         ),
         pattern: property_spec['pattern'],
         help: property_spec['pattern_text']
