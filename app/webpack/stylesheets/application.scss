@@ -76,3 +76,11 @@ label.required:after {
   padding-left: 0.75em;
   border-left: 2px solid rgba($gray-600, 0.3);
 }
+
+.bg-gradient-primary {
+  background: $blue-2; /* Old browsers */
+  background: -moz-linear-gradient(top, $blue 0%, $blue-2 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, $blue 0%,$blue-2 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, $blue 0%,$blue-2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#{$blue}", endColorstr="#{$blue-2}",GradientType=0 ); /* IE6-9 */
+}

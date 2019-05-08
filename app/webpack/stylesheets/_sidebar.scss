@@ -32,26 +32,26 @@
     padding: 0.2rem 2rem;
     @extend .pl-3;
     font-weight: 500;
-    color: $blue;
+    color: $blue-2;
 
     &:hover, &:hover i{
-      color: darken($blue, 15%);
+      color: darken($blue-2, 15%);
     }
     &:hover{
       text-decoration: underline;
     }
     &.active {
-      color: $mustard;
+      color: $primary;
       .fas,
       .fab {
-        color: $mustard;
+        color: $primary;
       }
     }
   }
 
   .fas,
   .fab {
-    color: $blue;
+    color: $blue-2;
     margin-right: 0.3em;
   }
 }
@@ -61,7 +61,4 @@
     position: -webkit-sticky;
     position: sticky;
   }
-}
-.text-accent{
-  color: $mustard;
 }
