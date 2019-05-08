@@ -28,6 +28,17 @@ module Resources
       'Resources::KubeNamespace' => {
         'kubernetes' => lambda do |resource, agent|
           agent.create_namespace resource.name
+
+          ResourceProvisioningService.new.request_dependent_create resource, 'MonitoringDashboard'
+
+          true
+        end
+      },
+      'Resources::MonitoringDashboard' => {
+        'grafana' => lambda do |resource, agent|
+          template_url = resource.integration.config['template_url']
+          result = agent.create_dashboard resource.name, template_url: template_url
+          resource.url = result.url
           true
         end
       }

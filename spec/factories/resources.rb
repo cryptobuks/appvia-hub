@@ -14,5 +14,11 @@ FactoryBot.define do
 
     factory :kube_namespace, class: 'Resources::KubeNamespace' do
     end
+
+    factory :monitoring_dashboard, class: 'Resources::MonitoringDashboard' do
+      # NOTE: this factory will not produce a valid model object out of the box
+      # - you will need to set the `parent` association yourself (to another
+      # valid resource).
+    end
   end
 end

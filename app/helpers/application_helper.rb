@@ -4,12 +4,18 @@ module ApplicationHelper
       Integration.count.zero?
   end
 
-  def icon(name, size: '1x', title: nil, data_attrs: nil)
-    tag.i '', class: "fas fa-#{name} fa-#{size}", title: title, data: data_attrs
+  def icon(name, size: '1x', css_class: [], title: nil, data_attrs: nil)
+    tag.i '',
+      class: ['fas', "fa-#{name}", "fa-#{size}"] + Array(css_class),
+      title: title,
+      data: data_attrs
   end
 
-  def brand_icon(name, size: '1x', title: nil, data_attrs: nil)
-    tag.i '', class: "fab fa-#{name} fa-#{size}", title: title, data: data_attrs
+  def brand_icon(name, size: '1x', css_class: [], title: nil, data_attrs: nil)
+    tag.i '',
+      class: ['fab', "fa-#{name}", "fa-#{size}"] + Array(css_class),
+      title: title,
+      data: data_attrs
   end
 
   def icon_with_tooltip(text, icon_name: 'question-circle')

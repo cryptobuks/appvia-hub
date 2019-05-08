@@ -6,6 +6,8 @@ class Resource < ApplicationRecord
 
   audited associated_with: :project
 
+  has_closure_tree order: 'integration_id', dependent: nil
+
   belongs_to :project,
     -> { readonly },
     inverse_of: :resources

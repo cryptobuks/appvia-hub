@@ -47,7 +47,7 @@
                 <%= a.auditable_descriptor %>
               </span>
               <% status = 'pending' %>
-              <%= tag.span(status, class: "badge badge-#{resource_status_class(status)}") %>
+              <%= resource_status_badge status %>
               for space:
               <%= link_to a.associated_descriptor, project_path(a.associated_id), class: 'text-monospace' %>
             <% end %>
@@ -61,7 +61,7 @@
                 </span>
                 is now
                 <% status = a.audited_changes['status'].last %>
-                <%= tag.span(status, class: "badge badge-#{resource_status_class(status)}") %>
+                <%= resource_status_badge status %>
                 for space:
                 <%= link_to a.associated_descriptor, project_path(a.associated_id), class: 'text-monospace' %>
               <% end %>
@@ -78,7 +78,7 @@
                 <%= a.auditable_descriptor %>
               </span>
               <% status = 'deleting' %>
-              <%= tag.span(status, class: "badge badge-#{resource_status_class(status)}") %>
+              <%= resource_status_badge status %>
               for space:
               <%= link_to a.associated_descriptor, project_path(a.associated_id), class: 'text-monospace' %>
             <% end %>

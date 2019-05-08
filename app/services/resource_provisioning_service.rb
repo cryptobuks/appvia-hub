@@ -24,4 +24,20 @@ class ResourceProvisioningService
 
     true
   end
+
+  def request_dependent_create(parent_resource, resource_type_id)
+    resource_type = ResourceTypesService.get resource_type_id
+    integrations = ResourceTypesService.integrations_for(resource_type[:id])
+
+    return if integrations.empty?
+
+    resource_class = resource_type[:class].constantize
+    dependent_resource = resource_class.create!(
+      integration: integrations.first,
+      parent: parent_resource,
+      project: parent_resource.project,
+      name: parent_resource.name
+    )
+    request_create dependent_resource
+  end
 end

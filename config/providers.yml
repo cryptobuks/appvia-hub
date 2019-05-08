@@ -142,3 +142,30 @@
       - token
       - global_service_account_name
       - global_service_account_token
+
+- id: grafana
+  name: Grafana
+  config_spec:
+    properties:
+      url:
+        title: Grafana URL
+        description: The URL to this Grafana instance.
+        type: string
+      api_key:
+        title: Grafana API key
+        description: The API key used when talking to this Grafana instance.
+        type: string
+        masked: true
+      ca_cert:
+        title: CA certificate
+        description: MUST be base64 encoded. This is the CA bundle (pem format) for requests to the Grafana API.
+        type: string
+        masked: true
+      template_url:
+        title: Dashboard template URL
+        description: A URL to a dashboard template (in Golang templated format) that will be used when creating the dashboard on Grafana.
+        type: string
+    required:
+      - url
+      - api_key
+      - template_url
