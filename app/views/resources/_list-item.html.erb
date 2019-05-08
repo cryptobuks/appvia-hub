@@ -10,10 +10,8 @@
     </div>
   <%- end -%>
   <h3 class="h6">
-    <span class="text-accent">
       <%= resource.name %>
-    </span>
-    <span class="ml-1">
+    <span class="ml-1 text-muted">
       on <%= resource.integration.name %>
     </span>
     <%= resource_status_badge resource.status, css_class: 'ml-2' %>

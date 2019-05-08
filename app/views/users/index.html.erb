@@ -13,13 +13,13 @@
         <%= user.email %>
       </h5>
       <% if user.name.present? %>
-        <h6 class="card-subtitle mb-2 text-accent">
+        <h6 class="card-subtitle mb-2 text-muted">
           <%= user.name %>
         </h6>
       <% end %>
     </div>
     <% if current_user.admin? %>
-      <div class="card-footer text-accent">
+      <div class="card-footer text-muted">
         <% if user.admin? %>
           <%= update_user_role_link 'Revoke Admin', user, :user %>
         <% else %>
