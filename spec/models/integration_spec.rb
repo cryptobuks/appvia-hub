@@ -85,13 +85,12 @@ RSpec.describe Integration, type: :model do
         { 'foo' => '1' }
       end
 
-      before do
-        expect(PROVIDERS_REGISTRY).to receive(:config_schemas)
-          .and_return(provider_id => schema)
-      end
-
       subject do
-        create_mocked_integration provider_id: provider_id, config: initial_config
+        create_mocked_integration(
+          provider_id: provider_id,
+          config: initial_config,
+          schema: schema
+        )
       end
 
       it 'ensures that boolean fields are stored in the correct format' do
@@ -121,6 +120,10 @@ RSpec.describe Integration, type: :model do
       end
 
       before do
+        # NOTE: usually in specs you MUST use the `mock_provider_config_schema`
+        # helper to mock out config schemas. However, in this special case, we
+        # need to test the actual validation flow without it being mocked out.
+        # Hence the line below instead:
         allow(PROVIDERS_REGISTRY).to receive(:config_schemas)
           .and_return(provider_id => schema)
       end

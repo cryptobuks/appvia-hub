@@ -25,7 +25,7 @@ module Resources
       },
       'Resources::MonitoringDashboard' => {
         'grafana' => lambda do |resource, agent|
-          agent.delete_dashboard_dashboard resource.name
+          agent.delete_dashboard resource.name
           true
         end
       }
