@@ -20,7 +20,7 @@ $gray-900:                          #212529 !default;
 $black:                             #000 !default;
 
 $blue:                              #2b3d50 !default;
-$blue-2:                            #1b75bc !default;
+$blue-light:                        #1b75bc !default;
 $indigo:                            #6610f2 !default;
 $purple:                            #6f42c1 !default;
 $pink:                              #e83e8c !default;
@@ -33,7 +33,7 @@ $cyan:                              #3498DB !default;
 
 $primary:                           $blue !default;
 $secondary:                         $gray-600 !default;
-$success:                           $blue-2 !default;
+$success:                           $blue-light !default;
 $info:                              $cyan !default;
 $warning:                           $yellow !default;
 $danger:                            $red !default;
@@ -44,7 +44,7 @@ $yiq-contrasted-threshold:          175 !default;
 
 // Links
 
-$link-color:                        $blue-2;
+$link-color:                        $blue-light;
 
 // Fonts
 

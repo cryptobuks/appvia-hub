@@ -78,9 +78,9 @@ label.required:after {
 }
 
 .bg-gradient-primary {
-  background: $blue-2; /* Old browsers */
-  background: -moz-linear-gradient(top, $blue 0%, $blue-2 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, $blue 0%,$blue-2 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, $blue 0%,$blue-2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#{$blue}", endColorstr="#{$blue-2}",GradientType=0 ); /* IE6-9 */
+  background: $blue-light; /* Old browsers */
+  background: -moz-linear-gradient(top, $blue 0%, $blue-light 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, $blue 0%,$blue-light 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, $blue 0%,$blue-light 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#{$blue}", endColorstr="#{$blue-light}",GradientType=0 ); /* IE6-9 */
 }

@@ -32,10 +32,10 @@
     padding: 0.2rem 2rem;
     @extend .pl-3;
     font-weight: 500;
-    color: $blue-2;
+    color: $blue-light;
 
     &:hover, &:hover i{
-      color: darken($blue-2, 15%);
+      color: darken($blue-light, 15%);
     }
     &:hover{
       text-decoration: underline;
@@ -51,7 +51,7 @@
 
   .fas,
   .fab {
-    color: $blue-2;
+    color: $blue-light;
     margin-right: 0.3em;
   }
 }
