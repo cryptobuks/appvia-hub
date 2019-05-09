@@ -36,8 +36,7 @@ class GitHubAgent
   end
 
   def delete_repository(full_name)
-    slug = full_name.split('/').last
-    return unless app_installation_client.repository?(slug, organization: @org)
+    return unless app_installation_client.repository? full_name
 
     app_installation_client.delete_repository(full_name)
   end
