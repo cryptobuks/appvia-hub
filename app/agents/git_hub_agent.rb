@@ -11,17 +11,19 @@ class GitHubAgent
   def create_repository(name, private: false, best_practices: false)
     client = app_installation_client
 
-    resource = client.create_repository(
+    resource = find_or_create_repo(
+      client,
       name,
-      organization: @org,
       private: private,
-      auto_init: best_practices
+      best_practices: best_practices
     )
 
     return resource unless best_practices
 
     # https://github.community/t5/GitHub-API-Development-and/REST-API-v3-wildcard-branch-protection/td-p/14547
-    client.protect_branch(resource.full_name, 'master',
+    client.protect_branch(
+      resource.full_name,
+      'master',
       enforce_admins: true,
       required_status_checks: {
         contexts: [],
@@ -30,7 +32,8 @@ class GitHubAgent
       required_pull_request_reviews: {
         dismiss_stale_reviews: true,
         require_code_owner_reviews: true
-      })
+      }
+    )
 
     resource
   end
@@ -58,5 +61,15 @@ class GitHubAgent
   def app_installation_client
     token = @client.create_app_installation_access_token(@app_installation_id)[:token]
     Octokit::Client.new bearer_token: token
+  end
+
+  def find_or_create_repo(client, name, private:, best_practices:)
+    full_name = "#{@org}/#{name}"
+    client.repository full_name
+  rescue Octokit::NotFound
+    client.create_repository name,
+      organization: @org,
+      private: private,
+      auto_init: best_practices
   end
 end
