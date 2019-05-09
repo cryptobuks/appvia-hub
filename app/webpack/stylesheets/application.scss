@@ -85,6 +85,8 @@ label.required:after {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#{$blue}", endColorstr="#{$blue-light}",GradientType=0 ); /* IE6-9 */
 }
 
-.logo{
-  width: 186px;
+.site-header {
+  .logo{
+    width: 186px;
+  }
 }
