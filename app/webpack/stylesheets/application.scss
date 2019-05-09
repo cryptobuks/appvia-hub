@@ -84,3 +84,7 @@ label.required:after {
   background: linear-gradient(to bottom, $blue 0%,$blue-light 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#{$blue}", endColorstr="#{$blue-light}",GradientType=0 ); /* IE6-9 */
 }
+
+.logo{
+  width: 186px;
+}
