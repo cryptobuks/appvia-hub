@@ -1,0 +1,22 @@
+<h1>Settings</h1>
+
+<%=
+  bootstrap_form_with(
+    local: true,
+    scope: 'settings',
+    url: admin_settings_path,
+    method: :put
+  ) do |form|
+%>
+  <%=
+    form.text_field :crisp_website_id,
+      label: label_with_tooltip(
+        'Crisp chat service website ID',
+        'This is the "website ID" for the http://crisp.chat service, used for live chat capabilities'
+      ),
+      value: @settings['crisp_website_id'],
+      help: 'Leave blank to disable the http://crisp.chat service on this site'
+  %>
+
+  <%= form.primary 'save' %>
+<% end %>
