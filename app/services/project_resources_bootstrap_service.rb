@@ -8,13 +8,15 @@ class ProjectResourcesBootstrapService
     return false if @project.resources.count.positive?
 
     ResourceTypesService.all.map do |rt|
+      next nil unless rt[:top_level]
+
       integration = ResourceTypesService.integrations_for(rt[:id]).first
       resource = {
         name: @project.slug,
         integration: integration
       }
       rt.merge resource: resource
-    end
+    end.compact
   end
 
   def bootstrap
