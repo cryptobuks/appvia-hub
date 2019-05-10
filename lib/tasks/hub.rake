@@ -38,7 +38,7 @@ module HubCleaner
         provisioning_service.request_delete r
       rescue ActiveRecord::StaleObjectError
         # Handle optimistic locking error
-        r.reload.destroy
+        r.reload.destroy if Resource.exists? r.id
       end
 
       # Just in case they've hung around due to errors from the agent
