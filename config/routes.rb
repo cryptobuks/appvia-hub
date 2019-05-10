@@ -3,6 +3,7 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   namespace :admin do
     resources :integrations, except: %i[show destroy]
+    resource :settings, only: %i[show update]
   end
 
   resources :projects, path: 'spaces' do

@@ -1,4 +1,22 @@
 module ApplicationHelper
+  def crisp_chat
+    crisp_website_id = SettingsService.get 'crisp_website_id'
+
+    return if crisp_website_id.blank?
+
+    safe_join(
+      [
+        raw( # rubocop:disable Rails/OutputSafety
+          <<-SCRIPT
+          <script type="text/javascript">
+            window.$crisp=[];window.CRISP_WEBSITE_ID="#{crisp_website_id}";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();
+          </script>
+          SCRIPT
+        )
+      ]
+    )
+  end
+
   def show_requires_setup?
     controller.controller_name != 'integrations' &&
       Integration.count.zero?
