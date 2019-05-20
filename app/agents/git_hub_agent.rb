@@ -18,22 +18,7 @@ class GitHubAgent
       best_practices: best_practices
     )
 
-    return resource unless best_practices
-
-    # https://github.community/t5/GitHub-API-Development-and/REST-API-v3-wildcard-branch-protection/td-p/14547
-    client.protect_branch(
-      resource.full_name,
-      'master',
-      enforce_admins: true,
-      required_status_checks: {
-        contexts: [],
-        strict: true
-      },
-      required_pull_request_reviews: {
-        dismiss_stale_reviews: true,
-        require_code_owner_reviews: true
-      }
-    )
+    apply_best_practices client, resource.full_name if best_practices
 
     resource
   end
@@ -71,5 +56,34 @@ class GitHubAgent
       organization: @org,
       private: private,
       auto_init: best_practices
+  end
+
+  def apply_best_practices(client, repo_full_name)
+    # Only apply best practices if the `master` branch exists
+
+    # Will raise a `Octokit::NotFound` error if branch doesn't exist
+    client.branch repo_full_name, 'master'
+
+    # https://github.community/t5/GitHub-API-Development-and/REST-API-v3-wildcard-branch-protection/td-p/14547
+    client.protect_branch(
+      repo_full_name,
+      'master',
+      enforce_admins: true,
+      required_status_checks: {
+        contexts: [],
+        strict: true
+      },
+      required_pull_request_reviews: {
+        dismiss_stale_reviews: true,
+        require_code_owner_reviews: true
+      }
+    )
+  rescue Octokit::NotFound
+    Rails.logger.warn [
+      '[GitHub Agent]',
+      'cannot apply best practices to repo:',
+      repo_full_name,
+      'because \'master\' branch does not exist'
+    ].join(' ')
   end
 end
