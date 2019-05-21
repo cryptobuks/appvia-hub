@@ -13,6 +13,8 @@ Rails.application.routes.draw do
         post :bootstrap
       end
     end
+
+    resource :integration_overrides, only: %i[show update]
   end
 
   resources :users, only: %i[index] do

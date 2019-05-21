@@ -2,29 +2,29 @@ module Resources
   class RequestDeleteWorker < BaseWorker
     HANDLERS = {
       'Resources::CodeRepo' => {
-        'git_hub' => lambda do |resource, agent|
+        'git_hub' => lambda do |resource, agent, _config|
           agent.delete_repository(resource.full_name) if resource.full_name.present?
           true
         end
       },
       'Resources::DockerRepo' => {
-        'quay' => lambda do |resource, agent|
+        'quay' => lambda do |resource, agent, _config|
           agent.delete_repository(resource.name)
           true
         end,
-        'ecr' => lambda do |resource, agent|
+        'ecr' => lambda do |resource, agent, _config|
           agent.delete_repository(resource.name)
           true
         end
       },
       'Resources::KubeNamespace' => {
-        'kubernetes' => lambda do |resource, agent|
+        'kubernetes' => lambda do |resource, agent, _config|
           agent.delete_namespace(resource.name)
           true
         end
       },
       'Resources::MonitoringDashboard' => {
-        'grafana' => lambda do |resource, agent|
+        'grafana' => lambda do |resource, agent, _config|
           agent.delete_dashboard resource.name
           true
         end

@@ -1,0 +1,75 @@
+<h1>
+  Integration overrides
+  for <%= @project.name -%> space
+</h1>
+
+<p class="text-muted">
+  Note: only integrations with overridable config options are shown here
+</p>
+
+<%=
+  bootstrap_form_with(
+    local: true,
+    scope: 'integration_overrides',
+    url: project_integration_overrides_path(@project),
+    method: :put
+  ) do |form|
+%>
+  <% @overrideables.each do |entry| %>
+    <% integration = entry[:integration] %>
+    <%= form.fields_for integration.id do |integration_fields| %>
+      <% ovveriden_config = @overrides_by_integration_id[integration.id].try(:config) || {} %>
+      <div class="card mb-4">
+        <div class="card-header">
+          <strong>
+            <%= entry[:integration].name %>
+          </strong>
+        </div>
+        <ul class="list-group list-group-flush">
+          <% entry[:properties].each do |(name, property_spec)| %>
+            <li class="list-group-item">
+              <% original_value = integration.config[name] %>
+              <% is_overriden = ovveriden_config.key? name %>
+              <% overriden_value = ovveriden_config[name] %>
+              <%=
+                render partial: 'application/forms/json_schema_field',
+                  locals: {
+                    form: integration_fields,
+                    name: name,
+                    property_spec: property_spec,
+                    is_required: false,
+                    current_value: overriden_value,
+                    include_blank: "-- don't override --"
+                  }
+              %>
+              <p>
+                <% if is_overriden %>
+                  <span class="text-danger font-weight-bold">
+                    Overriden
+                  </span>
+                  <% if overriden_value == original_value %>
+                    <br />
+                    <span class="text-muted font-italic">
+                      Note that currently your overriden value is the same as the config value in the integration, but if an admin changes the integration config then your overriden value will still be used instead.
+                    </span>
+                  <% end  %>
+                <% else %>
+                  <span class="none-text">Not overridden</span>
+                <% end %>
+              </p>
+              <div>
+                Integration config value is:
+                <br />
+                <span class="indented">
+                  <%= original_value %>
+                </span>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%= form.primary 'Save' %>
+<% end %>
