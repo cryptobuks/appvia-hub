@@ -5,6 +5,12 @@ module Authentication
 
   extend Memoist
 
+  AUTH_HEADERS = {
+    subject: ENV['AUTH_SUB_HEADER'] || 'X-Auth-Subject',
+    email: ENV['AUTH_EMAIL_HEADER'] || 'X-Auth-Email',
+    name: ENV['AUTH_NAME_HEADER'] || 'X-Auth-Username'
+  }.freeze
+
   def require_authentication
     head(:unauthorized) && return unless current_user?
   end
@@ -29,11 +35,7 @@ module Authentication
   private
 
   def auth_data_from_headers
-    {
-      subject: 'X-Auth-Subject',
-      email: 'X-Auth-Email',
-      name: 'X-Auth-Username'
-    }.each_with_object({}) do |(k, v), acc|
+    AUTH_HEADERS.each_with_object({}) do |(k, v), acc|
       acc[k] = request.headers[v]
     end.compact
   end
