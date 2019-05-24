@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 module Resources
   class BaseWorker
     include Sidekiq::Worker
@@ -55,9 +56,11 @@ module Resources
 
     def perform(resource_id)
       with_resource(resource_id) do |resource|
-        with_agent(resource.integration) do |agent|
+        config = config_for resource.integration, resource.project
+
+        with_agent(resource.integration, config) do |agent|
           with_handler(resource) do |handler|
-            result = handler.call resource, agent
+            result = handler.call resource, agent, config
             result ? finalise(resource) : resource.failed!
           rescue StandardError => e
             logger.error [
@@ -80,7 +83,7 @@ module Resources
       raise NotImplementedError
     end
 
-    protected
+    private
 
     def with_resource(id)
       resource = Resource.find_by id: id
@@ -92,10 +95,10 @@ module Resources
       end
     end
 
-    def with_agent(integration)
+    def with_agent(integration, config)
       agent_initialiser = AGENT_INITIALISERS[integration.provider_id]
 
-      agent = agent_initialiser&.call integration.config
+      agent = agent_initialiser&.call config
 
       if agent
         yield agent
@@ -113,5 +116,10 @@ module Resources
         logger.error "No handler found for resource type: #{resource.type}, provider: #{resource.integration.provider_id}"
       end
     end
+
+    def config_for(integration, project)
+      IntegrationOverridesService.new.effective_config_for integration, project
+    end
   end
 end
+# rubocop:enable Metrics/ClassLength

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_10_131147) do
+ActiveRecord::Schema.define(version: 2019_05_21_123220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -49,6 +49,17 @@ ActiveRecord::Schema.define(version: 2019_05_10_131147) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_hash_records_on_slug", unique: true
+  end
+
+  create_table "integration_overrides", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id", null: false
+    t.uuid "integration_id", null: false
+    t.text "config", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["integration_id"], name: "index_integration_overrides_on_integration_id"
+    t.index ["project_id", "integration_id"], name: "index_integration_overrides_on_project_id_and_integration_id", unique: true
+    t.index ["project_id"], name: "index_integration_overrides_on_project_id"
   end
 
   create_table "integrations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -105,6 +116,8 @@ ActiveRecord::Schema.define(version: 2019_05_10_131147) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "integration_overrides", "integrations"
+  add_foreign_key "integration_overrides", "projects"
   add_foreign_key "resources", "integrations"
   add_foreign_key "resources", "projects"
 end

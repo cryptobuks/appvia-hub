@@ -15,7 +15,7 @@ class GitHubAgent
       client,
       name,
       private: private,
-      best_practices: best_practices
+      auto_init: best_practices
     )
 
     apply_best_practices client, resource.full_name if best_practices
@@ -48,14 +48,14 @@ class GitHubAgent
     Octokit::Client.new bearer_token: token
   end
 
-  def find_or_create_repo(client, name, private:, best_practices:)
+  def find_or_create_repo(client, name, private:, auto_init:)
     full_name = "#{@org}/#{name}"
     client.repository full_name
   rescue Octokit::NotFound
     client.create_repository name,
       organization: @org,
       private: private,
-      auto_init: best_practices
+      auto_init: auto_init
   end
 
   def apply_best_practices(client, repo_full_name)

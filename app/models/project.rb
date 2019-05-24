@@ -4,6 +4,10 @@ class Project < ApplicationRecord
 
   audited
 
+  has_many :integration_overrides,
+    dependent: :destroy,
+    inverse_of: :project
+
   has_many :resources,
     -> { includes :integration },
     dependent: :restrict_with_exception,
