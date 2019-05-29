@@ -26,6 +26,17 @@
         <% if resource.full_name.present? %>
           <%= link_to resource.full_name, resource.url, target: '_blank' %>
         <% end %>
+
+        <% if resource.integration.provider_id == 'git_hub' %>
+          <div class="indented mt-3">
+            Enforce best practices
+            <%= icon_with_tooltip resource.integration.provider['config_spec']['properties']['enforce_best_practices']['description'] -%>
+            <br />
+            <span class="font-italic">
+              <%= resource.enforce_best_practices %>
+            </span>
+          </div>
+        <% end %>
       <%- when Resources::DockerRepo -%>
         <span class="badge badge-secondary mr-1">
           <%= resource.visibility.try(:capitalize) %>

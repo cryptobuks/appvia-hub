@@ -86,6 +86,7 @@ RSpec.describe 'Code Repo - GitHub - with overriden config option' do
       expect(updated.private).to eq agent_create_response.private
       expect(updated.full_name).to eq agent_create_response.full_name
       expect(updated.url).to eq agent_create_response.html_url
+      expect(updated.enforce_best_practices).to eq !integration_config['enforce_best_practices']
     end
   end
 end
