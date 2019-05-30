@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :record_last_seen!
 
   helper_method :current_user
+  helper_method :current_user?
 
   protected
 

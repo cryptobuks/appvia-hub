@@ -6,9 +6,9 @@ module Authentication
   extend Memoist
 
   AUTH_HEADERS = {
-    subject: ENV['AUTH_SUB_HEADER'] || 'X-Auth-Subject',
-    email: ENV['AUTH_EMAIL_HEADER'] || 'X-Auth-Email',
-    name: ENV['AUTH_NAME_HEADER'] || 'X-Auth-Username'
+    subject: Rails.configuration.x.auth.sub_header,
+    email: Rails.configuration.x.auth.email_header,
+    name: Rails.configuration.x.auth.name_header
   }.freeze
 
   def require_authentication
