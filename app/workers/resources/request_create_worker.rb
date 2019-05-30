@@ -10,6 +10,7 @@ module Resources
           resource.private = result.private
           resource.full_name = result.full_name
           resource.url = result.html_url
+          resource.enforce_best_practices = enforce_best_practices
           true
         end
       },

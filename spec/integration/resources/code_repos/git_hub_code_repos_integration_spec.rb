@@ -44,6 +44,7 @@ RSpec.describe 'Code Repos - GitHub' do
         expect(updated.private).to eq agent_create_response.private
         expect(updated.full_name).to eq agent_create_response.full_name
         expect(updated.url).to eq agent_create_response.html_url
+        expect(updated.enforce_best_practices).to eq true
       end
     end
 
@@ -60,6 +61,7 @@ RSpec.describe 'Code Repos - GitHub' do
         expect(updated.private).to eq nil
         expect(updated.full_name).to eq nil
         expect(updated.url).to eq nil
+        expect(updated.enforce_best_practices).to eq false
       end
     end
 
