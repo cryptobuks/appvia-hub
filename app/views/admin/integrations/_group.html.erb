@@ -35,13 +35,23 @@
       <%=
         tag.div(
           id: panel_id,
-          class: 'card-body collapse',
+          class: [
+            'card-body',
+            expanded ? 'expand' : 'collapse'
+          ],
           role: 'tabpanel'
         ) do
       %>
         <% if integrations.present? %>
           <% integrations.each do |i| %>
-            <%= render partial: 'card', locals: { integration: i, unmask: unmask } %>
+            <%=
+              render partial: 'card',
+                locals: {
+                  integration: i,
+                  group: group,
+                  unmask: unmask
+                }
+            %>
           <% end %>
         <% end %>
 

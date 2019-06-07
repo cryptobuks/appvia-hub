@@ -56,7 +56,7 @@ RSpec.describe 'Admin - Integrations', type: :request do
 
         context 'when provider_id is valid' do
           it 'loads the new integration page' do
-            get new_admin_integration_path(provider_id: Integration.provider_ids.keys.first)
+            get new_admin_integration_path(provider_id: 'git_hub')
             expect(response).to be_successful
             expect(response).to render_template(:new)
             expect(assigns(:integration)).to be_a Integration
@@ -97,7 +97,8 @@ RSpec.describe 'Admin - Integrations', type: :request do
   end
 
   describe 'create - POST /admin/integrations' do
-    let(:provider_id) { Integration.provider_ids.keys.first }
+    let(:provider_id) { 'git_hub' }
+    let(:resource_type_id) { 'CodeRepo' }
 
     before do
       mock_provider_config_schema provider_id
@@ -132,7 +133,8 @@ RSpec.describe 'Admin - Integrations', type: :request do
             expect do
               post admin_integrations_path, params: { integration: params }
               integration = assigns(:integration)
-              expect(response).to redirect_to(admin_integrations_path)
+              path = admin_integrations_path(expand: resource_type_id, anchor: integration.id)
+              expect(response).to redirect_to(path)
               expect(integration).to be_persisted
               expect(integration.provider_id).to eq provider_id
               expect(integration.name).to eq params[:name]
@@ -168,8 +170,11 @@ RSpec.describe 'Admin - Integrations', type: :request do
   end
 
   describe 'update - PUT /admin/integrations/:id' do
+    let(:provider_id) { 'git_hub' }
+    let(:resource_type_id) { 'CodeRepo' }
+
     before do
-      @integration = create_mocked_integration
+      @integration = create_mocked_integration provider_id: provider_id
     end
 
     let :updated_params do
@@ -198,7 +203,8 @@ RSpec.describe 'Admin - Integrations', type: :request do
               move_time_to 1.minute.from_now
               put admin_integration_path(@integration), params: { integration: updated_params }
               integration = Integration.find @integration.id
-              expect(response).to redirect_to(admin_integrations_path)
+              path = admin_integrations_path(expand: resource_type_id, anchor: integration.id)
+              expect(response).to redirect_to(path)
               expect(assigns(:integration)).to eq integration
               expect(integration.name).to eq updated_params[:name]
               expect(integration.config).to eq @integration.config

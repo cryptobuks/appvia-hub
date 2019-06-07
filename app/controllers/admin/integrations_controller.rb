@@ -6,6 +6,7 @@ module Admin
     def index
       integrations_by_provider = Integration.all.group_by(&:provider_id)
 
+      @group_to_expand = params[:expand]
       @unmask = params.key? 'unmask'
 
       @groups = ResourceTypesService.all.map do |rt|
@@ -37,7 +38,8 @@ module Admin
       @integration = Integration.new integration_params
 
       if @integration.save
-        redirect_to admin_integrations_path, notice: 'New integration was successfully created.'
+        path = admin_integrations_path_with_selected @integration
+        redirect_to path, notice: 'New integration was successfully created.'
       else
         render :new
       end
@@ -46,7 +48,8 @@ module Admin
     # PATCH/PUT /admin/integrations/:id
     def update
       if @integration.update integration_params
-        redirect_to admin_integrations_path, notice: 'Integration was successfully updated.'
+        path = admin_integrations_path_with_selected @integration
+        redirect_to path, notice: 'Integration was successfully updated.'
       else
         render :edit
       end
@@ -60,6 +63,15 @@ module Admin
 
     def integration_params
       params.require(:integration).permit(:provider_id, :name, config: {})
+    end
+
+    def admin_integrations_path_with_selected(integration)
+      resource_type = ResourceTypesService.for_provider integration.provider_id
+
+      admin_integrations_path(
+        expand: resource_type[:id],
+        anchor: integration.id
+      )
     end
   end
 end
