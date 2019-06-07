@@ -1,6 +1,6 @@
 <% config_spec = integration.provider['config_spec'] %>
 
-<div class="card mb-3">
+<div id="<%= integration.id -%>" class="card mb-3">
   <div class="card-body">
     <h5 class="card-title">
       Name: <%= integration.name %>
@@ -29,7 +29,15 @@
               <span class="text-muted font-weight-light">
                 hidden
               </span>
-              <%= link_to 'show all hidden', { unmask: true }, class: 'ml-3' %>
+              <%=
+                link_to 'show all hidden',
+                  {
+                    expand: group[:id],
+                    anchor: integration.id,
+                    unmask: true
+                  },
+                  class: 'ml-3'
+              %>
             <% end %>
           <% end %>
         </dd>

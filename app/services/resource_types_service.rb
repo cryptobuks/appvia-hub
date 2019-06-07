@@ -53,6 +53,10 @@ class ResourceTypesService
       entry
     end
 
+    def for_provider(provider_id)
+      all.find { |e| e[:providers].include? provider_id }
+    end
+
     def integrations_for(id)
       entry = get id
 

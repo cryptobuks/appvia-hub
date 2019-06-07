@@ -1,5 +1,12 @@
 <h1>Integrations</h1>
 
 <% @groups.each do |group| %>
-  <%= render partial: 'group', locals: { group: group, unmask: @unmask } %>
+  <%=
+    render partial: 'group',
+      locals: {
+        group: group,
+        unmask: @unmask,
+        expanded: group[:id] == @group_to_expand
+      }
+  %>
 <% end %>
