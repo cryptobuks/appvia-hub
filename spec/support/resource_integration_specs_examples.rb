@@ -25,12 +25,18 @@ module ResourceIntegrationSpecsExamples
         .and_return(provisioning_service)
     end
 
-    let :dependent_type do
-      nil
-    end
+    let :dependents do
+      # Example:
+      #
+      # [
+      #   {
+      #      type: 'Foo',
+      #      integration: '<instance of Integration for this dependent>',
+      #      factory: :foo
+      #   }
+      # ]
 
-    let :dependent_integration do
-      nil
+      []
     end
 
     describe 'request create' do
@@ -38,14 +44,14 @@ module ResourceIntegrationSpecsExamples
         before do
           agent_create_method_call_success.call(agent, resource)
 
-          if dependent_type.present?
+          dependents.each do |d|
             expect(provisioning_service).to receive(:request_dependent_create)
-              .with(resource, dependent_type)
+              .with(resource, d[:type])
               .and_call_original
 
             expect(ResourceTypesService).to receive(:integrations_for)
-              .with(dependent_type)
-              .and_return([dependent_integration])
+              .with(d[:type])
+              .and_return([d[:integration]])
           end
         end
 
@@ -71,21 +77,25 @@ module ResourceIntegrationSpecsExamples
 
           request_create_finished_success_expectations.call updated
 
-          if dependent_type.present?
-            expect(Resources::RequestCreateWorker.jobs.size).to eq 1
-            worker = Resources::RequestCreateWorker.jobs.first
+          if dependents.any?
+            expect(updated.children.length).to eq dependents.size
 
-            expect(updated.children.length).to eq 1
-            dependent = updated.children.first
+            expect(Resources::RequestCreateWorker.jobs.size).to eq dependents.size
 
-            expect(worker['args']).to contain_exactly dependent.id
+            dependents.each_with_index do |d, ix|
+              worker = Resources::RequestCreateWorker.jobs[ix]
 
-            expect(dependent.integration).to eq dependent_integration
-            expect(dependent.project).to eq resource.project
-            expect(dependent.name).to eq resource.name
-            expect(dependent.status).to eq Resource.statuses[:pending]
+              dependent_resource = updated.children.where(type: "Resources::#{d[:type]}").first
 
-            expect(dependent.audits.order(:created_at).last.action).to eq 'request_create'
+              expect(worker['args']).to contain_exactly dependent_resource.id
+
+              expect(dependent_resource.integration).to eq d[:integration]
+              expect(dependent_resource.project).to eq resource.project
+              expect(dependent_resource.name).to eq resource.name
+              expect(dependent_resource.status).to eq Resource.statuses[:pending]
+
+              expect(dependent_resource.audits.order(:created_at).last.action).to eq 'request_create'
+            end
           end
         end
       end
@@ -94,7 +104,7 @@ module ResourceIntegrationSpecsExamples
         before do
           agent_create_method_call_error.call(agent, resource)
 
-          expect(provisioning_service).to receive(:request_dependent_create).never if dependent_type.present?
+          expect(provisioning_service).to receive(:request_dependent_create).never if dependents.any?
         end
 
         it 'marks the resource as failed' do
@@ -117,6 +127,12 @@ module ResourceIntegrationSpecsExamples
         request_delete_before_setup_resource_state.call resource
         resource.status = Resource.statuses[:active]
         resource.save!
+
+        dependents.each do |d|
+          create d[:factory],
+            integration: d[:integration],
+            parent: resource
+        end
       end
 
       context 'when agent doesn\'t throw an error' do
@@ -126,8 +142,6 @@ module ResourceIntegrationSpecsExamples
 
         it 'works as expected' do
           move_time_to 1.minute.from_now
-
-          dependent = (resource.children.first if dependent_type.present?)
 
           expect do
             provisioning_service.request_delete resource
@@ -143,11 +157,23 @@ module ResourceIntegrationSpecsExamples
 
           expect(Resource.exists?(resource.id)).to be false
 
-          if dependent.present?
-            expect(Resources::RequestDeleteWorker.jobs.size).to eq 1
-            worker = Resources::RequestDeleteWorker.jobs.first
-            expect(worker['args']).to contain_exactly dependent.id
-            expect(dependent.reload.status).to eq Resource.statuses[:deleting]
+          if dependents.any?
+            expect(Resources::RequestDeleteWorker.jobs.size).to eq dependents.size
+
+            dependent_resources = resource.children.entries
+            expect(dependent_resources.size).to eq dependents.size
+
+            worker_args = Resources::RequestDeleteWorker.jobs.map { |j| j['args'] }
+
+            expect(worker_args).to match_array(
+              dependent_resources.map { |r| [r.id] }
+            )
+
+            expect(dependent_resources.map(&:status).uniq).to contain_exactly Resource.statuses[:deleting]
+
+            dependent_resources.each do |r|
+              expect(r.audits.order(:created_at).last.action).to eq 'request_delete'
+            end
           end
         end
       end
@@ -166,9 +192,9 @@ module ResourceIntegrationSpecsExamples
 
           expect(updated.status).to eq Resource.statuses[:failed]
 
-          if dependent_type.present?
+          if dependents.any?
             expect(Resources::RequestDeleteWorker.jobs.size).to eq 0
-            expect(resource.children.size).to eq 1
+            expect(resource.children.size).to eq dependents.size
           end
         end
       end

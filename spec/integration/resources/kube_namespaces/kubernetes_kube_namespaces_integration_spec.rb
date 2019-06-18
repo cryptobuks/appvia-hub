@@ -31,12 +31,27 @@ RSpec.describe 'Kube Namespaces – Kubernetes' do
       }
     end
 
-    let :dependent_type do
-      'MonitoringDashboard'
+    let :grafana_integration do
+      create_mocked_integration provider_id: 'grafana'
     end
 
-    let :dependent_integration do
-      create_mocked_integration provider_id: 'grafana'
+    let :loki_integration do
+      create_mocked_integration provider_id: 'loki'
+    end
+
+    let :dependents do
+      [
+        {
+          type: 'MonitoringDashboard',
+          integration: grafana_integration,
+          factory: :monitoring_dashboard
+        },
+        {
+          type: 'LoggingDashboard',
+          integration: loki_integration,
+          factory: :logging_dashboard
+        }
+      ]
     end
 
     let :agent_create_response do
@@ -71,9 +86,6 @@ RSpec.describe 'Kube Namespaces – Kubernetes' do
 
     let :request_delete_before_setup_resource_state do
       lambda do |resource|
-        create :monitoring_dashboard,
-          integration: dependent_integration,
-          parent: resource
       end
     end
 
