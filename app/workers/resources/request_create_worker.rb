@@ -33,6 +33,7 @@ module Resources
           agent.create_namespace resource.name
 
           ResourceProvisioningService.new.request_dependent_create resource, 'MonitoringDashboard'
+          ResourceProvisioningService.new.request_dependent_create resource, 'LoggingDashboard'
 
           true
         end
@@ -44,6 +45,17 @@ module Resources
           result = agent.create_dashboard resource.name, template_url: template_url
 
           resource.url = result.url
+
+          true
+        end
+      },
+      'Resources::LoggingDashboard' => {
+        'loki' => lambda do |resource, agent, _config|
+          query_expression = '{namespace=\"' + resource.name + '\"}'
+
+          result = agent.create_logging_dashboard query_expression
+
+          resource.url = result
 
           true
         end
