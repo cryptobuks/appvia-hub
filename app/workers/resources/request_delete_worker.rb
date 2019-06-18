@@ -28,6 +28,12 @@ module Resources
           agent.delete_dashboard resource.name
           true
         end
+      },
+      'Resources::LoggingDashboard' => {
+        'loki' => lambda do |resource, agent, _config|
+          agent.delete_logging_dashboard resource.name
+          true
+        end
       }
     }.freeze
 
