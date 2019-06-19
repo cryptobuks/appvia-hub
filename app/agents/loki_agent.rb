@@ -4,21 +4,21 @@ class LokiAgent
   end
 
   def create_logging_dashboard(query_expression)
-    logging_view_uri = 'explore?left=[' \
-                          '"now-6h",' \
-                          '"now",' \
-                          '"Loki",' \
-                          '{' \
-                            '"expr":"' + query_expression + '"' \
-                          '},' \
-                          '{' \
-                            '"ui":[true,true,true,"none"]' \
-                          '}' \
-                        ']'
+    logging_view_uri = '[' \
+                         '"now-6h",' \
+                         '"now",' \
+                         '"Loki",' \
+                         '{' \
+                           '"expr":"' + query_expression + '"' \
+                         '},' \
+                         '{' \
+                           '"ui":[true,true,true,"none"]' \
+                         '}' \
+                       ']'
     if @grafana_url.end_with?('/')
-      @grafana_url + CGI.escape(logging_view_uri)
+      @grafana_url + 'explore?left=' + CGI.escape(logging_view_uri).gsub('%2C', ',').gsub('%3A', ':')
     else
-      @grafana_url + '/' + CGI.escape(logging_view_uri)
+      @grafana_url + '/' + 'explore?left=' + CGI.escape(logging_view_uri).gsub('%2C', ',').gsub('%3A', ':')
     end
   end
 
