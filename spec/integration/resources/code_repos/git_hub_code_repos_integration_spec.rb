@@ -10,6 +10,9 @@ RSpec.describe 'Code Repos - GitHub' do
         'app_private_key' => 'foo_private_key',
         'app_installation_id' => 'foo_installation',
         'org' => 'foo',
+        'app_id' => 12_345,
+        'app_private_key' => 'foo_private_key',
+        'app_installation_id' => 1_010_101,
         'enforce_best_practices' => true
       }
     end

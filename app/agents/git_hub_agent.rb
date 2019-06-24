@@ -35,7 +35,7 @@ class GitHubAgent
     payload = {
       iat: Time.now.to_i,
       exp: Time.now.to_i + (10 * 60), # Max is 10 mins
-      iss: @app_id
+      iss: @app_id.to_s
     }
 
     jwt = JWT.encode payload, @app_private_key, 'RS256'
