@@ -213,7 +213,7 @@ destroy() {
   fi
 
   info "attempting to delete the cluster: ${CLUSTER_NAME}, region: ${REGION}"
-  if ! ${GCLOUD} container clusters delete ${CLUSTER_NAME}; then
+  if ! ${GCLOUD} container clusters delete ${CLUSTER_NAME} --region=${REGION}; then
     failed "trying to the delete the cluster: ${CLUSTER_NAME}"
   fi
 
@@ -264,7 +264,7 @@ authenticate() {
 # wait-on is responsible for waiting on the master api to become available
 wait-on() {
   local timeout=${1:-400}
-  info "waiting on the master api to come up, timeout: ${timeout}"
+  info "waiting for master api to be available, timeout: ${timeout} seconds"
 
   local checks=0
   for ((j=0; j<3; j++)); do
@@ -297,10 +297,12 @@ has-cluster() {
 
 # provision-nat is responsble for provisioning a nat device
 provision-nat() {
-  info "attempting to deploy a cloud nat device for external internet access"
+  local name="cloud-nat"
+
+  info "attempting to deploy a cloud nat device: ${name}, region: ${REGION}"
 
   # @step: check if a cloud-nat exists already
-  resp=`${GCLOUD} compute routers nats describe cloud-nat --region=${REGION} --router=router 2>&1`
+  resp=`${GCLOUD} compute routers nats describe ${name} --region=${REGION} --router=router 2>&1`
   if [[ $? -ne 0 ]]; then
     if [[ ! "${resp}" =~ ^.*not.found.*$ ]]; then
       error "unable to check status of cloud nat"
@@ -308,7 +310,7 @@ provision-nat() {
     fi
 
     # @step: provision a cloud-nat device
-    if ! ${GCLOUD} compute routers nats create cloud-nat \
+    if ! ${GCLOUD} compute routers nats create ${name} \
       --auto-allocate-nat-external-ips \
       --nat-all-subnet-ip-ranges \
       --router=router \
@@ -316,7 +318,7 @@ provision-nat() {
       return 0
     fi
   else
-    info "skipping provisioning of nat device as one already exists"
+    info "skipping cloud nat device: ${name}, region: ${REGION}, already exists"
   fi
 }
 
@@ -364,6 +366,8 @@ provision-gke() {
       ${CLUSTER_NAME}; then
       return 1
     fi
+  else
+    info "skipping the cluster build as it already exists"
   fi
 
   return 0
@@ -373,7 +377,7 @@ provision-gke() {
 while [[ $# -ne 0 ]]; do
   case $1 in
   --build)                          ACTION="build";                  shift 1; ;;
-  --destroy)                        ACTION="destroy";                shift 2; ;;
+  --destroy)                        ACTION="destroy";                shift 1; ;;
   --account)                        ACCOUNT="$2";                    shift 2; ;;
   --authorize-master-cidr)          AUTHORIZED_MASTER_CIDRS=${2};    shift 2; ;;
   --cluster-addon)                  CLUSTER_ADDONS=",${2}";          shift 2; ;;
