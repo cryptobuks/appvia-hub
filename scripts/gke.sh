@@ -196,6 +196,32 @@ SERVER_TOKEN=${KUBE_SA_TOKEN}
 EOF
 }
 
+# destroy is responsible for deleting the gke cluster
+destroy() {
+  [[ -n "${ACCOUNT}"    ]] || usage "you have not specified a GCP credenetials account file"
+  [[ -f "${ACCOUNT}"    ]] || usage "${ACCOUNT} either doesn't exist or is not a file"
+  [[ -n ${CLUSTER_NAME} ]] || usage "you must specify the cluster name"
+  [[ -n ${REGION}       ]] || usage "you have not specified a gcp region"
+
+  # @step: provision gcp auth
+  if ! provision-auth; then
+    failed "unable to provision the gcp credentials"
+  fi
+
+  if ! has-cluster; then
+    failed "the cluster: ${CLUSTER_NAME} does not exist in region: ${REGION}"
+  fi
+
+  info "attempting to delete the cluster: ${CLUSTER_NAME}, region: ${REGION}"
+  if ! ${GCLOUD} container clusters delete ${CLUSTER_NAME}; then
+    failed "trying to the delete the cluster: ${CLUSTER_NAME}"
+  fi
+
+  # @@TODO: how can we delete the cloud-nat? if no clusters exist?
+
+  info "successfully deleted the cluster"
+}
+
 # provision-auth is responsible for setting up the gcp auth
 provision-auth() {
   # @step: provision the account configuration
