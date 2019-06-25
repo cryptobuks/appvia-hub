@@ -35,15 +35,23 @@ FROM ruby:2.5.5-alpine3.9
 LABEL maintainer="info@appvia.io"
 LABEL source="https://github.com/appvia/appvia-hub"
 
-ENV RAILS_ENV production
-ENV NODE_ENV production
-ENV APP_PATH /app
+ENV APP_PATH="/app" \
+    KUBECTL_VERSION="1.13.4" \
+    GCLOUD_VERSION="251.0.0" \
+    NODE_ENV="production" \
+    RAILS_ENV="production"
 
-RUN apk add --update --no-cache bash curl postgresql-client tzdata && \
+RUN apk add --update --no-cache bash curl python postgresql-client tzdata jq && \
+    curl -sL https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz | tar xz -C /opt && \
+    curl -sL https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o /usr/bin/kubectl && \
+    chmod +x /usr/bin/kubectl && \
     rm -rf /var/cache/apk/*
 
-RUN addgroup -g 1000 -S appuser \
- && adduser -u 1000 -S appuser -G appuser
+RUN export PATH=${PATH}:/opt/google-cloud-sdk/bin
+
+RUN /opt/google-cloud-sdk/bin/gcloud components install beta
+
+RUN addgroup -g 1000 -S appuser && adduser -u 1000 -S appuser -G appuser
 
 USER 1000
 
