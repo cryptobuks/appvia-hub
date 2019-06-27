@@ -8,7 +8,7 @@ class LokiAgent
     logging_view_uri = '[' \
                          '"now-6h",' \
                          '"now",' \
-                         '"' + data_source_name + '",' \
+                         '"' + @data_source_name + '",' \
                          '{' \
                            '"expr":"' + query_expression + '"' \
                          '},' \
