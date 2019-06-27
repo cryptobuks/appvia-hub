@@ -1,13 +1,14 @@
 class LokiAgent
-  def initialize(grafana_url:)
+  def initialize(grafana_url:, data_source_name:)
     @grafana_url = grafana_url
+    @data_source_name = data_source_name
   end
 
   def create_logging_dashboard(query_expression)
     logging_view_uri = '[' \
                          '"now-6h",' \
                          '"now",' \
-                         '"Loki",' \
+                         '"' + @data_source_name + '",' \
                          '{' \
                            '"expr":"' + query_expression + '"' \
                          '},' \
