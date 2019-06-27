@@ -21,7 +21,7 @@
     "lint-staged"
   ],
   "dependencies": {
-    "@rails/webpacker": "4.0",
+    "@rails/webpacker": "^4.0.7",
     "bootstrap": "^4.3.1",
     "bootstrap-select": "^1.13.10",
     "data-confirm-modal": "^1.6.2",
@@ -34,19 +34,19 @@
     "vue": "^2.6.10",
     "vue-loader": "^15.7.0",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.29.6"
+    "webpack": "^4.35.0"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.12.1",
+    "babel-eslint": "^10.0.2",
+    "eslint": "^6.0.1",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-config-prettier": "^4.2.0",
+    "eslint-config-prettier": "^6.0.0",
     "eslint-import-resolver-webpack": "^0.11.0",
-    "eslint-plugin-import": "^2.15.0",
-    "eslint-plugin-prettier": "^3.0.1",
-    "lint-staged": "^8.1.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "lint-staged": "^8.2.1",
     "pre-commit": "^1.2.2",
-    "prettier": "^1.16.1",
-    "webpack-dev-server": "^3.2.1"
+    "prettier": "^1.18.2",
+    "webpack-dev-server": "^3.7.2"
   }
 }

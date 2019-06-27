@@ -7,7 +7,7 @@ ENV NODE_ENV production
 
 WORKDIR /app
 
-RUN apk add --update --no-cache bash curl make gcc libc-dev postgresql-client postgresql-dev tzdata nodejs-current yarn
+RUN apk add --update --no-cache bash curl make gcc libc-dev postgresql-client postgresql-dev tzdata nodejs yarn
 
 # install gems
 COPY Gemfile Gemfile.lock ./
