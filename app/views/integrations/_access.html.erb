@@ -1,20 +1,17 @@
-<% credentials = global_credentials_for integration %>
-<% if credentials.present? %>
-  <div class="<%= container_css_class if local_assigns.key? :container_css_class -%>">
-    <% panel_id = "access-panel-#{SecureRandom.hex(10)}" %>
-    <%=
-      tag.a(
-        href: '/me/access',
-        data: {
-          target: "/me/access"
-        },
-        aria: {
-          controls: panel_id
-        }
-      ) do
-    %>
-      <%= icon 'key' %>
-      Setup access
-    <% end %>
-  </div>
-<% end %>
+<div class="<%= container_css_class if local_assigns.key? :container_css_class -%>">
+  <% panel_id = "access-panel-#{SecureRandom.hex(10)}" %>
+  <%=
+    tag.a(
+      href: '/me/access',
+      data: {
+        target: "/me/access"
+      },
+      aria: {
+        controls: panel_id
+      }
+    ) do
+  %>
+    <%= icon 'key' %>
+    Setup access
+  <% end %>
+</div>
