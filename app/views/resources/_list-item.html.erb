@@ -49,9 +49,18 @@
     </div>
 
     <%=
-      render partial: 'integrations/global_credentials',
+      render partial: 'integrations/access',
         locals: {
           integration: resource.integration,
+          container_css_class: 'indented mt-3'
+        }
+      %>
+
+    <%=
+      render partial: 'integrations/getting_started',
+        locals: {
+          integration: resource.integration,
+          resource: resource,
           container_css_class: 'indented mt-3'
         }
     %>
