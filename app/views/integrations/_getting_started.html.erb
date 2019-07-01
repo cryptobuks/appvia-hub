@@ -27,7 +27,7 @@
     %>
       <dl class="mt-2 card p-3 bg-light overflow-auto">
       <% if integration.provider_id == 'git_hub' %>
-        <pre class="mb-0"><code>git clone <%= resource.url %>.git</code></pre>
+        <pre class="mb-0"><code>$ git clone <%= resource.url %>.git</code></pre>
         <% documentation_url = 'https://guides.github.com/' %>
       <% end %>
       <% if integration.provider_id == 'kubernetes' %>
