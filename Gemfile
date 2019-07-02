@@ -26,12 +26,10 @@ gem 'faraday', '~> 0.15.4'
 gem 'faraday_middleware', '~> 0.13.1'
 gem 'typhoeus', '~> 1.3', '>= 1.3.1'
 gem 'closure_tree', '~> 7.0'
-gem 'googleauth', '~> 0.7.1'
 gem 'google-api-client', '>= 0.30.3'
-gem 'kubeclient', '>= 4.4.0'
-gem 'openssl', '>= 2.1.2'
+gem 'googleauth', '~> 0.7.1'
+gem 'k8s-client', '~> 0.72.0'
 gem 'stringio', '>= 0.0.2'
-
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
