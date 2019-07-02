@@ -36,13 +36,10 @@ LABEL maintainer="info@appvia.io"
 LABEL source="https://github.com/appvia/appvia-hub"
 
 ENV APP_PATH="/app" \
-    KUBECTL_VERSION="1.13.4" \
     NODE_ENV="production" \
     RAILS_ENV="production"
 
 RUN apk add --update --no-cache bash curl python postgresql-client tzdata jq && \
-    curl -sL https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o /usr/bin/kubectl && \
-    chmod +x /usr/bin/kubectl && \
     rm -rf /var/cache/apk/*
 
 RUN addgroup -g 1000 -S appuser && adduser -u 1000 -S appuser -G appuser
