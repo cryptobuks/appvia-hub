@@ -661,16 +661,3 @@ class GKEAgent
   # rubocop:enable Metrics/AbcSize
 end
 # rubocop:enable Metrics/MethodLength,Metrics/ClassLength
-
-require 'pp'
-
-account = File.read('../../account.json')
-region = 'europe-west2'
-project = 'gke-learning-242311'
-
-c = GKEAgent.new(account, project, region)
-c.provision(
-  name: 'test',
-  description: 'just a test',
-  version: '1.13.7-gke.8'
-)
