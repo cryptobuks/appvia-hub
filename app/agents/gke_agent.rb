@@ -123,7 +123,7 @@ module GKE
     end
 
     # hold_for_operation is responisble for waiting for an operation to complete or error
-    # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/CyclomaticComplexity
     def hold_for_operation(id, interval = 10, max_retries = 3, max_timeout = 15 * 60)
       max_attempts = max_timeout / interval
       retries = attempts = 0
@@ -133,9 +133,7 @@ module GKE
         begin
           resp = get_operation_status(id)
           if !resp.nil? && (resp.status == 'DONE')
-            if !resp.status_message.nil? && !resp.status_message.empty?
-              raise Exception, "operation: #{x.operation_type} has failed with error message: #{resp.status_message}"
-            end
+            raise Exception, "operation: #{x.operation_type} has failed with error message: #{resp.status_message}" if resp.status_message.present?
 
             break
           end
@@ -150,7 +148,7 @@ module GKE
         end
       end
     end
-    # rubocop:enable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     # get_operation_status returns the current status of an operation
     def get_operation_status(id, project = @project, region = @region)
@@ -314,7 +312,7 @@ class GKEAgent
   # rubocop:enable Metrics/MethodLength
 
   # provision is responsible for provisioning the cluster
-  # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength
   def provision(options = {})
     # @step: validate the options
     raise ArgumentError, 'you must specify a cluster name' unless options[:name]
@@ -362,16 +360,15 @@ class GKEAgent
     kubectl(cluster.endpoint, DEFAULT_BOOTSTRAP_JOB)
 
     # @step: wait for the bootstrapper to complete
-    puts <<~TEXT
-      Kubernetes API: https://#{cluster.endpoint}
-      GCP Region: #{@region}
-      GCP Project: #{@project}
-      Certificate Autority: #{cluster.master_auth.cluster_ca_certificate}
-      Cluster Token: #{service_account_credentials(cluster.endpoint, 'sysadmin')}
-      Cloud NAT: #{config[:enable_private_network]}
-    TEXT
+    #    puts <<~TEXT
+    #      Kubernetes API: https://#{cluster.endpoint}
+    #      GCP Region: #{@region}
+    #      GCP Project: #{@project}
+    #      Certificate Autority: #{cluster.master_auth.cluster_ca_certificate}
+    #      Cluster Token: #{service_account_credentials(cluster.endpoint, 'sysadmin')}
+    #      Cloud NAT: #{config[:enable_private_network]}
+    #    TEXT
   end
-  # rubocop:enable Metrics/AbcSize
 
   # destroy is responsible for deleting a gke cluster
   def destroy(name, project = @project, region = @region)

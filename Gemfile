@@ -28,7 +28,7 @@ gem 'typhoeus', '~> 1.3', '>= 1.3.1'
 gem 'closure_tree', '~> 7.0'
 gem 'google-api-client', '>= 0.30.3'
 gem 'googleauth', '~> 0.7.1'
-gem 'k8s-client', '~> 0.72.0'
+gem 'k8s-client', '~> 0.10.2'
 gem 'stringio', '>= 0.0.2'
 
 group :development, :test do
