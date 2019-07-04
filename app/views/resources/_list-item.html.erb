@@ -49,14 +49,7 @@
     </div>
 
     <div class="indented mt-3">
-      <%=
-        tag.a(
-          href: '/me/access',
-          data: {
-            target: '/me/access'
-          }
-        ) do
-      %>
+      <%= link_to me_access_path(anchor: resource.integration.id) do %>
         <%= icon 'key' %>
         Setup access
       <% end %>
