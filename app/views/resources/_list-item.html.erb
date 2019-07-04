@@ -48,13 +48,19 @@
       <%- end -%>
     </div>
 
-    <%=
-      render partial: 'integrations/access',
-        locals: {
-          integration: resource.integration,
-          container_css_class: 'indented mt-3'
-        }
-    %>
+    <div class="indented mt-3">
+      <%=
+        tag.a(
+          href: '/me/access',
+          data: {
+            target: '/me/access'
+          }
+        ) do
+      %>
+        <%= icon 'key' %>
+        Setup access
+      <% end %>
+    </div>
 
     <%=
       render partial: 'integrations/getting_started',
