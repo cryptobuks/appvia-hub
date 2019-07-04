@@ -8,7 +8,8 @@ module Resources
 
           result = agent.create_repository resource.name,
             team_id: all_team_id,
-            best_practices: enforce_best_practices
+            best_practices: enforce_best_practices,
+            template_url: resource.template_url
 
           resource.private = result.private
           resource.full_name = result.full_name

@@ -7,11 +7,20 @@ class ResourcesController < ApplicationController
   before_action :find_resource, only: [:destroy]
 
   def new
-    @resource = @project.resources.new type: @resource_type[:class]
+    @resource = @project.resources.new(
+      type: @resource_type[:class],
+      integration_id: @integrations.first.id
+    )
   end
 
   def create
     @resource = @project.resources.new resource_params
+
+    # Integration specific params
+    case @resource.integration.provider_id
+    when 'git_hub'
+      @resource.template_url = params['resource']['git_hub']['template_url'].presence
+    end
 
     if @resource.save
       ResourceProvisioningService.new.request_create @resource

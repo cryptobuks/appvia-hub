@@ -4,7 +4,12 @@
     scope: :resource,
     url: project_resources_path(resource.project, type: resource_type[:id]),
     method: :post,
-    local: true
+    local: true,
+    class: 'resource-form',
+    data: {
+      controller: 'resource-form',
+      'resource-form-integration-id': @resource.integration.id
+    }
   ) do |form|
 %>
   <%= form.alert_message "Please fix the issues below:" %>
@@ -21,7 +26,12 @@
         ),
         required: true
       },
-      { class: 'selectpicker' }
+      {
+        class: 'selectpicker',
+        data: {
+          action: 'resource-form#setCurrentIntegration'
+        }
+      }
   %>
 
   <%=
@@ -29,6 +39,29 @@
       help: Resource::SLUG_FORMAT_TEXT.capitalize,
       pattern: "^#{Resource::SLUG_FORMAT_REGEX}$"
   %>
+
+  <% integrations.each do |i| %>
+    <div data-target="resource-form.section" data-integration-id="<%= i.id -%>">
+      <%- case i.provider_id -%>
+      <%- when 'git_hub' -%>
+        <%= form.fields_for :git_hub do |integration_form| %>
+          <% templates = i.config['templates'] %>
+          <%=
+            integration_form.select :template_url,
+              templates.map { |t| [t['name'], t['repo_url']] },
+              {
+                label: label_with_tooltip(
+                  'Initialise with template',
+                  'These are set up by a hub admin'
+                ),
+                include_blank: true
+              },
+              { class: 'selectpicker' }
+          %>
+        <% end %>
+      <%- end -%>
+    </div>
+  <% end %>
 
   <%= form.primary 'Request' %>
 <% end %>

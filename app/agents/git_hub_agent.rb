@@ -8,7 +8,7 @@ class GitHubAgent
     setup_client
   end
 
-  def create_repository(name, team_id:, private: false, best_practices: false)
+  def create_repository(name, team_id:, private: false, best_practices: false, template_url: nil)
     client = app_installation_client
 
     resource = find_or_create_repo(
@@ -18,9 +18,13 @@ class GitHubAgent
       auto_init: best_practices
     )
 
-    apply_best_practices client, resource.full_name if best_practices
+    repo = resource.full_name
 
-    client.add_team_repository team_id, resource.full_name, permission: 'admin'
+    apply_best_practices(client, repo) if best_practices
+
+    client.add_team_repository team_id, repo, permission: 'admin'
+
+    client.start_source_import(repo, template_url) if template_url.present?
 
     resource
   end

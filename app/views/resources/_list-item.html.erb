@@ -36,6 +36,16 @@
               <%= resource.enforce_best_practices %>
             </span>
           </div>
+
+          <div class="indented mt-3">
+            From template
+            <br />
+            <% if resource.template_url.present? %>
+              <%= link_to resource.template_url, resource.template_url, target: '_blank' %>
+            <% else %>
+              <span class="none-text">None</span>
+            <% end %>
+          </div>
         <% end %>
       <%- when Resources::DockerRepo -%>
         <span class="badge badge-secondary mr-1">
