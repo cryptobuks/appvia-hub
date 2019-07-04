@@ -1,28 +1,33 @@
 import '../stylesheets/application.scss';
-import "<%= File.join(Gem.loaded_specs['bootstrap_form'].full_gem_path, 'app', 'assets', 'stylesheets', 'rails_bootstrap_forms.css') %>";
 
 import Rails from 'rails-ujs';
 import Turbolinks from 'turbolinks';
 
-import LocalTime from "local-time"
+import LocalTime from 'local-time';
 
 import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap-select';
 import 'data-confirm-modal';
 
+import '../gem-dependencies.js.erb';
+
+import '../controllers';
+
 Rails.start();
 Turbolinks.start();
-LocalTime.start()
+LocalTime.start();
 
-console.log('Hello World from Webpacker'); // eslint-disable-line
+/* eslint-disable no-undef */
 
 document.addEventListener('turbolinks:load', () => {
-  $(function () {
+  $(function tooltipActivation() {
     $('[data-toggle="tooltip"]').tooltip();
   });
 });
 
 // Make bootstrap-select work with Turbolinks
 document.addEventListener('turbolinks:load', () => {
-  $(window).trigger('load.bs.select.data-api'); // eslint-disable-line no-undef
+  $(window).trigger('load.bs.select.data-api');
 });
+
+/* eslint-enable no-undef */
